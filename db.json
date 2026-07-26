@@ -1,0 +1,1721 @@
+{
+  "ingredients": [
+    {
+      "id": "ing-001",
+      "name": "Chicken Breast",
+      "unit": "kg",
+      "currentStock": 18,
+      "reorderLevel": 5,
+      "reorderQty": 10,
+      "unitCost": 4.5,
+      "supplier": "FarmFresh Co.",
+      "category": "protein",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-002",
+      "name": "Chicken Thigh",
+      "unit": "kg",
+      "currentStock": 10,
+      "reorderLevel": 4,
+      "reorderQty": 8,
+      "unitCost": 3.8,
+      "supplier": "FarmFresh Co.",
+      "category": "protein",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-003",
+      "name": "Paneer",
+      "unit": "kg",
+      "currentStock": 6,
+      "reorderLevel": 3,
+      "reorderQty": 5,
+      "unitCost": 3.2,
+      "supplier": "DairyBest",
+      "category": "protein",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-004",
+      "name": "Basmati Rice",
+      "unit": "kg",
+      "currentStock": 30,
+      "reorderLevel": 10,
+      "reorderQty": 20,
+      "unitCost": 2.2,
+      "supplier": "GrainWorks",
+      "category": "grain",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-005",
+      "name": "Noodles",
+      "unit": "kg",
+      "currentStock": 12,
+      "reorderLevel": 5,
+      "reorderQty": 10,
+      "unitCost": 1.8,
+      "supplier": "GrainWorks",
+      "category": "grain",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-006",
+      "name": "Pasta",
+      "unit": "kg",
+      "currentStock": 8,
+      "reorderLevel": 4,
+      "reorderQty": 8,
+      "unitCost": 2,
+      "supplier": "GrainWorks",
+      "category": "grain",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-007",
+      "name": "Butter",
+      "unit": "kg",
+      "currentStock": 4,
+      "reorderLevel": 2,
+      "reorderQty": 4,
+      "unitCost": 5.5,
+      "supplier": "DairyBest",
+      "category": "dairy",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-008",
+      "name": "Heavy Cream",
+      "unit": "l",
+      "currentStock": 5,
+      "reorderLevel": 2,
+      "reorderQty": 4,
+      "unitCost": 3.8,
+      "supplier": "DairyBest",
+      "category": "dairy",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-009",
+      "name": "Mozzarella",
+      "unit": "kg",
+      "currentStock": 3.5,
+      "reorderLevel": 2,
+      "reorderQty": 3,
+      "unitCost": 7,
+      "supplier": "DairyBest",
+      "category": "dairy",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-010",
+      "name": "Tomato Puree",
+      "unit": "kg",
+      "currentStock": 10,
+      "reorderLevel": 4,
+      "reorderQty": 6,
+      "unitCost": 1.5,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-011",
+      "name": "Onions",
+      "unit": "kg",
+      "currentStock": 12,
+      "reorderLevel": 5,
+      "reorderQty": 10,
+      "unitCost": 0.8,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-012",
+      "name": "Bell Peppers",
+      "unit": "kg",
+      "currentStock": 5,
+      "reorderLevel": 3,
+      "reorderQty": 4,
+      "unitCost": 2.5,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-013",
+      "name": "Spinach",
+      "unit": "kg",
+      "currentStock": 3,
+      "reorderLevel": 2,
+      "reorderQty": 3,
+      "unitCost": 2.8,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-014",
+      "name": "Mushrooms",
+      "unit": "kg",
+      "currentStock": 4,
+      "reorderLevel": 2,
+      "reorderQty": 3,
+      "unitCost": 3.5,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-015",
+      "name": "Garam Masala",
+      "unit": "kg",
+      "currentStock": 1.5,
+      "reorderLevel": 0.5,
+      "reorderQty": 1,
+      "unitCost": 12,
+      "supplier": "SpiceKing",
+      "category": "spice",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-016",
+      "name": "Turmeric",
+      "unit": "kg",
+      "currentStock": 1,
+      "reorderLevel": 0.5,
+      "reorderQty": 1,
+      "unitCost": 8,
+      "supplier": "SpiceKing",
+      "category": "spice",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-017",
+      "name": "Cumin",
+      "unit": "kg",
+      "currentStock": 1.2,
+      "reorderLevel": 0.5,
+      "reorderQty": 1,
+      "unitCost": 6,
+      "supplier": "SpiceKing",
+      "category": "spice",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-018",
+      "name": "Ginger Garlic Paste",
+      "unit": "kg",
+      "currentStock": 3,
+      "reorderLevel": 1,
+      "reorderQty": 2,
+      "unitCost": 3,
+      "supplier": "SpiceKing",
+      "category": "spice",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-019",
+      "name": "Cooking Oil",
+      "unit": "l",
+      "currentStock": 18,
+      "reorderLevel": 5,
+      "reorderQty": 10,
+      "unitCost": 1.8,
+      "supplier": "OilCo",
+      "category": "other",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-020",
+      "name": "Salt",
+      "unit": "kg",
+      "currentStock": 6,
+      "reorderLevel": 2,
+      "reorderQty": 3,
+      "unitCost": 0.4,
+      "supplier": "SpiceKing",
+      "category": "spice",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-021",
+      "name": "Olive Oil",
+      "unit": "l",
+      "currentStock": 7,
+      "reorderLevel": 3,
+      "reorderQty": 5,
+      "unitCost": 4,
+      "supplier": "OilCo",
+      "category": "other",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-022",
+      "name": "Soy Sauce",
+      "unit": "l",
+      "currentStock": 3,
+      "reorderLevel": 1,
+      "reorderQty": 2,
+      "unitCost": 2.5,
+      "supplier": "AsianMart",
+      "category": "other",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-023",
+      "name": "All-Purpose Flour",
+      "unit": "kg",
+      "currentStock": 10,
+      "reorderLevel": 4,
+      "reorderQty": 6,
+      "unitCost": 1,
+      "supplier": "GrainWorks",
+      "category": "grain",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-024",
+      "name": "Sugar",
+      "unit": "kg",
+      "currentStock": 5,
+      "reorderLevel": 2,
+      "reorderQty": 4,
+      "unitCost": 0.9,
+      "supplier": "GrainWorks",
+      "category": "other",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "ing-025",
+      "name": "Green Chilies",
+      "unit": "kg",
+      "currentStock": 0.8,
+      "reorderLevel": 0.5,
+      "reorderQty": 1,
+      "unitCost": 3,
+      "supplier": "FreshFarm",
+      "category": "vegetable",
+      "updatedAt": "2026-07-14T06:00:00Z"
+    }
+  ],
+  "brands": [
+    {
+      "id": "brand-01",
+      "name": "Tandoori Express",
+      "color": "#E65100"
+    },
+    {
+      "id": "brand-02",
+      "name": "Wok On Fire",
+      "color": "#D32F2F"
+    },
+    {
+      "id": "brand-03",
+      "name": "Pizza Piazza",
+      "color": "#2E7D32"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "item-001",
+      "name": "Butter Chicken Bowl",
+      "brandId": "brand-01",
+      "brandName": "Tandoori Express",
+      "price": 12.99,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-002",
+      "name": "Chicken Biryani",
+      "brandId": "brand-01",
+      "brandName": "Tandoori Express",
+      "price": 14.99,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-003",
+      "name": "Palak Paneer",
+      "brandId": "brand-01",
+      "brandName": "Tandoori Express",
+      "price": 11.99,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-004",
+      "name": "Garlic Naan (4 pcs)",
+      "brandId": "brand-01",
+      "brandName": "Tandoori Express",
+      "price": 4.99,
+      "category": "sides",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-005",
+      "name": "Hakka Noodles",
+      "brandId": "brand-02",
+      "brandName": "Wok On Fire",
+      "price": 10.99,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-006",
+      "name": "Schezwan Fried Rice",
+      "brandId": "brand-02",
+      "brandName": "Wok On Fire",
+      "price": 11.49,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-007",
+      "name": "Spring Rolls (6 pcs)",
+      "brandId": "brand-02",
+      "brandName": "Wok On Fire",
+      "price": 5.99,
+      "category": "sides",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-008",
+      "name": "Manchow Soup",
+      "brandId": "brand-02",
+      "brandName": "Wok On Fire",
+      "price": 6.49,
+      "category": "sides",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-009",
+      "name": "Margherita Pizza",
+      "brandId": "brand-03",
+      "brandName": "Pizza Piazza",
+      "price": 9.99,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-010",
+      "name": "Farmhouse Pizza",
+      "brandId": "brand-03",
+      "brandName": "Pizza Piazza",
+      "price": 13.49,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-011",
+      "name": "Pasta Alfredo",
+      "brandId": "brand-03",
+      "brandName": "Pizza Piazza",
+      "price": 10.49,
+      "category": "mains",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    },
+    {
+      "id": "item-012",
+      "name": "Garlic Breadsticks",
+      "brandId": "brand-03",
+      "brandName": "Pizza Piazza",
+      "price": 4.49,
+      "category": "sides",
+      "isActive": true,
+      "updatedAt": "2026-07-14T06:00:00Z"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "recipe-001",
+      "menuItemId": "item-001",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-001",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-007",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-008",
+          "quantity": 0.1
+        },
+        {
+          "ingredientId": "ing-010",
+          "quantity": 0.1
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-015",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-016",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-018",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-025",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-002",
+      "menuItemId": "item-002",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-001",
+          "quantity": 0.25
+        },
+        {
+          "ingredientId": "ing-004",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.08
+        },
+        {
+          "ingredientId": "ing-015",
+          "quantity": 0.015
+        },
+        {
+          "ingredientId": "ing-016",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-017",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-018",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.04
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-025",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-003",
+      "menuItemId": "item-003",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-003",
+          "quantity": 0.15
+        },
+        {
+          "ingredientId": "ing-013",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-008",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-018",
+          "quantity": 0.015
+        },
+        {
+          "ingredientId": "ing-015",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-017",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-004",
+      "menuItemId": "item-004",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-023",
+          "quantity": 0.15
+        },
+        {
+          "ingredientId": "ing-007",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        },
+        {
+          "ingredientId": "ing-024",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-005",
+      "menuItemId": "item-005",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-005",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.04
+        },
+        {
+          "ingredientId": "ing-012",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-022",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        }
+      ]
+    },
+    {
+      "id": "recipe-006",
+      "menuItemId": "item-006",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-004",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.04
+        },
+        {
+          "ingredientId": "ing-012",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-022",
+          "quantity": 0.015
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        },
+        {
+          "ingredientId": "ing-025",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-007",
+      "menuItemId": "item-007",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-023",
+          "quantity": 0.1
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-012",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-014",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        }
+      ]
+    },
+    {
+      "id": "recipe-008",
+      "menuItemId": "item-008",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-001",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-018",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-022",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-019",
+          "quantity": 0.01
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        },
+        {
+          "ingredientId": "ing-025",
+          "quantity": 0.003
+        }
+      ]
+    },
+    {
+      "id": "recipe-009",
+      "menuItemId": "item-009",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-023",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-009",
+          "quantity": 0.15
+        },
+        {
+          "ingredientId": "ing-010",
+          "quantity": 0.08
+        },
+        {
+          "ingredientId": "ing-021",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        },
+        {
+          "ingredientId": "ing-024",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-010",
+      "menuItemId": "item-010",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-023",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-009",
+          "quantity": 0.15
+        },
+        {
+          "ingredientId": "ing-010",
+          "quantity": 0.08
+        },
+        {
+          "ingredientId": "ing-012",
+          "quantity": 0.04
+        },
+        {
+          "ingredientId": "ing-014",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-011",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-021",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-011",
+      "menuItemId": "item-011",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-006",
+          "quantity": 0.2
+        },
+        {
+          "ingredientId": "ing-008",
+          "quantity": 0.1
+        },
+        {
+          "ingredientId": "ing-007",
+          "quantity": 0.04
+        },
+        {
+          "ingredientId": "ing-009",
+          "quantity": 0.05
+        },
+        {
+          "ingredientId": "ing-014",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-021",
+          "quantity": 0.02
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.005
+        }
+      ]
+    },
+    {
+      "id": "recipe-012",
+      "menuItemId": "item-012",
+      "servings": 1,
+      "ingredients": [
+        {
+          "ingredientId": "ing-023",
+          "quantity": 0.12
+        },
+        {
+          "ingredientId": "ing-007",
+          "quantity": 0.03
+        },
+        {
+          "ingredientId": "ing-021",
+          "quantity": 0.015
+        },
+        {
+          "ingredientId": "ing-020",
+          "quantity": 0.003
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-001",
+      "orderNumber": 2001,
+      "source": "zomato",
+      "customerName": "Arun P.",
+      "customerId": 1,
+      "phone": 9876543210,
+      "items": [
+        {
+          "menuItemId": "item-008",
+          "name": "Chicken Curry",
+          "quantity": 1,
+          "unitPrice": 9
+        },
+        {
+          "menuItemId": "item-005",
+          "name": "Dal Makhani",
+          "quantity": 1,
+          "unitPrice": 6
+        }
+      ],
+      "totalAmount": 15,
+      "status": "cancelled",
+      "brandId": "brand-001",
+      "timestamps": {
+        "placedAt": "2026-07-15T09:43:27.527Z",
+        "startedAt": "2026-07-15T09:48:27.527Z",
+        "readyAt": "2026-07-15T09:58:27.527Z",
+        "dispatchedAt": "2026-07-15T10:03:27.527Z"
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-002",
+      "orderNumber": 2002,
+      "source": "swiggy",
+      "customerName": "Neha S.",
+      "customerId": 2,
+      "phone": 9876543211,
+      "items": [
+        {
+          "menuItemId": "item-005",
+          "name": "Dal Makhani",
+          "quantity": 1,
+          "unitPrice": 6
+        }
+      ],
+      "totalAmount": 6,
+      "status": "dispatched",
+      "brandId": "brand-003",
+      "timestamps": {
+        "placedAt": "2026-07-15T08:50:27.530Z",
+        "startedAt": "2026-07-15T08:55:27.530Z",
+        "readyAt": "2026-07-15T09:05:27.530Z",
+        "dispatchedAt": "2026-07-15T09:10:27.530Z"
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-003",
+      "orderNumber": 2003,
+      "source": "swiggy",
+      "customerName": "Ravi K.",
+      "customerId": 3,
+      "phone": 9876543212,
+      "items": [
+        {
+          "menuItemId": "item-001",
+          "name": "Butter Chicken",
+          "quantity": 1,
+          "unitPrice": 12.5
+        }
+      ],
+      "totalAmount": 12.5,
+      "status": "preparing",
+      "brandId": "brand-002",
+      "timestamps": {
+        "placedAt": "2026-07-15T09:43:27.530Z",
+        "startedAt": "2026-07-15T09:48:27.530Z",
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-004",
+      "orderNumber": 2004,
+      "source": "zomato",
+      "customerName": "Priya M.",
+      "customerId": 4,
+      "phone": 9876543213,
+      "items": [
+        {
+          "menuItemId": "item-001",
+          "name": "Butter Chicken",
+          "quantity": 2,
+          "unitPrice": 12.5
+        }
+      ],
+      "totalAmount": 25,
+      "status": "pending",
+      "brandId": "brand-003",
+      "timestamps": {
+        "placedAt": "2026-07-15T08:17:27.530Z",
+        "startedAt": null,
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-005",
+      "orderNumber": 2005,
+      "source": "direct",
+      "customerName": "Amit R.",
+      "customerId": 5,
+      "phone": 9876543214,
+      "items": [
+        {
+          "menuItemId": "item-009",
+          "name": "Raita",
+          "quantity": 1,
+          "unitPrice": 2
+        }
+      ],
+      "totalAmount": 2,
+      "status": "preparing",
+      "brandId": "brand-001",
+      "timestamps": {
+        "placedAt": "2026-07-15T10:39:27.531Z",
+        "startedAt": "2026-07-15T10:44:27.531Z",
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-006",
+      "orderNumber": 2006,
+      "source": "uber-eats",
+      "customerName": "Deepa L.",
+      "customerId": 6,
+      "phone": 9876543215,
+      "items": [
+        {
+          "menuItemId": "item-007",
+          "name": "Masala Dosa",
+          "quantity": 2,
+          "unitPrice": 5
+        },
+        {
+          "menuItemId": "item-006",
+          "name": "Gulab Jamun",
+          "quantity": 4,
+          "unitPrice": 3
+        }
+      ],
+      "totalAmount": 22,
+      "status": "ready",
+      "brandId": "brand-004",
+      "timestamps": {
+        "placedAt": "2026-07-15T08:41:27.531Z",
+        "startedAt": "2026-07-15T08:46:27.531Z",
+        "readyAt": "2026-07-15T08:56:27.531Z",
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-007",
+      "orderNumber": 2007,
+      "source": "swiggy",
+      "customerName": "Karan J.",
+      "customerId": 7,
+      "phone": 9876543216,
+      "items": [
+        {
+          "menuItemId": "item-001",
+          "name": "Butter Chicken",
+          "quantity": 2,
+          "unitPrice": 12.5
+        }
+      ],
+      "totalAmount": 25,
+      "status": "cancelled",
+      "brandId": "brand-002",
+      "timestamps": {
+        "placedAt": "2026-07-15T11:00:27.531Z",
+        "startedAt": "2026-07-15T11:05:27.531Z",
+        "readyAt": "2026-07-15T11:15:27.531Z",
+        "dispatchedAt": "2026-07-15T11:20:27.531Z"
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-008",
+      "orderNumber": 2008,
+      "source": "uber-eats",
+      "customerName": "Meera D.",
+      "customerId": 8,
+      "phone": 9876543217,
+      "items": [
+        {
+          "menuItemId": "item-007",
+          "name": "Masala Dosa",
+          "quantity": 2,
+          "unitPrice": 5
+        },
+        {
+          "menuItemId": "item-010",
+          "name": "Samosa",
+          "quantity": 3,
+          "unitPrice": 3.5
+        }
+      ],
+      "totalAmount": 20.5,
+      "status": "preparing",
+      "brandId": "brand-003",
+      "timestamps": {
+        "placedAt": "2026-07-15T08:24:27.531Z",
+        "startedAt": "2026-07-15T08:29:27.531Z",
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-009",
+      "orderNumber": 2009,
+      "source": "direct",
+      "customerName": "Sneha G.",
+      "customerId": 9,
+      "phone": 9876543218,
+      "items": [
+        {
+          "menuItemId": "item-001",
+          "name": "Butter Chicken",
+          "quantity": 1,
+          "unitPrice": 12.5
+        }
+      ],
+      "totalAmount": 12.5,
+      "status": "cancelled",
+      "brandId": "brand-004",
+      "timestamps": {
+        "placedAt": "2026-07-15T08:07:27.531Z",
+        "startedAt": "2026-07-15T08:12:27.531Z",
+        "readyAt": "2026-07-15T08:22:27.531Z",
+        "dispatchedAt": "2026-07-15T08:27:27.531Z"
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-010",
+      "orderNumber": 2010,
+      "source": "uber-eats",
+      "customerName": "Vikram S.",
+      "customerId": 10,
+      "phone": 9876543219,
+      "items": [
+        {
+          "menuItemId": "item-001",
+          "name": "Butter Chicken",
+          "quantity": 2,
+          "unitPrice": 12.5
+        }
+      ],
+      "totalAmount": 25,
+      "status": "dispatched",
+      "brandId": "brand-004",
+      "timestamps": {
+        "placedAt": "2026-07-15T10:50:27.531Z",
+        "startedAt": "2026-07-15T10:55:27.531Z",
+        "readyAt": "2026-07-15T11:05:27.531Z",
+        "dispatchedAt": "2026-07-15T11:10:27.531Z"
+      },
+      "prepTimeTarget": 15
+    },
+    {
+      "id": "ord-011",
+      "orderNumber": 2011,
+      "source": "direct",
+      "customerName": "Walk-in",
+      "items": [
+        {
+          "menuItemId": "item-010",
+          "name": "Samosa",
+          "quantity": 3,
+          "unitPrice": 3.5
+        }
+      ],
+      "totalAmount": 10.5,
+      "status": "dispatched",
+      "brandId": "brand-003",
+      "timestamps": {
+        "placedAt": "2026-07-15T09:37:27.531Z",
+        "startedAt": "2026-07-15T09:42:27.531Z",
+        "readyAt": "2026-07-15T09:52:27.531Z",
+        "dispatchedAt": "2026-07-15T09:57:27.531Z"
+      },
+      "prepTimeTarget": 10
+    },
+    {
+      "id": "ord-012",
+      "orderNumber": 2012,
+      "source": "direct",
+      "customerName": "Walk-in",
+      "items": [
+        {
+          "menuItemId": "item-008",
+          "name": "Chicken Curry",
+          "quantity": 1,
+          "unitPrice": 9
+        }
+      ],
+      "totalAmount": 9,
+      "status": "cancelled",
+      "brandId": "brand-002",
+      "timestamps": {
+        "placedAt": "2026-07-15T10:29:27.531Z",
+        "startedAt": "2026-07-15T10:34:27.531Z",
+        "readyAt": "2026-07-15T10:44:27.531Z",
+        "dispatchedAt": "2026-07-15T10:49:27.531Z"
+      },
+      "prepTimeTarget": 10
+    },
+    {
+      "id": "ord-013",
+      "orderNumber": 2013,
+      "source": "direct",
+      "customerName": "Walk-in",
+      "items": [
+        {
+          "menuItemId": "item-003",
+          "name": "Biryani",
+          "quantity": 1,
+          "unitPrice": 10
+        }
+      ],
+      "totalAmount": 10,
+      "status": "pending",
+      "brandId": "brand-001",
+      "timestamps": {
+        "placedAt": "2026-07-15T09:20:27.532Z",
+        "startedAt": null,
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 10
+    },
+    {
+      "id": "ord-014",
+      "orderNumber": 2014,
+      "source": "direct",
+      "customerName": "Walk-in",
+      "items": [
+        {
+          "menuItemId": "item-008",
+          "name": "Chicken Curry",
+          "quantity": 1,
+          "unitPrice": 9
+        }
+      ],
+      "totalAmount": 9,
+      "status": "ready",
+      "brandId": "brand-003",
+      "timestamps": {
+        "placedAt": "2026-07-15T10:41:27.532Z",
+        "startedAt": "2026-07-15T10:46:27.532Z",
+        "readyAt": "2026-07-15T10:56:27.532Z",
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 10
+    },
+    {
+      "id": "ord-015",
+      "orderNumber": 2015,
+      "source": "direct",
+      "customerName": "Walk-in",
+      "items": [
+        {
+          "menuItemId": "item-003",
+          "name": "Biryani",
+          "quantity": 1,
+          "unitPrice": 10
+        },
+        {
+          "menuItemId": "item-009",
+          "name": "Raita",
+          "quantity": 1,
+          "unitPrice": 2
+        }
+      ],
+      "totalAmount": 12,
+      "status": "pending",
+      "brandId": "brand-002",
+      "timestamps": {
+        "placedAt": "2026-07-15T09:59:27.532Z",
+        "startedAt": null,
+        "readyAt": null,
+        "dispatchedAt": null
+      },
+      "prepTimeTarget": 10
+    }
+  ],
+  "analytics_sales": [
+    {
+      "id": "sales-001",
+      "date": "2026-07-09",
+      "totalRevenue": 980,
+      "orderCount": 36,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 15
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 18
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 7
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 5
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 11
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 6
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 14
+        }
+      ]
+    },
+    {
+      "id": "sales-002",
+      "date": "2026-07-10",
+      "totalRevenue": 1240,
+      "orderCount": 44,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 20
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 13
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 22
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 15
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 7
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 14
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 18
+        }
+      ]
+    },
+    {
+      "id": "sales-003",
+      "date": "2026-07-11",
+      "totalRevenue": 1130,
+      "orderCount": 40,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 18
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 11
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 20
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 14
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 6
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 7
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 16
+        }
+      ]
+    },
+    {
+      "id": "sales-004",
+      "date": "2026-07-12",
+      "totalRevenue": 1360,
+      "orderCount": 48,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 22
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 15
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 25
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 13
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 17
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 16
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 11
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 20
+        }
+      ]
+    },
+    {
+      "id": "sales-005",
+      "date": "2026-07-13",
+      "totalRevenue": 1050,
+      "orderCount": 38,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 16
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 19
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 7
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 13
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 5
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 11
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 6
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 8
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 15
+        }
+      ]
+    },
+    {
+      "id": "sales-006",
+      "date": "2026-07-14",
+      "totalRevenue": 1420,
+      "orderCount": 50,
+      "itemsSold": [
+        {
+          "menuItemId": "item-001",
+          "units": 24
+        },
+        {
+          "menuItemId": "item-002",
+          "units": 16
+        },
+        {
+          "menuItemId": "item-003",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-004",
+          "units": 26
+        },
+        {
+          "menuItemId": "item-005",
+          "units": 14
+        },
+        {
+          "menuItemId": "item-006",
+          "units": 11
+        },
+        {
+          "menuItemId": "item-007",
+          "units": 18
+        },
+        {
+          "menuItemId": "item-008",
+          "units": 9
+        },
+        {
+          "menuItemId": "item-009",
+          "units": 17
+        },
+        {
+          "menuItemId": "item-010",
+          "units": 10
+        },
+        {
+          "menuItemId": "item-011",
+          "units": 12
+        },
+        {
+          "menuItemId": "item-012",
+          "units": 22
+        }
+      ]
+    }
+  ],
+  "wastage_logs": [
+    {
+      "id": "waste-001",
+      "date": "2026-07-13",
+      "ingredientName": "Spinach",
+      "ingredientId": "ing-013",
+      "quantity": 0.4,
+      "unit": "kg",
+      "reason": "wilted",
+      "cost": 1.12
+    },
+    {
+      "id": "waste-002",
+      "date": "2026-07-13",
+      "ingredientName": "Heavy Cream",
+      "ingredientId": "ing-008",
+      "quantity": 0.2,
+      "unit": "l",
+      "reason": "expired",
+      "cost": 0.76
+    },
+    {
+      "id": "waste-003",
+      "date": "2026-07-14",
+      "ingredientName": "Mushrooms",
+      "ingredientId": "ing-014",
+      "quantity": 0.3,
+      "unit": "kg",
+      "reason": "spoiled",
+      "cost": 1.05
+    },
+    {
+      "id": "waste-004",
+      "date": "2026-07-14",
+      "ingredientName": "Onions",
+      "ingredientId": "ing-011",
+      "quantity": 0.5,
+      "unit": "kg",
+      "reason": "spoiled",
+      "cost": 0.4
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "name": "Arun P.",
+      "phone": 9876543210,
+      "email": "arun@email.com"
+    },
+    {
+      "id": 2,
+      "name": "Neha S.",
+      "phone": 9876543211,
+      "email": "neha@email.com"
+    },
+    {
+      "id": 3,
+      "name": "Ravi K.",
+      "phone": 9876543212,
+      "email": "ravi@email.com"
+    },
+    {
+      "id": 4,
+      "name": "Priya M.",
+      "phone": 9876543213,
+      "email": "priya@email.com"
+    },
+    {
+      "id": 5,
+      "name": "Amit R.",
+      "phone": 9876543214,
+      "email": "amit@email.com"
+    },
+    {
+      "id": 6,
+      "name": "Deepa L.",
+      "phone": 9876543215,
+      "email": "deepa@email.com"
+    },
+    {
+      "id": 7,
+      "name": "Karan J.",
+      "phone": 9876543216,
+      "email": "karan@email.com"
+    },
+    {
+      "id": 8,
+      "name": "Meera D.",
+      "phone": 9876543217,
+      "email": "meera@email.com"
+    },
+    {
+      "id": 9,
+      "name": "Sneha G.",
+      "phone": 9876543218,
+      "email": "sneha@email.com"
+    },
+    {
+      "id": 10,
+      "name": "Vikram S.",
+      "phone": 9876543219,
+      "email": "vikram@email.com"
+    }
+  ]
+}

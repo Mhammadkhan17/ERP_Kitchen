@@ -1,0 +1,126 @@
+CLOUD KITCHEN ERP — TODO LIST
+==============================
+
+PHASE 0 — PROJECT SCAFFOLDING
+[x] Create package.json with all dependencies
+[x] Create vite.config.js with UnoCSS + proxy
+[x] Create uno.config.js with presetWind + brand colors + shortcuts
+[x] Create index.html with MDI icons
+[x] Create src/main.js bootstrap (Pinia, Router, theme plugin)
+[x] Create src/App.vue root shell
+[x] Create src/plugins/vuetify0.js theme plugin
+[x] Create src/styles/main.css CSS variables + base styles
+[x] Create src/router/index.js with all 8 routes
+[x] Create db.json seed data (10 ingredients, 5 menu items, 2 brands, 5 orders, 2 recipes, sales + wastage logs)
+[x] Create server.js with JSON Server + timestamp middleware
+[x] Create AppLayout.vue shell (sidebar + header + router-view)
+[x] Create AppDrawer.vue navigation sidebar
+[x] Create AppHeader.vue top bar with mobile nav
+[x] npm install — all dependencies installed
+[x] npm run build — passes with 0 errors (125 modules)
+
+PHASE 1a — UI PRIMITIVES
+[x] VDataTable.vue — styled table with loading/empty states + cell slots
+[x] VDialog.vue — teleported modal with backdrop, close, footer slot
+[x] VCard.vue — card container with shadow
+[x] VChip.vue — colored status chip with optional dot
+[x] VBadge.vue — circular count badge
+[x] VStatusDot.vue — colored status indicator dot
+[x] VPageHeader.vue — page title + action slot
+[x] VSearchBar.vue — search input with icon
+[x] VConfirmDialog.vue — confirmation modal
+[x] VBanner.vue — alert banner (info/warning/error/success)
+[x] VDataTable: sort indicators + column sorting
+[x] VDataTable: pagination controls
+[x] VDialog: focus trap + ESC close
+[x] VToast / snackbar toast component
+[x] VTooltip primitive
+
+PHASE 1b — INVENTORY MODULE
+[x] Create useInventoryStore (CRUD, search/filter, low stock detection, stock adjustment, recipe deduction)
+[x] Create api/modules/inventory.js
+[x] Build InventoryList.vue — table with search, status chips, edit/delete
+[x] Build StockAdjustment.vue — select ingredient, choose in/out, submit
+[x] Build IngredientForm.vue — dialog form with all fields
+[x] Build LowStockBanner.vue — warning alert
+[x] Add column sorting + pagination to InventoryList
+[x] Add stock preview in StockAdjustment (before/after display)
+[x] Add success confirmation toast to StockAdjustment
+[x] Add client-side form validation
+[x] Add unit filter dropdown
+
+PHASE 2 — MENU & RECIPE MODULE
+[x] Create useMenuStore (menu items + recipes + brands)
+[x] Create api/modules/menu.js
+[x] Build MenuList.vue — table with brand names, active toggle switches, edit
+[x] Build MenuItemForm.vue — dialog form for adding/editing items
+[x] Build RecipeBuilder.vue — expansion panels with ingredient picker
+[x] Build IngredientPicker.vue — searchable checkbox list with quantities
+[ ] Add search + category filter to MenuList
+[ ] Add serving multiplier to RecipeBuilder
+[ ] Add drag-and-drop ingredient reordering
+
+PHASE 3 — KDS & ORDER MANAGEMENT
+[x] Create useOrdersStore (status management, cross-store deduction flow)
+[x] Create api/modules/orders.js
+[x] Build KdsColumn.vue — Kanban column shell
+[x] Build OrderCard.vue — order card with status actions
+[x] Build OrderTimer.vue — live elapsed time counter
+[x] Build OrderDashboard.vue — 4-column Kanban with polling + new-order alerts
+[x] Build OrderDetail.vue — order detail dialog with timeline
+[x] Wire deduction flow: updateOrderStatus(preparing) -> deductRecipeIngredients -> checkLowStock
+[x] Add 30s polling for new orders
+[x] Add timer color transitions (>10min yellow, >15min red)
+[x] Add sound notification on new order
+[x] Add drag-and-drop between Kanban columns
+[x] Add cancelled column support
+
+PHASE 4 — ANALYTICS MODULE
+[x] Create useAnalyticsStore (sales, wastage, computed KPIs)
+[x] Create api/modules/analytics.js
+[x] Build AnalyticsDashboard.vue — KPI grid + chart + tables + period toggle
+[x] Build KpiCard.vue — icon + value + trend
+[x] Build SalesChart.vue — Chart.js bar chart (vue-chartjs)
+[x] Build TopSellingTable.vue — ranked items list with revenue %
+[x] Build WastageLog.vue — wastage records table with date range filter
+[x] Replace CSS bars with Chart.js + vue-chartjs
+[x] Add date range filter to wastage
+[x] Add CSV export
+
+PHASE 5 — MOBILE & POLISH
+[x] KDS columns stack vertically at <768px
+[x] VDialog goes fullscreen at <640px
+[x] AppDrawer becomes off-canvas overlay at <768px
+[x] VDataTable horizontal scroll on mobile
+[x] Global error boundary
+[x] Skeleton loading on initial page loads (InventoryList, MenuList)
+[x] Snackbar toast for success/error feedback (VToast)
+[x] Real-time KDS via SSE (server-sent events) — replaces 30s polling
+
+PHASE 6 — TESTING
+[x] Set up Vitest + @vue/test-utils + jsdom
+[x] Unit tests for stores (inventory, orders) — 26 tests
+[x] Unit tests for utils (formatters, validators) — 26 tests
+[x] Component tests for UI primitives (VDataTable, VDialog) — 12 tests
+[x] Integration test: Order -> Inventory deduction flow — 2 tests
+(Total: 67 tests, 7 files, all passing)
+
+COMMON COMPONENTS
+[x] EmptyState.vue
+[x] LoadingSkeleton.vue
+[x] StatusTimeline.vue
+
+COMPOSABLES
+[x] useSnackbar.js
+[x] useTimer.js
+[x] useConfirm.js
+[x] useDebounce.js
+
+UTILITIES
+[x] formatters.js (currency, date, time, status)
+[x] validators.js (required, minLength, positiveNumber, maxDecimals)
+
+DOCUMENTATION
+[x] plan.md — full technical blueprint
+[x] CHANGELOG.md — complete handoff document
+[x] todo.txt — this file

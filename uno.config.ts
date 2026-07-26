@@ -1,0 +1,56 @@
+import { defineConfig, presetWind } from 'unocss'
+import transformerDirectives from '@unocss/transformer-directives'
+
+export default defineConfig({
+  presets: [presetWind()],
+  transformers: [transformerDirectives()],
+  shortcuts: {
+    'btn': 'px-4 py-2 rounded-lg font-medium transition-colors duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
+    'btn-primary': 'btn bg-orange-600 text-white hover:bg-orange-700 active:bg-orange-800',
+    'btn-secondary': 'btn bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300',
+    'btn-danger': 'btn bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
+    'btn-ghost': 'btn text-gray-600 hover:bg-gray-100 active:bg-gray-200',
+    'card': 'bg-white rounded-xl shadow-sm border border-gray-200 p-6',
+    'badge': 'inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-bold',
+    'chip': 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium',
+    'input': 'w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-colors',
+    'page-header': 'text-2xl font-bold text-gray-900',
+    'page-subtitle': 'text-sm text-gray-500 mt-1',
+    'field': 'flex flex-col gap-1.5',
+    'skeleton': 'animate-pulse bg-gray-200 rounded-lg',
+    'skeleton-text': 'animate-pulse bg-gray-200 rounded h-4',
+    'skeleton-heading': 'skeleton h-6 w-48',
+    'skeleton-card': 'skeleton h-32 w-full rounded-xl',
+    'btn-filter': 'text-sm px-3 py-1.5 rounded-lg font-medium transition-all duration-150',
+    'btn-filter-active': 'btn-filter bg-orange-600 text-white shadow-sm',
+    'btn-filter-inactive': 'btn-filter bg-gray-100 text-gray-700 hover:bg-gray-200',
+  },
+  theme: {
+    colors: {
+      brand: {
+        50: '#fff7ed',
+        100: '#ffedd5',
+        200: '#fed7aa',
+        300: '#fdba74',
+        400: '#fb923c',
+        500: '#f97316',
+        600: '#ea580c',
+        700: '#c2410c',
+        800: '#9a3412',
+        900: '#7c2d12',
+      },
+      primary: {
+        50: '#fff7ed',
+        100: '#ffedd5',
+        200: '#fed7aa',
+        300: '#fdba74',
+        400: '#fb923c',
+        500: '#f97316',
+        600: '#ea580c',
+        700: '#c2410c',
+        800: '#9a3412',
+        900: '#7c2d12',
+      },
+    },
+  },
+})

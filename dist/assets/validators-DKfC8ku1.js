@@ -1,0 +1,1 @@
+function e(r){return r==null||r===""||typeof r=="string"&&!r.trim()?"This field is required":!0}function t(r){const i=Number(r);return isNaN(i)||i<=0?"Must be a positive number":!0}export{t as p,e as r};

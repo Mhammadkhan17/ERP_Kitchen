@@ -1,0 +1,104 @@
+:root {
+  --p-primary-50: #fff7ed;
+  --p-primary-100: #ffedd5;
+  --p-primary-200: #fed7aa;
+  --p-primary-300: #fdba74;
+  --p-primary-400: #fb923c;
+  --p-primary-500: #f97316;
+  --p-primary-600: #ea580c;
+  --p-primary-700: #c2410c;
+  --p-primary-800: #9a3412;
+  --p-primary-900: #7c2d12;
+
+  --surface-ground: #F8F9FA;
+  --surface-card: #FFFFFF;
+  --text-primary: #1A1D1F;
+  --text-secondary: #6C757D;
+  --border-color: #E9ECEF;
+  --accent: #E85D3A;
+  --status-pending: #F4A261;
+  --status-preparing: #4A90D9;
+  --status-ready: #2B9348;
+  --status-dispatched: #6C757D;
+}
+
+/* UnoCSS shortcut backup — .field is defined in uno.config.ts */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  padding: 0.75rem 1rem;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #D1D5DB transparent;
+}
+
+.p-dialog .p-dialog-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
