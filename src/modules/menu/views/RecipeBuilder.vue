@@ -23,76 +23,80 @@
       />
     </div>
 
-    <Accordion :value="expandedIds" @update:value="onAccordionChange" multiple>
-      <AccordionTab
-        v-for="item in items"
-        :key="item.id"
-        :header="item.name"
-      >
-        <div v-if="recipeData[item.id] && recipeData[item.id].loaded" class="flex flex-col gap-4 p-2">
-          <div class="flex items-center gap-2">
-            <label class="text-sm font-medium min-w-24">Servings:</label>
-            <InputNumber
-              v-model="recipeData[item.id].servings"
-              :min="1"
-              :step="1"
-              :input-style="{ width: '80px' }"
-            />
-          </div>
-
-          <div class="border-t pt-2">
-            <h3 class="text-sm font-semibold text-gray-600 mb-2">Current Ingredients</h3>
-            <div
-              v-if="!recipeData[item.id].ingredients.length"
-              class="text-sm text-gray-400 mb-2"
-            >
-              No ingredients added yet.
-            </div>
-            <div
-              v-for="ing in recipeData[item.id].ingredients"
-              :key="ing.ingredientId"
-              class="flex items-center gap-2 text-sm mb-1"
-            >
-              <i class="pi pi-circle-fill text-primary-400 text-xs" />
-              <span>{{ getIngredientName(ing.ingredientId) }}</span>
-              <span class="text-gray-400">—</span>
-              <span class="font-medium">{{ ing.quantity }}</span>
-              <span class="text-gray-400">{{ getIngredientUnit(ing.ingredientId) }}</span>
-            </div>
-          </div>
-
-          <div class="border-t pt-2">
-            <h3 class="text-sm font-semibold text-gray-600 mb-2">Add / Edit Ingredients</h3>
-            <IngredientPicker
-              v-model:selected="recipeData[item.id].ingredients"
-              :menu-item-id="item.id"
-            />
-          </div>
-
-          <div class="flex justify-end pt-2">
-            <Button
-              label="Save Recipe"
-              icon="pi pi-check"
-              :loading="upsertMutation.isPending.value"
-              @click="saveRecipe(item.id)"
-            />
-          </div>
+    <div class="flex flex-col gap-2">
+      <div v-for="item in items" :key="item.id" class="card">
+        <div
+          class="flex items-center justify-between cursor-pointer select-none px-4 py-3"
+          @click="toggle(item.id)"
+        >
+          <span class="font-semibold text-gray-800">{{ item.name }}</span>
+          <i :class="['pi', openPanels.includes(item.id) ? 'pi-chevron-up' : 'pi-chevron-down']" />
         </div>
 
-        <div v-else class="flex items-center justify-center py-6 text-gray-400">
-          <i class="pi pi-spin pi-spinner mr-2" />
-          Loading recipe...
+        <div v-if="openPanels.includes(item.id)" class="border-t px-4 py-3">
+          <div v-if="recipeData[item.id] && recipeData[item.id].loaded" class="flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+              <label class="text-sm font-medium min-w-24">Servings:</label>
+              <InputNumber
+                v-model="recipeData[item.id].servings"
+                :min="1"
+                :step="1"
+                :input-style="{ width: '80px' }"
+              />
+            </div>
+
+            <div class="border-t pt-2">
+              <h3 class="text-sm font-semibold text-gray-600 mb-2">Current Ingredients</h3>
+              <div
+                v-if="!recipeData[item.id].ingredients.length"
+                class="text-sm text-gray-400 mb-2"
+              >
+                No ingredients added yet.
+              </div>
+              <div
+                v-for="ing in recipeData[item.id].ingredients"
+                :key="ing.ingredientId"
+                class="flex items-center gap-2 text-sm mb-1"
+              >
+                <i class="pi pi-circle-fill text-primary-400 text-xs" />
+                <span>{{ getIngredientName(ing.ingredientId) }}</span>
+                <span class="text-gray-400">—</span>
+                <span class="font-medium">{{ ing.quantity }}</span>
+                <span class="text-gray-400">{{ getIngredientUnit(ing.ingredientId) }}</span>
+              </div>
+            </div>
+
+            <div class="border-t pt-2">
+              <h3 class="text-sm font-semibold text-gray-600 mb-2">Add / Edit Ingredients</h3>
+              <IngredientPicker
+                v-model:selected="recipeData[item.id].ingredients"
+                :menu-item-id="item.id"
+              />
+            </div>
+
+            <div class="flex justify-end pt-2">
+              <Button
+                label="Save Recipe"
+                icon="pi pi-check"
+                :loading="upsertMutation.isPending.value"
+                @click="saveRecipe(item.id)"
+              />
+            </div>
+          </div>
+
+          <div v-else class="flex items-center justify-center py-6 text-gray-400">
+            <i class="pi pi-spin pi-spinner mr-2" />
+            Loading recipe...
+          </div>
         </div>
-      </AccordionTab>
-    </Accordion>
+      </div>
+    </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue'
-import Accordion from 'primevue/accordion'
-import AccordionTab from 'primevue/accordiontab'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
 import { api } from '@/api/client'
@@ -121,15 +125,15 @@ const ingredientsMap = computed(() => {
 })
 
 const recipeData = reactive<Record<string, RecipeEditState>>({})
-const expandedIds = ref<string[]>([])
+const openPanels = ref<string[]>([])
 const upsertMutation = useUpsertRecipe()
 
-async function onAccordionChange(val: string | string[] | null | undefined) {
-  const ids = Array.isArray(val) ? val : val ? [val] : []
-  const newlyOpened = ids.filter((id) => !expandedIds.value.includes(id))
-  expandedIds.value = ids
-
-  for (const id of newlyOpened) {
+async function toggle(id: string) {
+  const idx = openPanels.value.indexOf(id)
+  if (idx >= 0) {
+    openPanels.value.splice(idx, 1)
+  } else {
+    openPanels.value.push(id)
     if (!recipeData[id] || !recipeData[id].loaded) {
       await loadRecipe(id)
     }
