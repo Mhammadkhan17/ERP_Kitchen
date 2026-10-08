@@ -7,7 +7,7 @@
     :style="{ width: '520px' }"
     @update:visible="$emit('close')"
   >
-    <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+    <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
       <div class="field">
         <label for="name" class="font-medium text-sm text-gray-700 mb-1 block">Name</label>
         <InputText id="name" v-model="form.name" class="w-full" :class="{ 'p-invalid': errors.name }" />
@@ -40,8 +40,8 @@
             id="currentStock"
             v-model="form.currentStock"
             :min="0"
-            :minFractionDigits="0"
-            :maxFractionDigits="3"
+            :min-fraction-digits="0"
+            :max-fraction-digits="3"
             class="w-full"
             :class="{ 'p-invalid': errors.currentStock }"
           />
@@ -54,8 +54,8 @@
             id="reorderLevel"
             v-model="form.reorderLevel"
             :min="0"
-            :minFractionDigits="0"
-            :maxFractionDigits="3"
+            :min-fraction-digits="0"
+            :max-fraction-digits="3"
             class="w-full"
             :class="{ 'p-invalid': errors.reorderLevel }"
           />
@@ -70,8 +70,8 @@
             id="reorderQty"
             v-model="form.reorderQty"
             :min="0"
-            :minFractionDigits="0"
-            :maxFractionDigits="3"
+            :min-fraction-digits="0"
+            :max-fraction-digits="3"
             class="w-full"
           />
         </div>
@@ -82,8 +82,8 @@
             id="unitCost"
             v-model="form.unitCost"
             :min="0"
-            :minFractionDigits="2"
-            :maxFractionDigits="2"
+            :min-fraction-digits="2"
+            :max-fraction-digits="2"
             prefix="$"
             class="w-full"
           />

@@ -1,8 +1,6 @@
 import axios from 'axios'
 import type { ApiClient } from '@/types/api'
-import type {
-  Ingredient, MenuItem, Recipe, Order, Brand, DailySales, WastageLog, Customer,
-} from '@/types'
+import type { Ingredient } from '@/types'
 
 const http = axios.create({
   baseURL: '/api',

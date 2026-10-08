@@ -92,7 +92,7 @@ const props = defineProps<{
   order: Order
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   'view-detail': [id: string]
 }>()
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useWastageLogs, useAggregatedSales, useKpiMetrics } from '@/modules/analytics/composables/useAnalytics'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import { formatCurrency } from '@/utils/formatters'
@@ -9,7 +9,6 @@ import BrandPerformance from '@/modules/analytics/components/BrandPerformance.vu
 import DailyRevenueGraph from '@/modules/analytics/components/DailyRevenueGraph.vue'
 import TopSellingTable from '@/modules/analytics/components/TopSellingTable.vue'
 import WastageLog from '@/modules/analytics/components/WastageLog.vue'
-import { computed } from 'vue'
 
 const activePeriod = ref<SalesPeriod>('daily')
 

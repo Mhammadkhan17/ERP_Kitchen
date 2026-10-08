@@ -9,7 +9,7 @@ interface RevenuePoint {
 }
 
 const props = withDefaults(defineProps<{
-  points: RevenuePoint[]
+  points?: RevenuePoint[]
 }>(), {
   points: () => [],
 })
@@ -120,8 +120,8 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
       />
 
       <text
-        v-for="(p, i) in pts" :key="'x' + i"
-        v-show="i % labelEvery === 0"
+        v-for="(p, i) in pts" v-show="i % labelEvery === 0"
+        :key="'x' + i"
         :x="p.x" :y="h - 4"
         text-anchor="middle" fill="#6C757D" class="text-[10px]"
       >{{ p.label }}</text>

@@ -6,7 +6,7 @@
     :style="{ width: '480px' }"
     @update:visible="$emit('close')"
   >
-    <form @submit.prevent="handleSubmit" class="flex flex-col gap-4 p-4">
+    <form class="flex flex-col gap-4 p-4" @submit.prevent="handleSubmit">
       <div class="flex flex-col gap-1">
         <label for="name">Name</label>
         <InputText id="name" v-model="form.name" />

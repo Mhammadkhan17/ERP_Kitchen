@@ -5,8 +5,8 @@ const WS_URL = import.meta.env.VITE_WS_URL
   ?? `http://localhost:${import.meta.env.VITE_WS_PORT ?? '3001'}`
 
 let singletonSocket: Socket | null = null
-let singletonConnected = ref(false)
-let singletonError = ref<string | null>(null)
+const singletonConnected = ref(false)
+const singletonError = ref<string | null>(null)
 let refCount = 0
 
 function createSocket(): Socket {

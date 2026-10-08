@@ -100,7 +100,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
@@ -113,7 +112,6 @@ import { formatCurrency } from '@/utils/formatters'
 import type { MenuItem } from '@/types'
 import MenuItemForm from '../components/MenuItemForm.vue'
 
-const router = useRouter()
 const search = ref('')
 const showDialog = ref(false)
 const editingItem = ref<MenuItem | null>(null)

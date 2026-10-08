@@ -12,7 +12,7 @@
           id="ingredient"
           v-model="selectedIngredient"
           :options="ingredients ?? []"
-          optionLabel="name"
+          option-label="name"
           placeholder="Select an ingredient"
           class="w-full"
           :class="{ 'p-invalid': error }"
@@ -54,8 +54,8 @@
             id="quantity"
             v-model="quantity"
             :min="0"
-            :minFractionDigits="0"
-            :maxFractionDigits="3"
+            :min-fraction-digits="0"
+            :max-fraction-digits="3"
             class="w-full"
             :class="{ 'p-invalid': qtyError }"
           />
@@ -95,7 +95,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
@@ -104,7 +103,6 @@ import { positiveNumber } from '@/utils/validators'
 import type { Ingredient } from '@/types'
 import { useIngredients, useAdjustStock } from '../composables/useInventory'
 
-const router = useRouter()
 
 const { data: ingredients } = useIngredients()
 const adjustMutation = useAdjustStock()

@@ -29,13 +29,13 @@
       <InputNumber
         v-if="isSelected(ing.id)"
         :model-value="getQuantity(ing.id)"
-        @update:model-value="updateQuantity(ing.id, $event)"
         :min="0"
         :step="0.5"
         :max-fraction-digits="2"
         :input-style="{ width: '80px' }"
         placeholder="Qty"
         size="small"
+        @update:model-value="updateQuantity(ing.id, $event)"
       />
     </div>
   </div>

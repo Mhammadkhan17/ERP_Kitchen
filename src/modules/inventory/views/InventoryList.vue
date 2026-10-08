@@ -16,7 +16,7 @@
     <LowStockBanner v-if="ingredients" :ingredients="ingredients" />
 
     <div class="flex items-center gap-3">
-      <IconField iconPosition="left" class="flex-1">
+      <IconField icon-position="left" class="flex-1">
         <InputIcon class="pi pi-search" />
         <InputText
           v-model="search"
@@ -29,7 +29,7 @@
         :options="unitOptions"
         placeholder="All Units"
         class="w-40"
-        :showClear="true"
+        :show-clear="true"
       />
     </div>
 
@@ -49,10 +49,10 @@
       :loading="isLoading"
       :paginator="true"
       :rows="10"
-      :rowsPerPageOptions="[10, 25, 50]"
-      stripedRows
-      sortField="name"
-      :sortOrder="1"
+      :rows-per-page-options="[10, 25, 50]"
+      striped-rows
+      sort-field="name"
+      :sort-order="1"
       class="p-datatable-sm"
     >
       <Column field="name" header="Name" sortable />
@@ -120,7 +120,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useConfirm } from 'primevue/useconfirm'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -140,7 +139,6 @@ import {
 import IngredientForm from '../components/IngredientForm.vue'
 import LowStockBanner from '../components/LowStockBanner.vue'
 
-const router = useRouter()
 const confirm = useConfirm()
 
 const search = ref('')

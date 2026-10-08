@@ -1,6 +1,6 @@
 <template>
   <header class="h-16 bg-white border-b border-gray-200 flex items-center px-6 gap-4 lg:hidden">
-    <button @click="mobileOpen = !mobileOpen" class="btn-ghost p-2 -ml-2">
+    <button class="btn-ghost p-2 -ml-2" @click="mobileOpen = !mobileOpen">
       <i class="pi pi-bars text-xl"></i>
     </button>
     <i class="pi pi-cart-plus text-lg text-orange-600"></i>
@@ -16,7 +16,7 @@
     <aside class="absolute left-0 top-0 bottom-0 w-60 bg-white shadow-xl" @click.stop>
       <div class="h-16 flex items-center justify-between px-6 border-b border-gray-200">
         <span class="font-bold text-lg">Menu</span>
-        <button @click="mobileOpen = false" class="btn-ghost p-1 text-xl">
+        <button class="btn-ghost p-1 text-xl" @click="mobileOpen = false">
           <i class="pi pi-times"></i>
         </button>
       </div>
