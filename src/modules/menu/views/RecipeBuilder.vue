@@ -102,6 +102,7 @@ import InputNumber from 'primevue/inputnumber'
 import { api } from '@/api/client'
 import { useMenuItems, useUpsertRecipe } from '../composables/useMenu'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
+import { useSnackbar } from '@/composables/useSnackbar'
 import IngredientPicker from '../components/IngredientPicker.vue'
 import type { RecipeIngredient } from '@/types'
 
@@ -127,6 +128,7 @@ const ingredientsMap = computed(() => {
 const recipeData = reactive<Record<string, RecipeEditState>>({})
 const openPanels = ref<string[]>([])
 const upsertMutation = useUpsertRecipe()
+const snackbar = useSnackbar()
 
 async function toggle(id: string) {
   const idx = openPanels.value.indexOf(id)
@@ -156,6 +158,7 @@ async function loadRecipe(menuItemId: string) {
       ingredients: recipe?.ingredients?.map((i) => ({ ...i })) ?? [],
     }
   } catch {
+    snackbar.error('Failed to load recipe')
     recipeData[menuItemId] = {
       loaded: true,
       loading: false,
@@ -184,7 +187,14 @@ function saveRecipe(menuItemId: string) {
       ingredients: data.ingredients,
     },
     {
-      onSuccess: () => loadRecipe(menuItemId),
+      onSuccess: (recipe) => {
+        recipeData[menuItemId] = {
+          loaded: true,
+          loading: false,
+          servings: recipe?.servings ?? data.servings,
+          ingredients: recipe?.ingredients?.map((i) => ({ ...i })) ?? data.ingredients.map((i) => ({ ...i })),
+        }
+      },
     },
   )
 }
