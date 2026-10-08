@@ -30,14 +30,19 @@ Open **http://localhost:5173** in your browser.
 
 ## Tech Stack
 
-| Layer     | Technology                            |
-| --------- | ------------------------------------- |
-| Frontend  | Vue 3, TypeScript, PrimeVue 4, UnoCSS |
-| State     | TanStack Vue Query                    |
-| Real-time | Socket.IO                             |
-| Backend   | JSON Server (mock REST API)           |
-| Build     | Vite 6                                |
-| Charts    | Chart.js + vue-chartjs                |
+| Layer     | Technology                                |
+| --------- | ----------------------------------------- |
+| Frontend  | Vue 3, TypeScript, PrimeVue 4, UnoCSS     |
+| State     | TanStack Vue Query                        |
+| Real-time | Socket.IO                                 |
+| Backend   | JSON Server (mock REST API)               |
+| Build     | Vite 6                                    |
+| Charts    | Hand-rolled SVG (`DailyRevenueGraph.vue`) |
+
+## Architecture at a glance
+
+- Mock API = json-server on :3001 (`server.js`, seeded by `db.json`)
+- Reset seed data with `git checkout db.json`
 
 ## Project Structure
 
@@ -68,6 +73,8 @@ src/
 | `npm run preview`    | Preview production build                   |
 | `npm test`           | Run tests                                  |
 | `npm run test:watch` | Run tests in watch mode                    |
+| `npm run lint`       | Run ESLint                                 |
+| `npm run format`     | Format with Prettier                       |
 
 ## Environment Variables
 
