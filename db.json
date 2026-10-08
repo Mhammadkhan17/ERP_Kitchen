@@ -10,7 +10,8 @@
       "unitCost": 4.5,
       "supplier": "FarmFresh Co.",
       "category": "protein",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-002",
@@ -22,7 +23,8 @@
       "unitCost": 3.8,
       "supplier": "FarmFresh Co.",
       "category": "protein",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-003",
@@ -34,7 +36,8 @@
       "unitCost": 3.2,
       "supplier": "DairyBest",
       "category": "protein",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-004",
@@ -46,7 +49,8 @@
       "unitCost": 2.2,
       "supplier": "GrainWorks",
       "category": "grain",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-005",
@@ -58,7 +62,8 @@
       "unitCost": 1.8,
       "supplier": "GrainWorks",
       "category": "grain",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-006",
@@ -70,7 +75,8 @@
       "unitCost": 2,
       "supplier": "GrainWorks",
       "category": "grain",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-007",
@@ -82,7 +88,8 @@
       "unitCost": 5.5,
       "supplier": "DairyBest",
       "category": "dairy",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-008",
@@ -94,7 +101,8 @@
       "unitCost": 3.8,
       "supplier": "DairyBest",
       "category": "dairy",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-009",
@@ -106,7 +114,8 @@
       "unitCost": 7,
       "supplier": "DairyBest",
       "category": "dairy",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-010",
@@ -118,7 +127,8 @@
       "unitCost": 1.5,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-011",
@@ -130,7 +140,8 @@
       "unitCost": 0.8,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-012",
@@ -142,7 +153,8 @@
       "unitCost": 2.5,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-013",
@@ -154,7 +166,8 @@
       "unitCost": 2.8,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-014",
@@ -166,7 +179,8 @@
       "unitCost": 3.5,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-015",
@@ -178,7 +192,8 @@
       "unitCost": 12,
       "supplier": "SpiceKing",
       "category": "spice",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-016",
@@ -190,7 +205,8 @@
       "unitCost": 8,
       "supplier": "SpiceKing",
       "category": "spice",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-017",
@@ -202,7 +218,8 @@
       "unitCost": 6,
       "supplier": "SpiceKing",
       "category": "spice",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-018",
@@ -214,7 +231,8 @@
       "unitCost": 3,
       "supplier": "SpiceKing",
       "category": "spice",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-019",
@@ -226,7 +244,8 @@
       "unitCost": 1.8,
       "supplier": "OilCo",
       "category": "other",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-020",
@@ -238,7 +257,8 @@
       "unitCost": 0.4,
       "supplier": "SpiceKing",
       "category": "spice",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-021",
@@ -250,7 +270,8 @@
       "unitCost": 4,
       "supplier": "OilCo",
       "category": "other",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-022",
@@ -262,7 +283,8 @@
       "unitCost": 2.5,
       "supplier": "AsianMart",
       "category": "other",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-023",
@@ -274,7 +296,8 @@
       "unitCost": 1,
       "supplier": "GrainWorks",
       "category": "grain",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-024",
@@ -286,7 +309,8 @@
       "unitCost": 0.9,
       "supplier": "GrainWorks",
       "category": "other",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     },
     {
       "id": "ing-025",
@@ -298,7 +322,8 @@
       "unitCost": 3,
       "supplier": "FreshFarm",
       "category": "vegetable",
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "isLowStock": false
     }
   ],
   "brands": [
@@ -327,7 +352,8 @@
       "price": 12.99,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 5
     },
     {
       "id": "item-002",
@@ -337,7 +363,8 @@
       "price": 14.99,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 4
     },
     {
       "id": "item-003",
@@ -347,7 +374,8 @@
       "price": 11.99,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 5
     },
     {
       "id": "item-004",
@@ -357,7 +385,8 @@
       "price": 4.99,
       "category": "sides",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 3
     },
     {
       "id": "item-005",
@@ -367,7 +396,8 @@
       "price": 10.99,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 4
     },
     {
       "id": "item-006",
@@ -377,7 +407,8 @@
       "price": 11.49,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 5
     },
     {
       "id": "item-007",
@@ -387,7 +418,8 @@
       "price": 5.99,
       "category": "sides",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 2
     },
     {
       "id": "item-008",
@@ -397,7 +429,8 @@
       "price": 6.49,
       "category": "sides",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 4
     },
     {
       "id": "item-009",
@@ -407,7 +440,8 @@
       "price": 9.99,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 3
     },
     {
       "id": "item-010",
@@ -417,7 +451,8 @@
       "price": 13.49,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 5
     },
     {
       "id": "item-011",
@@ -427,7 +462,8 @@
       "price": 10.49,
       "category": "mains",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 3
     },
     {
       "id": "item-012",
@@ -437,7 +473,8 @@
       "price": 4.49,
       "category": "sides",
       "isActive": true,
-      "updatedAt": "2026-07-14T06:00:00Z"
+      "updatedAt": "2026-07-14T06:00:00Z",
+      "popularity": 4
     }
   ],
   "recipes": [
@@ -490,7 +527,8 @@
           "ingredientId": "ing-025",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-002",
@@ -537,7 +575,8 @@
           "ingredientId": "ing-025",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-003",
@@ -580,7 +619,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-004",
@@ -607,7 +647,8 @@
           "ingredientId": "ing-024",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-005",
@@ -638,7 +679,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.003
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-006",
@@ -673,7 +715,8 @@
           "ingredientId": "ing-025",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-007",
@@ -704,7 +747,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.003
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-008",
@@ -739,7 +783,8 @@
           "ingredientId": "ing-025",
           "quantity": 0.003
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-009",
@@ -770,7 +815,8 @@
           "ingredientId": "ing-024",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-010",
@@ -809,7 +855,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-011",
@@ -844,7 +891,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.005
         }
-      ]
+      ],
+      "version": 1
     },
     {
       "id": "recipe-012",
@@ -867,7 +915,8 @@
           "ingredientId": "ing-020",
           "quantity": 0.003
         }
-      ]
+      ],
+      "version": 1
     }
   ],
   "orders": [
