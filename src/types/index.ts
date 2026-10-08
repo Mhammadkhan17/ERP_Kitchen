@@ -59,7 +59,7 @@ export interface Order {
   source: string
   customerName: string
   customerId?: number
-  phone?: number
+  phone?: string
   items: OrderItem[]
   totalAmount: number
   status: OrderStatus
@@ -93,7 +93,7 @@ export interface DailySales {
 export interface Customer {
   id: number
   name: string
-  phone: number
+  phone: string
   email: string
 }
 
