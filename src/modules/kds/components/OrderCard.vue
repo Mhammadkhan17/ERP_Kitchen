@@ -83,6 +83,7 @@ import { computed } from 'vue'
 import type { Order, OrderStatus } from '@/types'
 import { useOrderFlow } from '@/modules/kds/composables/useOrderFlow'
 import { formatCurrency, statusLabel } from '@/utils/formatters'
+import { ORDER_STATUS_COLORS, ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import { useTimer } from '@/composables/useTimer'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
@@ -103,16 +104,7 @@ const extraCount = computed(() => Math.max(0, props.order.items.length - 2))
 
 const formattedTimer = computed(() => timer.formatted.value)
 
-const columnColor = computed(() => {
-  const map: Record<string, string> = {
-    pending: '#F4A261',
-    preparing: '#4A90D9',
-    ready: '#2B9348',
-    dispatched: '#6C757D',
-    cancelled: '#6C757D',
-  }
-  return map[props.order.status] || '#6C757D'
-})
+const columnColor = computed(() => ORDER_STATUS_COLORS[props.order.status] || ORDER_STATUS_COLORS.dispatched)
 
 type ActionEntry = { label: string; handler: (id: string) => Promise<unknown> }
 
@@ -134,14 +126,5 @@ function handleAction() {
   }
 }
 
-const tagSeverity = computed(() => {
-  const map: Record<string, string> = {
-    pending: 'warn',
-    preparing: 'info',
-    ready: 'success',
-    dispatched: 'contrast',
-    cancelled: 'danger',
-  }
-  return map[props.order.status] || 'info'
-})
+const tagSeverity = computed(() => ORDER_STATUS_SEVERITY[props.order.status] || 'info')
 </script>

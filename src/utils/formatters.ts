@@ -1,3 +1,5 @@
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/constants/orderStatus'
+
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
 }
@@ -11,23 +13,9 @@ export function formatTime(iso: string): string {
 }
 
 export function statusLabel(status: string): string {
-  const labels: Record<string, string> = {
-    pending: 'Pending',
-    preparing: 'Preparing',
-    ready: 'Ready',
-    dispatched: 'Dispatched',
-    cancelled: 'Cancelled',
-  }
-  return labels[status] || status
+  return ORDER_STATUS_LABELS[status as keyof typeof ORDER_STATUS_LABELS] || status
 }
 
 export function statusColor(status: string): string {
-  const colors: Record<string, string> = {
-    pending: 'yellow',
-    preparing: 'blue',
-    ready: 'green',
-    dispatched: 'gray',
-    cancelled: 'red',
-  }
-  return colors[status] || 'gray'
+  return ORDER_STATUS_COLORS[status as keyof typeof ORDER_STATUS_LABELS] || 'gray'
 }

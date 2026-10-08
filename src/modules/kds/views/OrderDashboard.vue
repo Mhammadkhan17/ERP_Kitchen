@@ -191,6 +191,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { api } from '@/api/client'
 import type { Order, OrderStatus } from '@/types'
 import { formatCurrency, formatTime, statusLabel } from '@/utils/formatters'
+import { ORDER_STATUS_COLORS, ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import { useOrderFeed } from '@/modules/kds/composables/useOrderFeed'
 import KdsColumn from '@/modules/kds/components/KdsColumn.vue'
 import OrderCard from '@/modules/kds/components/OrderCard.vue'
@@ -240,10 +241,10 @@ const filteredOrders = computed(() => {
 const columns = computed(() => {
   const all = filteredOrders.value
   return [
-    { title: 'Pending', status: 'pending' as OrderStatus, orders: all.filter((o) => o.status === 'pending'), color: '#F4A261' },
-    { title: 'Preparing', status: 'preparing' as OrderStatus, orders: all.filter((o) => o.status === 'preparing'), color: '#4A90D9' },
-    { title: 'Ready', status: 'ready' as OrderStatus, orders: all.filter((o) => o.status === 'ready'), color: '#2B9348' },
-    { title: 'Dispatched', status: 'dispatched' as OrderStatus, orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'), color: '#6C757D' },
+    { title: 'Pending', status: 'pending' as OrderStatus, orders: all.filter((o) => o.status === 'pending'), color: ORDER_STATUS_COLORS.pending },
+    { title: 'Preparing', status: 'preparing' as OrderStatus, orders: all.filter((o) => o.status === 'preparing'), color: ORDER_STATUS_COLORS.preparing },
+    { title: 'Ready', status: 'ready' as OrderStatus, orders: all.filter((o) => o.status === 'ready'), color: ORDER_STATUS_COLORS.ready },
+    { title: 'Dispatched', status: 'dispatched' as OrderStatus, orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'), color: ORDER_STATUS_COLORS.dispatched },
   ]
 })
 
@@ -265,13 +266,6 @@ const specialItems = computed(() => {
 })
 
 function severityFor(status: OrderStatus): string {
-  const map: Record<string, string> = {
-    pending: 'warn',
-    preparing: 'info',
-    ready: 'success',
-    dispatched: 'contrast',
-    cancelled: 'danger',
-  }
-  return map[status] || 'info'
+  return ORDER_STATUS_SEVERITY[status] || 'info'
 }
 </script>

@@ -25,29 +25,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Order, OrderStatus } from '@/types'
+import type { Order } from '@/types'
+import { ORDER_STATUS_LABELS, ORDER_STATUS_BADGE_CLASS } from '@/constants/orderStatus'
 
 const props = defineProps<{ order: Order }>()
 
-const statusLabel = computed(() => {
-  const map: Record<OrderStatus, string> = {
-    pending: 'Pending',
-    preparing: 'Preparing',
-    ready: 'Ready',
-    dispatched: 'Dispatched',
-    cancelled: 'Cancelled',
-  }
-  return map[props.order.status] ?? props.order.status
-})
-
-const statusClass = computed(() => {
-  const map: Record<OrderStatus, string> = {
-    pending: 'bg-gray-100 text-gray-600',
-    preparing: 'bg-orange-100 text-orange-700',
-    ready: 'bg-green-100 text-green-700',
-    dispatched: 'bg-blue-100 text-blue-700',
-    cancelled: 'bg-red-100 text-red-700',
-  }
-  return map[props.order.status] ?? 'bg-gray-100 text-gray-600'
-})
+const statusLabel = computed(() => ORDER_STATUS_LABELS[props.order.status] ?? props.order.status)
+const statusClass = computed(() => ORDER_STATUS_BADGE_CLASS[props.order.status] ?? 'bg-gray-100 text-gray-600')
 </script>

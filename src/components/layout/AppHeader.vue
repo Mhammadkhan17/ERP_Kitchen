@@ -22,7 +22,7 @@
       </div>
       <nav class="py-4 px-3 space-y-1">
         <router-link
-          v-for="item in navItems"
+          v-for="item in NAV_ITEMS"
           :key="item.path"
           :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
@@ -40,16 +40,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { NAV_ITEMS } from '@/constants/nav'
 
 const route = useRoute()
 const mobileOpen = ref(false)
-
-const navItems = [
-  { path: '/kds', label: 'KDS Dashboard', icon: '<i class="pi pi-receipt"></i>' },
-  { path: '/inventory', label: 'Inventory', icon: '<i class="pi pi-box"></i>' },
-  { path: '/menu', label: 'Menu & Recipes', icon: '<i class="pi pi-book"></i>' },
-  { path: '/analytics', label: 'Analytics', icon: '<i class="pi pi-chart-bar"></i>' },
-]
 
 function isActive(path: string): boolean {
   return route.path.startsWith(path)
