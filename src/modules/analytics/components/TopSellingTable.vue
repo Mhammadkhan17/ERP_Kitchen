@@ -3,10 +3,25 @@ import { computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import type { DailySales } from '@/types'
+import { useMenuItems } from '@/modules/menu/composables/useMenu'
 
 const props = defineProps<{
   salesData: DailySales[]
 }>()
+
+const { data: menuItems } = useMenuItems()
+
+const nameMap = computed(() => {
+  const map = new Map<string, string>()
+  for (const item of menuItems.value ?? []) {
+    map.set(item.id, item.name)
+  }
+  return map
+})
+
+function itemName(id: string): string {
+  return nameMap.value.get(id) ?? id
+}
 
 interface AggregatedItem {
   menuItemId: string
@@ -42,7 +57,11 @@ const topItems = computed<AggregatedItem[]>(() => {
           <span class="text-gray-400 font-mono">{{ index + 1 }}</span>
         </template>
       </Column>
-      <Column field="menuItemId" header="Item" class="truncate max-w-28" />
+      <Column field="menuItemId" header="Item" class="truncate max-w-28">
+        <template #body="{ data }">
+          {{ itemName(data.menuItemId) }}
+        </template>
+      </Column>
       <Column field="units" header="Sold">
         <template #body="{ data }">
           <span class="font-medium">{{ data.units }}</span>
