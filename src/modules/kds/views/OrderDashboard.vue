@@ -191,11 +191,10 @@
 </template>
 
 <script setup lang="ts">
-import { statusLabel } from '@/utils/formatters'
+import { formatCurrency, statusLabel, formatTime } from '@/utils/formatters'
 import { ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import type { OrderStatus } from '@/types'
 import { useOrderDashboard } from '@/modules/kds/composables/useOrderDashboard'
-import { formatCurrency, formatTime } from '@/utils/formatters'
 import KdsColumn from '@/modules/kds/components/KdsColumn.vue'
 import OrderCard from '@/modules/kds/components/OrderCard.vue'
 import Dialog from 'primevue/dialog'

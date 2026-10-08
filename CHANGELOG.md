@@ -20,7 +20,7 @@ Gap-closure pass on the Vue 3 + TypeScript + PrimeVue + Vue Query + Socket.IO st
 
 ### Tooling
 
-- ESLint 9 + Prettier added (`npm run lint`, `npm run format`)
+- ESLint 10 + Prettier added (`npm run lint`, `npm run format`)
 - Vitest suite added: utils, API client, composable, component (`npm test`)
 
 ### Removed
