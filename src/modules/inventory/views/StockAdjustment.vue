@@ -1,13 +1,21 @@
 <template>
   <div class="max-w-xl mx-auto flex flex-col gap-6">
     <div class="flex items-center gap-3">
-      <Button icon="pi pi-arrow-left" severity="secondary" text rounded @click="$router.push('/inventory')" />
+      <Button
+        icon="pi pi-arrow-left"
+        severity="secondary"
+        text
+        rounded
+        @click="$router.push('/inventory')"
+      />
       <h1 class="text-2xl font-bold text-gray-900">Stock Adjustment</h1>
     </div>
 
     <div class="card bg-white rounded-lg border border-gray-200 p-6 flex flex-col gap-5">
       <div class="field">
-        <label for="ingredient" class="font-medium text-sm text-gray-700 mb-1 block">Ingredient</label>
+        <label for="ingredient" class="font-medium text-sm text-gray-700 mb-1 block"
+          >Ingredient</label
+        >
         <Select
           id="ingredient"
           v-model="selectedIngredient"
@@ -49,7 +57,9 @@
         </div>
 
         <div class="field">
-          <label for="quantity" class="font-medium text-sm text-gray-700 mb-1 block">Quantity</label>
+          <label for="quantity" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Quantity</label
+          >
           <InputNumber
             id="quantity"
             v-model="quantity"
@@ -102,7 +112,6 @@ import Textarea from 'primevue/textarea'
 import { positiveNumber } from '@/utils/validators'
 import type { Ingredient } from '@/types'
 import { useIngredients, useAdjustStock } from '../composables/useInventory'
-
 
 const { data: ingredients } = useIngredients()
 const adjustMutation = useAdjustStock()

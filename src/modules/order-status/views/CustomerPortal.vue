@@ -49,11 +49,7 @@ function logout() {
         Enter your phone number or customer ID to see your orders.
       </p>
       <form class="flex gap-3" @submit.prevent="login">
-        <InputText
-          v-model="input"
-          placeholder="Phone number or customer ID"
-          class="flex-1"
-        />
+        <InputText v-model="input" placeholder="Phone number or customer ID" class="flex-1" />
         <Button type="submit" label="View Orders" icon="pi pi-arrow-right" />
       </form>
       <p v-if="loginError" class="text-sm text-red-600 text-center">{{ loginError }}</p>
@@ -61,7 +57,9 @@ function logout() {
 
     <template v-else>
       <div class="flex items-center justify-between">
-        <p class="text-sm text-gray-500">Showing orders for <strong>{{ customerId }}</strong></p>
+        <p class="text-sm text-gray-500">
+          Showing orders for <strong>{{ customerId }}</strong>
+        </p>
         <Button
           label="Switch"
           icon="pi pi-sign-out"
@@ -96,7 +94,13 @@ function logout() {
       <div v-else-if="isError" class="text-center py-12">
         <i class="pi pi-exclamation-triangle text-3xl text-gray-300 mb-3 block" />
         <p class="text-sm text-gray-500">Failed to load orders.</p>
-        <Button label="Retry" severity="secondary" size="small" class="mt-3" @click="() => refetch()" />
+        <Button
+          label="Retry"
+          severity="secondary"
+          size="small"
+          class="mt-3"
+          @click="() => refetch()"
+        />
       </div>
 
       <div v-else-if="orders?.length" class="space-y-4">

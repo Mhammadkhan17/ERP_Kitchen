@@ -43,10 +43,30 @@ export function useOrderDashboard() {
   const columns = computed(() => {
     const all = filteredOrders.value
     return [
-      { title: 'Pending', status: 'pending' as OrderStatus, orders: all.filter((o) => o.status === 'pending'), color: ORDER_STATUS_COLORS.pending },
-      { title: 'Preparing', status: 'preparing' as OrderStatus, orders: all.filter((o) => o.status === 'preparing'), color: ORDER_STATUS_COLORS.preparing },
-      { title: 'Ready', status: 'ready' as OrderStatus, orders: all.filter((o) => o.status === 'ready'), color: ORDER_STATUS_COLORS.ready },
-      { title: 'Dispatched', status: 'dispatched' as OrderStatus, orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'), color: ORDER_STATUS_COLORS.dispatched },
+      {
+        title: 'Pending',
+        status: 'pending' as OrderStatus,
+        orders: all.filter((o) => o.status === 'pending'),
+        color: ORDER_STATUS_COLORS.pending,
+      },
+      {
+        title: 'Preparing',
+        status: 'preparing' as OrderStatus,
+        orders: all.filter((o) => o.status === 'preparing'),
+        color: ORDER_STATUS_COLORS.preparing,
+      },
+      {
+        title: 'Ready',
+        status: 'ready' as OrderStatus,
+        orders: all.filter((o) => o.status === 'ready'),
+        color: ORDER_STATUS_COLORS.ready,
+      },
+      {
+        title: 'Dispatched',
+        status: 'dispatched' as OrderStatus,
+        orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'),
+        color: ORDER_STATUS_COLORS.dispatched,
+      },
     ]
   })
 

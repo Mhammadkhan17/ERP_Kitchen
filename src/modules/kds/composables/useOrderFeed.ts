@@ -16,14 +16,17 @@ export function useOrderFeed() {
 
       const idx = old.findIndex((o) => o.id === payload.id)
       if (idx === -1) {
-        api.orders.get(payload.id).then((order) => {
-          queryClient.setQueryData<Order[]>(['orders'], (prev) => {
-            if (!prev) return [order]
-            return [...prev, order]
+        api.orders
+          .get(payload.id)
+          .then((order) => {
+            queryClient.setQueryData<Order[]>(['orders'], (prev) => {
+              if (!prev) return [order]
+              return [...prev, order]
+            })
           })
-        }).catch(() => {
-          queryClient.invalidateQueries({ queryKey: ['orders'] })
-        })
+          .catch(() => {
+            queryClient.invalidateQueries({ queryKey: ['orders'] })
+          })
         return old
       }
 
@@ -35,7 +38,9 @@ export function useOrderFeed() {
   }
 
   socket.on('order:update', handler)
-  onUnmounted(() => { socket.off('order:update', handler) })
+  onUnmounted(() => {
+    socket.off('order:update', handler)
+  })
 
   return { connected, error }
 }

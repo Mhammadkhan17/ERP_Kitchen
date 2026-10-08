@@ -2,7 +2,12 @@ import { describe, it, expect } from 'vitest'
 import { aggregateSales } from './aggregateSales'
 import type { DailySales } from '@/types'
 
-function day(date: string, revenue: number, orderCount: number, items: Array<[string, number]>): DailySales {
+function day(
+  date: string,
+  revenue: number,
+  orderCount: number,
+  items: Array<[string, number]>,
+): DailySales {
   return {
     id: `sales-${date}`,
     date,
@@ -14,7 +19,10 @@ function day(date: string, revenue: number, orderCount: number, items: Array<[st
 
 const sample: DailySales[] = [
   day('2026-03-02', 100, 2, [['item-001', 3]]), // Monday week 10
-  day('2026-03-04', 50, 1, [['item-001', 1], ['item-002', 2]]),
+  day('2026-03-04', 50, 1, [
+    ['item-001', 1],
+    ['item-002', 2],
+  ]),
   day('2026-03-09', 80, 2, [['item-002', 4]]), // next week
   day('2026-04-01', 200, 5, [['item-003', 9]]), // April
 ]
@@ -29,7 +37,10 @@ describe('aggregateSales', () => {
   it('daily preserves rows sorted by date with labels equal to dates', () => {
     const result = aggregateSales(sample, 'daily')
     expect(result.map((r) => r.label)).toEqual([
-      '2026-03-02', '2026-03-04', '2026-03-09', '2026-04-01',
+      '2026-03-02',
+      '2026-03-04',
+      '2026-03-09',
+      '2026-04-01',
     ])
     expect(result[0].revenue).toBe(100)
   })

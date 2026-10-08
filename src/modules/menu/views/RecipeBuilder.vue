@@ -13,84 +13,89 @@
       </div>
     </template>
     <template v-else>
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-800">Recipe Builder</h1>
-      <Button
-        label="Back to Menu"
-        icon="pi pi-arrow-left"
-        severity="secondary"
-        @click="$router.push('/menu')"
-      />
-    </div>
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-800">Recipe Builder</h1>
+        <Button
+          label="Back to Menu"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          @click="$router.push('/menu')"
+        />
+      </div>
 
-    <div class="flex flex-col gap-2">
-      <div v-for="item in items" :key="item.id" class="card">
-        <div
-          class="flex items-center justify-between cursor-pointer select-none px-4 py-3"
-          @click="toggle(item.id)"
-        >
-          <span class="font-semibold text-gray-800">{{ item.name }}</span>
-          <i :class="['pi', openPanels.includes(item.id) ? 'pi-chevron-up' : 'pi-chevron-down']" />
-        </div>
-
-        <div v-if="openPanels.includes(item.id)" class="border-t px-4 py-3">
-          <div v-if="recipeData[item.id] && recipeData[item.id].loaded" class="flex flex-col gap-4">
-            <div class="flex items-center gap-2">
-              <label class="text-sm font-medium min-w-24">Servings:</label>
-              <InputNumber
-                v-model="recipeData[item.id].servings"
-                :min="1"
-                :step="1"
-                :input-style="{ width: '80px' }"
-              />
-            </div>
-
-            <div class="border-t pt-2">
-              <h3 class="text-sm font-semibold text-gray-600 mb-2">Current Ingredients</h3>
-              <div
-                v-if="!recipeData[item.id].ingredients.length"
-                class="text-sm text-gray-400 mb-2"
-              >
-                No ingredients added yet.
-              </div>
-              <div
-                v-for="ing in recipeData[item.id].ingredients"
-                :key="ing.ingredientId"
-                class="flex items-center gap-2 text-sm mb-1"
-              >
-                <i class="pi pi-circle-fill text-primary-400 text-xs" />
-                <span>{{ getIngredientName(ing.ingredientId) }}</span>
-                <span class="text-gray-400">—</span>
-                <span class="font-medium">{{ ing.quantity }}</span>
-                <span class="text-gray-400">{{ getIngredientUnit(ing.ingredientId) }}</span>
-              </div>
-            </div>
-
-            <div class="border-t pt-2">
-              <h3 class="text-sm font-semibold text-gray-600 mb-2">Add / Edit Ingredients</h3>
-              <IngredientPicker
-                v-model:selected="recipeData[item.id].ingredients"
-                :menu-item-id="item.id"
-              />
-            </div>
-
-            <div class="flex justify-end pt-2">
-              <Button
-                label="Save Recipe"
-                icon="pi pi-check"
-                :loading="upsertMutation.isPending.value"
-                @click="saveRecipe(item.id)"
-              />
-            </div>
+      <div class="flex flex-col gap-2">
+        <div v-for="item in items" :key="item.id" class="card">
+          <div
+            class="flex items-center justify-between cursor-pointer select-none px-4 py-3"
+            @click="toggle(item.id)"
+          >
+            <span class="font-semibold text-gray-800">{{ item.name }}</span>
+            <i
+              :class="['pi', openPanels.includes(item.id) ? 'pi-chevron-up' : 'pi-chevron-down']"
+            />
           </div>
 
-          <div v-else class="flex items-center justify-center py-6 text-gray-400">
-            <i class="pi pi-spin pi-spinner mr-2" />
-            Loading recipe...
+          <div v-if="openPanels.includes(item.id)" class="border-t px-4 py-3">
+            <div
+              v-if="recipeData[item.id] && recipeData[item.id].loaded"
+              class="flex flex-col gap-4"
+            >
+              <div class="flex items-center gap-2">
+                <label class="text-sm font-medium min-w-24">Servings:</label>
+                <InputNumber
+                  v-model="recipeData[item.id].servings"
+                  :min="1"
+                  :step="1"
+                  :input-style="{ width: '80px' }"
+                />
+              </div>
+
+              <div class="border-t pt-2">
+                <h3 class="text-sm font-semibold text-gray-600 mb-2">Current Ingredients</h3>
+                <div
+                  v-if="!recipeData[item.id].ingredients.length"
+                  class="text-sm text-gray-400 mb-2"
+                >
+                  No ingredients added yet.
+                </div>
+                <div
+                  v-for="ing in recipeData[item.id].ingredients"
+                  :key="ing.ingredientId"
+                  class="flex items-center gap-2 text-sm mb-1"
+                >
+                  <i class="pi pi-circle-fill text-primary-400 text-xs" />
+                  <span>{{ getIngredientName(ing.ingredientId) }}</span>
+                  <span class="text-gray-400">—</span>
+                  <span class="font-medium">{{ ing.quantity }}</span>
+                  <span class="text-gray-400">{{ getIngredientUnit(ing.ingredientId) }}</span>
+                </div>
+              </div>
+
+              <div class="border-t pt-2">
+                <h3 class="text-sm font-semibold text-gray-600 mb-2">Add / Edit Ingredients</h3>
+                <IngredientPicker
+                  v-model:selected="recipeData[item.id].ingredients"
+                  :menu-item-id="item.id"
+                />
+              </div>
+
+              <div class="flex justify-end pt-2">
+                <Button
+                  label="Save Recipe"
+                  icon="pi pi-check"
+                  :loading="upsertMutation.isPending.value"
+                  @click="saveRecipe(item.id)"
+                />
+              </div>
+            </div>
+
+            <div v-else class="flex items-center justify-center py-6 text-gray-400">
+              <i class="pi pi-spin pi-spinner mr-2" />
+              Loading recipe...
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </template>
   </div>
 </template>
@@ -192,7 +197,8 @@ function saveRecipe(menuItemId: string) {
           loaded: true,
           loading: false,
           servings: recipe?.servings ?? data.servings,
-          ingredients: recipe?.ingredients?.map((i) => ({ ...i })) ?? data.ingredients.map((i) => ({ ...i })),
+          ingredients:
+            recipe?.ingredients?.map((i) => ({ ...i })) ?? data.ingredients.map((i) => ({ ...i })),
         }
       },
     },

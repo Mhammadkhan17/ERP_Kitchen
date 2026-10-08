@@ -3,7 +3,9 @@
     <Message severity="warn" :closable="false">
       <div class="flex flex-col gap-1">
         <span class="font-semibold text-sm">
-          Low Stock Alert — {{ lowStockItems.length }} item{{ lowStockItems.length === 1 ? '' : 's' }}
+          Low Stock Alert — {{ lowStockItems.length }} item{{
+            lowStockItems.length === 1 ? '' : 's'
+          }}
         </span>
         <ul class="text-sm mt-1 space-y-0.5">
           <li v-for="item in lowStockItems" :key="item.id">

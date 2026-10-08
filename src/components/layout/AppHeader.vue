@@ -7,11 +7,7 @@
     <span class="font-bold text-lg">Cloud Kitchen</span>
   </header>
 
-  <div
-    v-if="mobileOpen"
-    class="fixed inset-0 z-50 lg:hidden"
-    @click="mobileOpen = false"
-  >
+  <div v-if="mobileOpen" class="fixed inset-0 z-50 lg:hidden" @click="mobileOpen = false">
     <div class="absolute inset-0 bg-black/50" />
     <aside class="absolute left-0 top-0 bottom-0 w-60 bg-white shadow-xl" @click.stop>
       <div class="h-16 flex items-center justify-between px-6 border-b border-gray-200">
@@ -26,7 +22,9 @@
           :key="item.path"
           :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
-          :class="isActive(item.path) ? 'bg-orange-50 text-orange-700' : 'text-gray-600 hover:bg-gray-100'"
+          :class="
+            isActive(item.path) ? 'bg-orange-50 text-orange-700' : 'text-gray-600 hover:bg-gray-100'
+          "
           @click="mobileOpen = false"
         >
           <span class="text-lg" v-html="item.icon"></span>

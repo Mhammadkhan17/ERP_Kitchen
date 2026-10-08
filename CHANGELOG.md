@@ -9,6 +9,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 ## What Was Completed (Phase 0)
 
 ### Scaffolding & Config
+
 - **`package.json`** — Vue 3.5, Pinia, Vue Router 4, Axios, UnoCSS 0.65, json-server 0.17, concurrently, Vite 6
 - **`vite.config.js`** — Vue plugin, UnoCSS plugin, `@/` alias, `/api` proxy → `localhost:3001`, Vitest config (globals, jsdom, test file pattern)
 - **`uno.config.js`** — `presetWind()`, brand colors (`orange-600` primary), shortcuts (`btn`, `btn-primary`, `card`, `badge`, `chip`, `input`, `page-header`, etc.)
@@ -17,24 +18,27 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - **`db.json`** — Seed data: 10 ingredients, 2 brands, 5 menu items, 2 recipes, 5 orders (mixed statuses), 3 days sales analytics, 2 wastage logs
 
 ### Bootstrap & Plugins
+
 - **`src/main.js`** — App bootstrap: Pinia, Router, Vuetify0 theme plugin, UnoCSS reset + base
 - **`src/App.vue`** — Shell that renders `<AppLayout />`
 - **`src/plugins/vuetify0.js`** — Placeholder Vuetify0 theme plugin (sets primary/secondary colors as global properties)
 - **`src/styles/main.css`** — CSS custom properties for brand colors, font smoothing, mobile utility
 
 ### Routing (src/router/index.js)
-| Path | Name | View |
-|------|------|------|
-| `/` | — | Redirect → `/kds` |
-| `/kds` | `kds.dashboard` | `OrderDashboard.vue` |
-| `/kds/:id` | `kds.detail` | `OrderDetail.vue` |
-| `/inventory` | `inventory.list` | `InventoryList.vue` |
-| `/inventory/adjust` | `inventory.adjust` | `StockAdjustment.vue` |
-| `/menu` | `menu.list` | `MenuList.vue` |
-| `/menu/recipes` | `menu.recipes` | `RecipeBuilder.vue` |
-| `/analytics` | `analytics.dashboard` | `AnalyticsDashboard.vue` |
+
+| Path                | Name                  | View                     |
+| ------------------- | --------------------- | ------------------------ |
+| `/`                 | —                     | Redirect → `/kds`        |
+| `/kds`              | `kds.dashboard`       | `OrderDashboard.vue`     |
+| `/kds/:id`          | `kds.detail`          | `OrderDetail.vue`        |
+| `/inventory`        | `inventory.list`      | `InventoryList.vue`      |
+| `/inventory/adjust` | `inventory.adjust`    | `StockAdjustment.vue`    |
+| `/menu`             | `menu.list`           | `MenuList.vue`           |
+| `/menu/recipes`     | `menu.recipes`        | `RecipeBuilder.vue`      |
+| `/analytics`        | `analytics.dashboard` | `AnalyticsDashboard.vue` |
 
 ### API Layer (src/api/)
+
 - **`client.js`** — Axios instance with `/api` base URL and response error interceptor
 - **`modules/inventory.js`** — CRUD for `/ingredients`
 - **`modules/orders.js`** — GET all, GET by id, POST, PATCH status
@@ -43,32 +47,36 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - **`index.js`** — Re-exports all API modules
 
 ### Layout Components (src/components/layout/)
+
 - **`AppLayout.vue`** — Flex container: sidebar (desktop) + header + `<router-view>`
 - **`AppDrawer.vue`** — Fixed 240px sidebar with nav links, active state highlighting, hidden on mobile (`<md`)
 - **`AppHeader.vue`** — Top bar with mobile nav toggle, horizontal nav links, mobile overlay menu
 
 ### UI Primitives (src/components/ui/) — All hand-rolled, no Vuetify0 components
-| Component | Props | Description |
-|-----------|-------|-------------|
-| `VDataTable.vue` | `columns`, `rows`, `loading`, `emptyMessage`, `sortable`, `pageSize` + slots per cell | Styled `<table>` with loading/empty states, column sorting with indicators, pagination controls, row click event |
-| `VDialog.vue` | `modelValue`, `title`, `maxWidth` | Teleported modal with backdrop, close, footer slot, focus trap, ESC to close |
-| `VCard.vue` | `padding` | White card with shadow + border + rounded |
-| `VChip.vue` | `color`, `dot` | Colored label chip (orange/green/red/blue/gray/yellow/purple) |
-| `VBadge.vue` | `count`, `color` | Circular count badge (99+ overflow) |
-| `VStatusDot.vue` | `status` | Small colored dot for order status |
-| `VPageHeader.vue` | `title`, `subtitle` + `actions` slot | Page title + actions bar |
-| `VSearchBar.vue` | `modelValue`, `placeholder` | Search input with magnifier icon |
-| `VConfirmDialog.vue` | `modelValue`, `title`, `message`, `confirmText`, `danger` | Confirmation modal |
-| `VBanner.vue` | `type` (info/warning/error/success), `dismissible` | Alert banner with icon + dismiss |
-| `VToast.vue` | — (uses `useSnackbar` composable) | Teleported snackbar toast with animated enter/leave |
-| `VTooltip.vue` | `text` | Hover tooltip with arrow |
+
+| Component            | Props                                                                                 | Description                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `VDataTable.vue`     | `columns`, `rows`, `loading`, `emptyMessage`, `sortable`, `pageSize` + slots per cell | Styled `<table>` with loading/empty states, column sorting with indicators, pagination controls, row click event |
+| `VDialog.vue`        | `modelValue`, `title`, `maxWidth`                                                     | Teleported modal with backdrop, close, footer slot, focus trap, ESC to close                                     |
+| `VCard.vue`          | `padding`                                                                             | White card with shadow + border + rounded                                                                        |
+| `VChip.vue`          | `color`, `dot`                                                                        | Colored label chip (orange/green/red/blue/gray/yellow/purple)                                                    |
+| `VBadge.vue`         | `count`, `color`                                                                      | Circular count badge (99+ overflow)                                                                              |
+| `VStatusDot.vue`     | `status`                                                                              | Small colored dot for order status                                                                               |
+| `VPageHeader.vue`    | `title`, `subtitle` + `actions` slot                                                  | Page title + actions bar                                                                                         |
+| `VSearchBar.vue`     | `modelValue`, `placeholder`                                                           | Search input with magnifier icon                                                                                 |
+| `VConfirmDialog.vue` | `modelValue`, `title`, `message`, `confirmText`, `danger`                             | Confirmation modal                                                                                               |
+| `VBanner.vue`        | `type` (info/warning/error/success), `dismissible`                                    | Alert banner with icon + dismiss                                                                                 |
+| `VToast.vue`         | — (uses `useSnackbar` composable)                                                     | Teleported snackbar toast with animated enter/leave                                                              |
+| `VTooltip.vue`       | `text`                                                                                | Hover tooltip with arrow                                                                                         |
 
 ### Common Components (src/components/common/)
+
 - **`EmptyState.vue`** — Icon + message + optional action button
 - **`LoadingSkeleton.vue`** — Animated pulse skeleton rows
 - **`StatusTimeline.vue`** — Vertical timeline for order status transitions
 
 ### Composables (src/composables/)
+
 - **`useSnackbar.js`** — Global snackbar state (ref-based, no provider needed)
 - **`useTimer.js`** — Elapsed seconds counter with start/stop/reset/format (mm:ss)
 - **`useConfirm.js`** — Promise-based confirm dialog state
@@ -76,16 +84,19 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - **`useSSE.js`** — Server-Sent Events composable with auto-reconnect
 
 ### Utils (src/utils/)
+
 - **`formatters.js`** — `formatCurrency`, `formatDate`, `formatTime`, `statusLabel`, `statusColor`
 - **`validators.js`** — `required`, `minLength`, `positiveNumber`, `maxDecimals`
 
 ### Pinia Stores (src/stores/)
+
 - **`inventory.js`** — Full CRUD, search/unit filter, low stock detection, stock adjustment, recipe-based bulk deduction
 - **`orders.js`** — Status filter, pending count, orders by status grouping, cross-store deduction flow (`pending → preparing` triggers `inventoryStore.deductRecipeIngredients`)
 - **`menu.js`** — Menu items + recipes + brands loaded in parallel, recipe lookup by menuItemId
 - **`analytics.js`** — Computed totals/revenue/AOV/wastage, parallel refresh
 
 ### KDS Module (src/modules/kds/)
+
 - **`OrderDashboard.vue`** — 4-column Kanban (Pending / Preparing / Ready / Dispatched), 30s polling, new order alert banners
 - **`OrderDetail.vue`** — Dialog with item breakdown, total, special instructions, status timeline
 - **`OrderCard.vue`** — Order card with source badge, item summary, timer, contextual action button (Start Preparing → Mark Ready → Mark Dispatched)
@@ -93,18 +104,21 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - **`OrderTimer.vue`** — Live elapsed time display (mm:ss) since `placedAt`
 
 ### Inventory Module (src/modules/inventory/)
+
 - **`InventoryList.vue`** — Full data table with search, status chips (ok/low/critical), edit/delete actions, low stock banner
 - **`StockAdjustment.vue`** — Select ingredient → choose in/out → enter quantity → submit
 - **`IngredientForm.vue`** — Dialog form with name, unit, stock, reorder, cost, supplier, category
 - **`LowStockBanner.vue`** — Warning banner listing ingredients at/below reorder level
 
 ### Menu Module (src/modules/menu/)
+
 - **`MenuList.vue`** — Data table with brand name, price, active toggle switch, edit action
 - **`RecipeBuilder.vue`** — Accordion per menu item with ingredient picker (searchable checkboxes + quantity inputs) and save
 - **`MenuItemForm.vue`** — Dialog form with name, brand, price, category, active toggle
 - **`IngredientPicker.vue`** — Searchable checkbox list with quantity input per ingredient
 
 ### Analytics Module (src/modules/analytics/)
+
 - **`AnalyticsDashboard.vue`** — 4 KPI cards (Revenue, AOV, Orders, Wastage), bar chart, top-selling table, wastage log table, period toggle (daily/weekly/monthly)
 - **`KpiCard.vue`** — Icon + label + big number + optional trend indicator
 - **`SalesChart.vue`** — Pure CSS bar chart (no Chart.js dependency needed)
@@ -126,6 +140,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 ## Remaining Work (TODOs)
 
 ### Phase 1a — UI Primitive Polish (Low Priority)
+
 - [x] VDataTable: add sort indicators + column sorting logic
 - [x] VDataTable: add pagination controls (page size, prev/next)
 - [x] VDataTable: add row click event
@@ -135,6 +150,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [x] Add `VTooltip` primitive
 
 ### Phase 1b — Inventory Enhancements (Medium Priority)
+
 - [x] InventoryList: add column sorting by clicking headers
 - [x] InventoryList: add pagination
 - [x] InventoryList: add unit filter dropdown
@@ -143,6 +159,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [x] IngredientForm: add client-side validation with `validators.js`
 
 ### Phase 2 — Menu & Recipe Enhancements
+
 - [x] MenuList: add search filter
 - [x] MenuList: add category filter tabs
 - [x] RecipeBuilder: add ingredient quantity validation
@@ -150,6 +167,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [x] RecipeBuilder: add drag-and-drop ingredient reordering
 
 ### Phase 3 — KDS Enhancements
+
 - [x] OrderTimer: add color transitions (>10min yellow, >15min red)
 - [x] OrderDashboard: add sound notification on new order poll
 - [x] OrderDashboard: add auto-scroll to new orders
@@ -159,6 +177,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [x] Add drag-and-drop between Kanban columns (HTML5 Drag & Drop API)
 
 ### Phase 4 — Analytics Enhancements
+
 - [x] SalesChart: replace CSS bars with Chart.js (`vue-chartjs`) for proper axes/tooltips
 - [x] SalesChart: add period-based data aggregation
 - [x] TopSellingTable: show revenue contribution per item
@@ -167,6 +186,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [x] AnalyticsDashboard: add comparison period toggle (period wired to store/API)
 
 ### Phase 5 — Polish & Mobile (High Priority)
+
 - [x] Mobile: KDS columns stack vertically at `<768px`
 - [x] Mobile: VDialog goes fullscreen at `<640px`
 - [x] Mobile: AppDrawer becomes off-canvas overlay at `<768px`
@@ -178,6 +198,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - [ ] Auth: login page + route guards (future scope)
 
 ### Phase 6 — Testing
+
 - [x] Set up Vitest + @vue/test-utils + jsdom
 - [x] Unit tests for stores (inventory: 13, orders: 11) — 24 tests
 - [x] Unit tests for utils (formatters: 13, validators: 13) — 26 tests
@@ -186,6 +207,7 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 - Total: **63 tests, 7 files, all passing ✓**
 
 ### Vuetify0 Migration
+
 - [x] Installed `@vuetify/v0` (40 headless components, 71 composables)
 - [x] **VDialog** → `Dialog.Root`/`Dialog.Content`/`Dialog.Title`/`Dialog.Close` — native focus trap, ESC dismiss, WAI-ARIA semantics
 - [x] **VToast** → `Snackbar.Root`/`Snackbar.Portal`/`Snackbar.Content`/`Snackbar.Close` — portal to body with proper queue support
@@ -212,15 +234,15 @@ Cloud Kitchen MVP ERP built with Vue 3 (Composition API, `<script setup>`) + Uno
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite dev server (port 5173) |
-| `npm run server` | Start JSON Server (port 3001) |
-| `npm start` | Run both concurrently |
-| `npm run build` | Production build to `dist/` |
-| `npm run preview` | Preview production build |
-| `npm test` | Run all tests (Vitest) |
-| `npm run test:watch` | Run tests in watch mode |
+| Command              | Description                       |
+| -------------------- | --------------------------------- |
+| `npm run dev`        | Start Vite dev server (port 5173) |
+| `npm run server`     | Start JSON Server (port 3001)     |
+| `npm start`          | Run both concurrently             |
+| `npm run build`      | Production build to `dist/`       |
+| `npm run preview`    | Preview production build          |
+| `npm test`           | Run all tests (Vitest)            |
+| `npm run test:watch` | Run tests in watch mode           |
 
 ---
 

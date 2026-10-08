@@ -1,14 +1,17 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
-  title: string
-  value: string | number
-  icon: string
-  subtitle?: string
-  trend?: number
-}>(), {
-  subtitle: '',
-  trend: 0,
-})
+withDefaults(
+  defineProps<{
+    title: string
+    value: string | number
+    icon: string
+    subtitle?: string
+    trend?: number
+  }>(),
+  {
+    subtitle: '',
+    trend: 0,
+  },
+)
 </script>
 
 <template>

@@ -49,7 +49,11 @@ function submitWastage() {
       unit: form.value.unit,
       reason: form.value.reason,
     },
-    { onSuccess: () => { dialogVisible.value = false } },
+    {
+      onSuccess: () => {
+        dialogVisible.value = false
+      },
+    },
   )
 }
 </script>
@@ -58,7 +62,13 @@ function submitWastage() {
   <div class="card">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-semibold text-gray-900">Wastage Log</h3>
-      <Button label="Log Wastage" icon="pi pi-plus" size="small" class="btn-primary" @click="openDialog" />
+      <Button
+        label="Log Wastage"
+        icon="pi pi-plus"
+        size="small"
+        class="btn-primary"
+        @click="openDialog"
+      />
     </div>
 
     <DataTable
@@ -84,9 +94,7 @@ function submitWastage() {
       <Column field="reason" header="Reason" />
     </DataTable>
 
-    <div v-if="!logs.length" class="text-center text-gray-400 py-6 text-sm">
-      No wastage records
-    </div>
+    <div v-if="!logs.length" class="text-center text-gray-400 py-6 text-sm">No wastage records</div>
 
     <Dialog
       v-model:visible="dialogVisible"
@@ -118,21 +126,20 @@ function submitWastage() {
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-700">Unit</label>
-          <InputText
-            v-model="form.unit"
-            placeholder="e.g. kg, liters, pieces"
-          />
+          <InputText v-model="form.unit" placeholder="e.g. kg, liters, pieces" />
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-700">Reason</label>
-          <InputText
-            v-model="form.reason"
-            placeholder="Why was this wasted?"
-          />
+          <InputText v-model="form.reason" placeholder="Why was this wasted?" />
         </div>
       </div>
       <template #footer>
-        <Button label="Cancel" severity="secondary" class="btn-secondary" @click="dialogVisible = false" />
+        <Button
+          label="Cancel"
+          severity="secondary"
+          class="btn-secondary"
+          @click="dialogVisible = false"
+        />
         <Button
           label="Submit"
           class="btn-primary"

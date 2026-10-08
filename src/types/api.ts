@@ -1,5 +1,12 @@
 import type {
-  Ingredient, MenuItem, Recipe, Order, Brand, DailySales, WastageLog, Customer,
+  Ingredient,
+  MenuItem,
+  Recipe,
+  Order,
+  Brand,
+  DailySales,
+  WastageLog,
+  Customer,
 } from './index'
 
 export interface ApiClient {

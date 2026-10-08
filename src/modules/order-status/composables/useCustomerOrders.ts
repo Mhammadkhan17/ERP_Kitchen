@@ -45,7 +45,9 @@ export function useCustomerOrders(inputRef: Ref<string>) {
   }
 
   socket.on('order:update', handler)
-  onUnmounted(() => { socket.off('order:update', handler) })
+  onUnmounted(() => {
+    socket.off('order:update', handler)
+  })
 
   return query
 }
@@ -71,7 +73,9 @@ export function useOrderTracking(orderNumberRef: Ref<number>) {
   }
 
   socket.on('order:update', handler)
-  onUnmounted(() => { socket.off('order:update', handler) })
+  onUnmounted(() => {
+    socket.off('order:update', handler)
+  })
 
   return query
 }

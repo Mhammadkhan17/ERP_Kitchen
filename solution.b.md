@@ -5,6 +5,7 @@
 **Core insight:** Keep the existing admin app fully intact under `/admin/*` while building the customer portal at the root `/`. A `beforeEach` guard transparently redirects legacy paths so no bookmark breaks.
 
 **Key decisions already made:**
+
 - Split router into `routes/admin.ts`, `routes/customer.ts`, merged in `index.ts`
 - Admin: parent `/admin` + `AppLayout`. Customer: parent `/` + `CustomerLayout`
 - `PublicLayout` → `CustomerLayout` with cart badge + nav tabs
@@ -14,14 +15,14 @@
 
 ## 2. Judge Feedback Addressed
 
-| # | Concern | Resolution |
-|---|---------|-----------|
-| 1 | `order-status` straddles two contexts | `order-status` stays **purely for guest tracking** (`/track`). Portal orders get a **new separate composable** `useCustomerOrders.ts` in `customer/composables/` with its own query key `['customer-orders']`. |
-| 2 | Guard debugging | `beforeEach` logs a `console.warn('[router] Redirecting legacy path: ...')` in dev mode when redirect fires. |
-| 3a | Query key collision | Admin uses `['orders']`, customer uses `['customer-orders']` — no overlap. |
-| 3b | Loading/empty/error states | Every customer view explicitly handles `isLoading`, `isError`, empty data, and error retry. |
-| 3c | Test strategy for guard | Describe a `redirectGuard.spec.ts` test at end of doc. |
-| 4 | Phone gate | **UUID guest fallback**: browsing the menu adds a `guestId` to localStorage if no customer session exists. Checkout can proceed with guestId; phone is optional for order tracking. |
+| #   | Concern                               | Resolution                                                                                                                                                                                                     |
+| --- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `order-status` straddles two contexts | `order-status` stays **purely for guest tracking** (`/track`). Portal orders get a **new separate composable** `useCustomerOrders.ts` in `customer/composables/` with its own query key `['customer-orders']`. |
+| 2   | Guard debugging                       | `beforeEach` logs a `console.warn('[router] Redirecting legacy path: ...')` in dev mode when redirect fires.                                                                                                   |
+| 3a  | Query key collision                   | Admin uses `['orders']`, customer uses `['customer-orders']` — no overlap.                                                                                                                                     |
+| 3b  | Loading/empty/error states            | Every customer view explicitly handles `isLoading`, `isError`, empty data, and error retry.                                                                                                                    |
+| 3c  | Test strategy for guard               | Describe a `redirectGuard.spec.ts` test at end of doc.                                                                                                                                                         |
+| 4   | Phone gate                            | **UUID guest fallback**: browsing the menu adds a `guestId` to localStorage if no customer session exists. Checkout can proceed with guestId; phone is optional for order tracking.                            |
 
 ## 3. Implementation Breakdown
 
@@ -161,6 +162,7 @@ export default router
 #### `AppDrawer.vue` and `AppHeader.vue` — path changes
 
 In both files, change:
+
 ```ts
 const navItems = [
   { path: '/kds', ... },
@@ -169,7 +171,9 @@ const navItems = [
   { path: '/analytics', ... },
 ]
 ```
+
 to:
+
 ```ts
 const navItems = [
   { path: '/admin/kds', ... },
@@ -226,7 +230,7 @@ import { api } from '@/api/client'
 const STORAGE_KEY = 'customer_session'
 
 interface CustomerSession {
-  id: number | string  // number for registered, string (uuid) for guest
+  id: number | string // number for registered, string (uuid) for guest
   phone?: number
   name?: string
 }
@@ -248,7 +252,7 @@ export function useCustomerSession() {
   }
 
   function initGuest(): void {
-    if (session.value) return  // already has a session
+    if (session.value) return // already has a session
     const guestId = crypto.randomUUID()
     session.value = { id: guestId }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(session.value))
@@ -264,6 +268,7 @@ export function useCustomerSession() {
 ```
 
 **Edge cases:**
+
 - `localStorage` unavailable (incognito?) → wrap in try/catch
 - Session already exists → `initGuest` is a no-op
 - Phone not found → `loginByPhone` returns false; caller shows error
@@ -288,29 +293,33 @@ interface CartItem {
 }
 
 const saved = localStorage.getItem(STORAGE_KEY)
-const items = reactive<Map<string, CartItem>>(
-  saved ? new Map(JSON.parse(saved)) : new Map()
-)
+const items = reactive<Map<string, CartItem>>(saved ? new Map(JSON.parse(saved)) : new Map())
 
 // Persist on every change
 watch(
   () => Array.from(items.entries()),
   (val) => localStorage.setItem(STORAGE_KEY, JSON.stringify(val)),
-  { deep: true }
+  { deep: true },
 )
 
 export function useCustomerCart() {
   const totalItems = computed(() =>
-    Array.from(items.values()).reduce((sum, i) => sum + i.quantity, 0)
+    Array.from(items.values()).reduce((sum, i) => sum + i.quantity, 0),
   )
 
   const totalAmount = computed(() =>
-    Array.from(items.values()).reduce((sum, i) => sum + i.unitPrice * i.quantity, 0)
+    Array.from(items.values()).reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
   )
 
   const itemCount = (menuItemId: string) => items.get(menuItemId)?.quantity ?? 0
 
-  function addItem(menuItem: { id: string; name: string; price: number; brandId: string; brandName: string }): void {
+  function addItem(menuItem: {
+    id: string
+    name: string
+    price: number
+    brandId: string
+    brandName: string
+  }): void {
     const existing = items.get(menuItem.id)
     if (existing) {
       existing.quantity++
@@ -357,6 +366,7 @@ export function useCustomerCart() {
 ```
 
 **Edge cases:**
+
 - Quantity set to 0 → item removed from cart
 - Cart persisted across page refreshes via localStorage
 - Cart survives guest→login transition (no clearing on login)
@@ -409,7 +419,9 @@ export function useCustomerOrders() {
   }
 
   socket.on('order:update', handler)
-  onUnmounted(() => { socket.off('order:update', handler) })
+  onUnmounted(() => {
+    socket.off('order:update', handler)
+  })
 
   const placeOrder = useMutation({
     mutationFn: (data: {
@@ -419,14 +431,20 @@ export function useCustomerOrders() {
       items: Order['items']
       totalAmount: number
       brandId: string
-    }) => api.orders.create({
-      ...data,
-      source: 'direct',
-      status: 'pending',
-      orderNumber: Date.now(),
-      timestamps: { placedAt: new Date().toISOString(), startedAt: null, readyAt: null, dispatchedAt: null },
-      prepTimeTarget: 15,
-    }),
+    }) =>
+      api.orders.create({
+        ...data,
+        source: 'direct',
+        status: 'pending',
+        orderNumber: Date.now(),
+        timestamps: {
+          placedAt: new Date().toISOString(),
+          startedAt: null,
+          readyAt: null,
+          dispatchedAt: null,
+        },
+        prepTimeTarget: 15,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey })
       snackbar.success('Order placed!')
@@ -466,13 +484,16 @@ export function useCustomerOrderDetail(orderIdRef: Ref<string>) {
   }
 
   socket.on('order:update', handler)
-  onUnmounted(() => { socket.off('order:update', handler) })
+  onUnmounted(() => {
+    socket.off('order:update', handler)
+  })
 
   return query
 }
 ```
 
 **Edge cases:**
+
 - Guest orders use string `customerId` (UUID) — json-server can store this
 - No session → query is disabled
 - Socket events only update matched orders (by ID)
@@ -518,6 +539,7 @@ export function useCustomerMenu() {
 #### `MenuBrowse.vue`
 
 **Core functionality:**
+
 - Hero banner at top with tagline
 - Category filter: `Chip` buttons for all categories + "All"
 - Brand filter: `SelectButton` or `Chips` for brands
@@ -526,12 +548,13 @@ export function useCustomerMenu() {
 - Cart badge in layout header triggers `CartDrawer`
 
 **States:**
-| State | UI |
-|-------|-----|
-| Loading | Skeleton grid (6 skeleton cards) |
-| Error | Error icon + "Failed to load menu" + Retry button |
+
+| State                    | UI                                                   |
+| ------------------------ | ---------------------------------------------------- |
+| Loading                  | Skeleton grid (6 skeleton cards)                     |
+| Error                    | Error icon + "Failed to load menu" + Retry button    |
 | Empty (all filtered out) | "No items match your filters" + Clear filters button |
-| Success | Filtered grid of cards |
+| Success                  | Filtered grid of cards                               |
 
 ```vue
 <template>
@@ -591,7 +614,15 @@ export function useCustomerMenu() {
     <div v-else-if="filteredItems.length === 0" class="text-center py-16">
       <i class="pi pi-filter-slash text-4xl text-gray-300 mb-4 block" />
       <p class="text-gray-500">No items match your filters</p>
-      <Button label="Clear filters" severity="secondary" @click="activeCategory = null; activeBrand = null" class="mt-4" />
+      <Button
+        label="Clear filters"
+        severity="secondary"
+        @click="
+          activeCategory = null
+          activeBrand = null
+        "
+        class="mt-4"
+      />
     </div>
 
     <!-- Menu Grid -->
@@ -636,7 +667,9 @@ const filteredItems = computed(() => {
 
 ```vue
 <template>
-  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+  <div
+    class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+  >
     <div class="h-32 flex items-center justify-center" :style="{ background: brandColor }">
       <span class="text-5xl text-white/80 font-bold">{{ item.name[0] }}</span>
     </div>
@@ -649,7 +682,9 @@ const filteredItems = computed(() => {
         <span class="font-bold text-orange-600">${{ item.price.toFixed(2) }}</span>
       </div>
       <div class="flex items-center justify-between pt-2">
-        <span class="text-xs text-gray-400 px-2 py-0.5 bg-gray-100 rounded-full capitalize">{{ item.category }}</span>
+        <span class="text-xs text-gray-400 px-2 py-0.5 bg-gray-100 rounded-full capitalize">{{
+          item.category
+        }}</span>
         <div class="flex items-center gap-2">
           <Button
             v-if="quantity > 0"
@@ -659,7 +694,9 @@ const filteredItems = computed(() => {
             rounded
             @click="$emit('update:quantity', Math.max(0, quantity - 1))"
           />
-          <span v-if="quantity > 0" class="text-sm font-medium w-6 text-center">{{ quantity }}</span>
+          <span v-if="quantity > 0" class="text-sm font-medium w-6 text-center">{{
+            quantity
+          }}</span>
           <Button
             :icon="quantity > 0 ? 'pi pi-plus' : 'pi pi-cart-plus'"
             :severity="quantity > 0 ? 'secondary' : 'primary'"
@@ -691,6 +728,7 @@ const brandColor = computed(() => props.brandColor ?? '#f97316')
 ```
 
 **Edge cases:**
+
 - Quantity already in cart → shows +/- buttons instead of "Add"
 - Price formatting with `.toFixed(2)`
 - Brand color fallback to orange if not specified
@@ -698,6 +736,7 @@ const brandColor = computed(() => props.brandColor ?? '#f97316')
 #### `CartDrawer.vue`
 
 **Core functionality:**
+
 - Slide-over panel from right, triggered by cart icon
 - Lists all cart items with qty controls, individual remove
 - Shows subtotal, item count
@@ -710,7 +749,9 @@ const brandColor = computed(() => props.brandColor ?? '#f97316')
     <div v-if="visible" class="fixed inset-0 z-50 flex justify-end" @click.self="$emit('close')">
       <div class="absolute inset-0 bg-black/40" />
       <aside class="relative w-full max-w-md bg-white shadow-xl flex flex-col">
-        <header class="flex items-center justify-between px-6 h-16 border-b border-gray-200 shrink-0">
+        <header
+          class="flex items-center justify-between px-6 h-16 border-b border-gray-200 shrink-0"
+        >
           <h2 class="font-bold text-lg">Your Cart ({{ cart.totalItems }})</h2>
           <button class="text-gray-400 hover:text-gray-600 text-xl" @click="$emit('close')">
             <i class="pi pi-times" />
@@ -718,7 +759,10 @@ const brandColor = computed(() => props.brandColor ?? '#f97316')
         </header>
 
         <!-- Empty state -->
-        <div v-if="cartItems.length === 0" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+        <div
+          v-if="cartItems.length === 0"
+          class="flex-1 flex flex-col items-center justify-center text-gray-400"
+        >
           <i class="pi pi-shopping-cart text-5xl mb-4" />
           <p class="text-sm">Your cart is empty</p>
         </div>
@@ -746,7 +790,10 @@ const brandColor = computed(() => props.brandColor ?? '#f97316')
             icon="pi pi-arrow-right"
             icon-pos="right"
             :disabled="cart.totalItems === 0"
-            @click="$router.push('/checkout'); $emit('close')"
+            @click="
+              $router.push('/checkout')
+              $emit('close')
+            "
           />
         </footer>
       </aside>
@@ -770,12 +817,19 @@ const cartItems = computed(() => Array.from(cart.items.values()))
 </script>
 
 <style scoped>
-.slide-enter-active, .slide-leave-active { transition: all 0.3s ease; }
-.slide-enter-from, .slide-leave-to { transform: translateX(100%); }
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
 </style>
 ```
 
 **Edge cases:**
+
 - Empty cart shows illustration + text, footer button is disabled
 - Click-outside-to-close on backdrop overlay
 - Navigation to checkout closes drawer
@@ -788,12 +842,26 @@ const cartItems = computed(() => Array.from(cart.items.values()))
     <div class="flex-1 min-w-0">
       <p class="font-medium text-sm text-gray-900 truncate">{{ item.name }}</p>
       <p class="text-xs text-gray-400">{{ item.brandName }}</p>
-      <p class="text-sm font-semibold text-orange-600 mt-1">${{ (item.unitPrice * item.quantity).toFixed(2) }}</p>
+      <p class="text-sm font-semibold text-orange-600 mt-1">
+        ${{ (item.unitPrice * item.quantity).toFixed(2) }}
+      </p>
     </div>
     <div class="flex items-center gap-2 shrink-0">
-      <Button icon="pi pi-minus" severity="secondary" size="small" rounded @click="$emit('update:quantity', item.quantity - 1)" />
+      <Button
+        icon="pi pi-minus"
+        severity="secondary"
+        size="small"
+        rounded
+        @click="$emit('update:quantity', item.quantity - 1)"
+      />
       <span class="w-6 text-center text-sm font-medium">{{ item.quantity }}</span>
-      <Button icon="pi pi-plus" severity="secondary" size="small" rounded @click="$emit('update:quantity', item.quantity + 1)" />
+      <Button
+        icon="pi pi-plus"
+        severity="secondary"
+        size="small"
+        rounded
+        @click="$emit('update:quantity', item.quantity + 1)"
+      />
     </div>
     <Button icon="pi pi-trash" severity="danger" size="small" text @click="$emit('remove')" />
   </div>
@@ -811,6 +879,7 @@ defineEmits<{ 'update:quantity': [value: number]; remove: [] }>()
 #### `CheckoutPage.vue`
 
 **Core functionality:**
+
 - Customer info form: name, phone, email
 - Shows cart items summary (read-only)
 - Order total
@@ -819,12 +888,13 @@ defineEmits<{ 'update:quantity': [value: number]; remove: [] }>()
 - On error: show error, keep form data
 
 **States:**
-| State | UI |
-|-------|-----|
-| Empty cart | "Your cart is empty" + link back to menu |
-| Loading (placing) | Button shows spinner |
-| Error | Error message + keep data |
-| Success | Redirect + toast |
+
+| State             | UI                                       |
+| ----------------- | ---------------------------------------- |
+| Empty cart        | "Your cart is empty" + link back to menu |
+| Loading (placing) | Button shows spinner                     |
+| Error             | Error message + keep data                |
+| Success           | Redirect + toast                         |
 
 ```vue
 <template>
@@ -841,7 +911,12 @@ defineEmits<{ 'update:quantity': [value: number]; remove: [] }>()
     <template v-else>
       <Panel header="Customer Details">
         <div class="space-y-4">
-          <InputText v-model="form.name" placeholder="Full name *" class="w-full" :class="{ 'p-invalid': errors.name }" />
+          <InputText
+            v-model="form.name"
+            placeholder="Full name *"
+            class="w-full"
+            :class="{ 'p-invalid': errors.name }"
+          />
           <small v-if="errors.name" class="text-red-600">Name is required</small>
           <InputText v-model="form.phone" placeholder="Phone number" class="w-full" type="tel" />
           <InputText v-model="form.email" placeholder="Email" class="w-full" type="email" />
@@ -850,7 +925,11 @@ defineEmits<{ 'update:quantity': [value: number]; remove: [] }>()
 
       <Panel header="Order Summary">
         <div class="space-y-3">
-          <div v-for="item in cartItems" :key="item.menuItemId" class="flex justify-between text-sm">
+          <div
+            v-for="item in cartItems"
+            :key="item.menuItemId"
+            class="flex justify-between text-sm"
+          >
             <span>{{ item.quantity }}× {{ item.name }}</span>
             <span class="font-medium">${{ (item.unitPrice * item.quantity).toFixed(2) }}</span>
           </div>
@@ -929,6 +1008,7 @@ async function placeOrder() {
 ```
 
 **Edge cases:**
+
 - Empty cart → shows link back, no form
 - Missing name → validation error
 - Guest session auto-initialized on place order
@@ -938,17 +1018,19 @@ async function placeOrder() {
 #### `OrderHistory.vue`
 
 **Core functionality:**
+
 - List of orders with status badges
 - Real-time status updates via socket
 - Click to expand details or navigate to detail
 - Pull-to-refresh or manual refresh button
 
 **States:**
-| State | UI |
-|-------|-----|
-| Loading | Skeleton list |
-| Error | Error + retry |
-| Empty | "No orders yet" + link to menu |
+
+| State      | UI                                    |
+| ---------- | ------------------------------------- |
+| Loading    | Skeleton list                         |
+| Error      | Error + retry                         |
+| Empty      | "No orders yet" + link to menu        |
 | No session | "Sign in to see orders" + phone input |
 
 ```vue
@@ -1038,6 +1120,7 @@ async function signIn() {
 #### `OrderDetail.vue`
 
 **Core functionality:**
+
 - Full order details: items, total, timestamps
 - `StatusTimeline` from `order-status` module
 - "Cancel Order" button (only while `pending` status)
@@ -1045,13 +1128,14 @@ async function signIn() {
 - Real-time status updates
 
 **States:**
-| State | UI |
-|-------|-----|
-| Loading | Full skeleton |
-| Error | Error + retry |
-| Not found | "Order not found" |
-| Pending | Detail + Cancel/Modify buttons |
-| Non-pending | Detail only (read-only) |
+
+| State       | UI                             |
+| ----------- | ------------------------------ |
+| Loading     | Full skeleton                  |
+| Error       | Error + retry                  |
+| Not found   | "Order not found"              |
+| Pending     | Detail + Cancel/Modify buttons |
+| Non-pending | Detail only (read-only)        |
 
 ```vue
 <template>
@@ -1085,7 +1169,9 @@ async function signIn() {
       <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
         <div class="flex justify-between items-start">
           <div>
-            <p class="text-xs text-gray-400 uppercase tracking-wide">Order #{{ order.orderNumber }}</p>
+            <p class="text-xs text-gray-400 uppercase tracking-wide">
+              Order #{{ order.orderNumber }}
+            </p>
             <h1 class="text-xl font-bold text-gray-900">{{ order.customerName }}</h1>
           </div>
           <span class="px-3 py-1 rounded-full text-sm font-semibold" :class="statusClass">
@@ -1095,7 +1181,11 @@ async function signIn() {
 
         <!-- Items -->
         <div class="divide-y divide-gray-100">
-          <div v-for="item in order.items" :key="item.menuItemId" class="flex justify-between py-2 text-sm">
+          <div
+            v-for="item in order.items"
+            :key="item.menuItemId"
+            class="flex justify-between py-2 text-sm"
+          >
             <span>{{ item.quantity }}× {{ item.name }}</span>
             <span class="font-medium">${{ (item.unitPrice * item.quantity).toFixed(2) }}</span>
           </div>
@@ -1115,12 +1205,7 @@ async function signIn() {
             :loading="orders.cancelOrder.isPending.value"
             @click="confirmCancel"
           />
-          <Button
-            label="Modify Order"
-            severity="secondary"
-            outlined
-            @click="modifyOpen = true"
-          />
+          <Button label="Modify Order" severity="secondary" outlined @click="modifyOpen = true" />
         </div>
       </div>
 
@@ -1151,16 +1236,21 @@ const modifyOpen = ref(false)
 
 const statusLabel = computed(() => {
   const map: Record<OrderStatus, string> = {
-    pending: 'Pending', preparing: 'Preparing', ready: 'Ready',
-    dispatched: 'Dispatched', cancelled: 'Cancelled',
+    pending: 'Pending',
+    preparing: 'Preparing',
+    ready: 'Ready',
+    dispatched: 'Dispatched',
+    cancelled: 'Cancelled',
   }
   return map[order.value?.status as OrderStatus] ?? order.value?.status ?? ''
 })
 
 const statusClass = computed(() => {
   const map: Record<OrderStatus, string> = {
-    pending: 'bg-gray-100 text-gray-600', preparing: 'bg-orange-100 text-orange-700',
-    ready: 'bg-green-100 text-green-700', dispatched: 'bg-blue-100 text-blue-700',
+    pending: 'bg-gray-100 text-gray-600',
+    preparing: 'bg-orange-100 text-orange-700',
+    ready: 'bg-green-100 text-green-700',
+    dispatched: 'bg-blue-100 text-blue-700',
     cancelled: 'bg-red-100 text-red-700',
   }
   return map[order.value?.status as OrderStatus] ?? 'bg-gray-100 text-gray-600'
@@ -1178,6 +1268,7 @@ function confirmCancel() {
 ```
 
 **Edge cases:**
+
 - Cancel only allowed on `pending` orders
 - Other statuses → no action buttons
 - Cancel confirmation dialog before proceeding
@@ -1185,33 +1276,33 @@ function confirmCancel() {
 
 ### Phase 5: New Files Summary
 
-| File | Purpose |
-|------|---------|
-| `src/router/routes/admin.ts` | Admin route definitions extracted |
-| `src/router/routes/customer.ts` | Customer portal route definitions |
-| `src/modules/customer/composables/useCustomerCart.ts` | Cart state + localStorage sync |
-| `src/modules/customer/composables/useCustomerSession.ts` | Session management (phone/UUID) |
-| `src/modules/customer/composables/useCustomerOrders.ts` | Orders fetch, place, cancel, modify |
-| `src/modules/customer/composables/useCustomerMenu.ts` | Menu with brand enrichment |
-| `src/modules/customer/components/MenuItemCard.vue` | Menu item card |
-| `src/modules/customer/components/CartDrawer.vue` | Slide-over cart drawer |
-| `src/modules/customer/components/CartItem.vue` | Cart item row |
-| `src/modules/customer/components/OrderCard.vue` | Reusable order card for history |
-| `src/modules/customer/components/CustomerInfoForm.vue` | Checkout form |
-| `src/modules/customer/views/MenuBrowse.vue` | Main menu browsing page |
-| `src/modules/customer/views/CheckoutPage.vue` | Checkout + order placement |
-| `src/modules/customer/views/OrderHistory.vue` | Customer order history |
-| `src/modules/customer/views/OrderDetail.vue` | Single order detail with actions |
+| File                                                     | Purpose                             |
+| -------------------------------------------------------- | ----------------------------------- |
+| `src/router/routes/admin.ts`                             | Admin route definitions extracted   |
+| `src/router/routes/customer.ts`                          | Customer portal route definitions   |
+| `src/modules/customer/composables/useCustomerCart.ts`    | Cart state + localStorage sync      |
+| `src/modules/customer/composables/useCustomerSession.ts` | Session management (phone/UUID)     |
+| `src/modules/customer/composables/useCustomerOrders.ts`  | Orders fetch, place, cancel, modify |
+| `src/modules/customer/composables/useCustomerMenu.ts`    | Menu with brand enrichment          |
+| `src/modules/customer/components/MenuItemCard.vue`       | Menu item card                      |
+| `src/modules/customer/components/CartDrawer.vue`         | Slide-over cart drawer              |
+| `src/modules/customer/components/CartItem.vue`           | Cart item row                       |
+| `src/modules/customer/components/OrderCard.vue`          | Reusable order card for history     |
+| `src/modules/customer/components/CustomerInfoForm.vue`   | Checkout form                       |
+| `src/modules/customer/views/MenuBrowse.vue`              | Main menu browsing page             |
+| `src/modules/customer/views/CheckoutPage.vue`            | Checkout + order placement          |
+| `src/modules/customer/views/OrderHistory.vue`            | Customer order history              |
+| `src/modules/customer/views/OrderDetail.vue`             | Single order detail with actions    |
 
 ### Phase 6: Modified Files Summary
 
-| File | Change |
-|------|--------|
-| `src/router/index.ts` | Split into admin + customer routes; add `beforeEach` guard |
-| `src/components/layout/AppDrawer.vue` | Nav paths → `/admin/kds`, etc. |
-| `src/components/layout/AppHeader.vue` | Nav paths → `/admin/kds`, etc. |
+| File                                     | Change                                                                    |
+| ---------------------------------------- | ------------------------------------------------------------------------- |
+| `src/router/index.ts`                    | Split into admin + customer routes; add `beforeEach` guard                |
+| `src/components/layout/AppDrawer.vue`    | Nav paths → `/admin/kds`, etc.                                            |
+| `src/components/layout/AppHeader.vue`    | Nav paths → `/admin/kds`, etc.                                            |
 | `src/components/layout/PublicLayout.vue` | Renamed → `CustomerLayout.vue`; add cart badge, nav tabs, wider container |
-| `src/components/layout/PublicLayout.vue` | Recreated as minimal layout for `/track` (original simple header) |
+| `src/components/layout/PublicLayout.vue` | Recreated as minimal layout for `/track` (original simple header)         |
 
 ### Phase 7: Test Strategy
 
@@ -1301,15 +1392,15 @@ Step 13: Test guard + integration tests
 
 ## 5. What Changed vs. Original Proposal
 
-| Area | Original Proposal | Final Solution |
-|------|------------------|----------------|
+| Area                  | Original Proposal                          | Final Solution                                                                                                    |
+| --------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | `order-status` module | Reused `useCustomerOrders` with extensions | Kept purely for guest tracking; new `useCustomerOrders` in `customer/composables/` with `['customer-orders']` key |
-| Session | Phone-only gate | Phone + UUID guest fallback (menu browsing without sign-in) |
-| Query keys | Potential collision (`['orders']`) | Explicit separation: admin `['orders']`, customer `['customer-orders']` |
-| Guard debugging | No logging | `console.warn` in dev mode |
-| Loading/empty/error | Not specified | Explicit per-component for all views |
-| PublicLayout | Rename in-place | Renamed to `CustomerLayout.vue` with enhancements; recreated `PublicLayout.vue` as minimal for `/track` |
-| Test strategy | Not mentioned | `redirectGuard.spec.ts` with table-driven tests |
+| Session               | Phone-only gate                            | Phone + UUID guest fallback (menu browsing without sign-in)                                                       |
+| Query keys            | Potential collision (`['orders']`)         | Explicit separation: admin `['orders']`, customer `['customer-orders']`                                           |
+| Guard debugging       | No logging                                 | `console.warn` in dev mode                                                                                        |
+| Loading/empty/error   | Not specified                              | Explicit per-component for all views                                                                              |
+| PublicLayout          | Rename in-place                            | Renamed to `CustomerLayout.vue` with enhancements; recreated `PublicLayout.vue` as minimal for `/track`           |
+| Test strategy         | Not mentioned                              | `redirectGuard.spec.ts` with table-driven tests                                                                   |
 
 ## 6. Self-Verification
 

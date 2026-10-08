@@ -3,11 +3,21 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-4">
         <div>
-          <h1 class="font-display text-xl font-bold text-gray-900 tracking-tight">Kitchen Display</h1>
+          <h1 class="font-display text-xl font-bold text-gray-900 tracking-tight">
+            Kitchen Display
+          </h1>
           <p class="font-mono text-xs text-gray-500 mt-0.5 tracking-wide">
-            {{ new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }) }}
+            {{
+              new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'short',
+                day: 'numeric',
+              })
+            }}
             <span class="mx-1.5">&middot;</span>
-            <span :class="feed.connected.value ? 'text-[#2B9348]' : 'text-[#E85D3A]'">{{ feed.connected.value ? 'live' : 'offline' }}</span>
+            <span :class="feed.connected.value ? 'text-[#2B9348]' : 'text-[#E85D3A]'">{{
+              feed.connected.value ? 'live' : 'offline'
+            }}</span>
           </p>
         </div>
       </div>
@@ -28,11 +38,7 @@
         <InputIcon>
           <i class="pi pi-search" />
         </InputIcon>
-        <InputText
-          v-model="search"
-          placeholder="Search..."
-          class="w-full"
-        />
+        <InputText v-model="search" placeholder="Search..." class="w-full" />
       </IconField>
     </div>
 
@@ -40,21 +46,11 @@
       Failed to load orders. Please try again.
     </div>
 
-    <div
-      v-else-if="isLoading"
-      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"
-    >
-      <div
-        v-for="i in 4"
-        :key="i"
-        class="skeleton-card h-[400px]"
-      />
+    <div v-else-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div v-for="i in 4" :key="i" class="skeleton-card h-[400px]" />
     </div>
 
-    <div
-      v-else
-      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"
-    >
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <KdsColumn
         v-for="col in columns"
         :key="col.status"
@@ -73,15 +69,12 @@
       </KdsColumn>
     </div>
 
-    <Dialog
-      v-model:visible="detailVisible"
-      modal
-      :style="{ width: '36rem' }"
-      class="rounded-xl"
-    >
+    <Dialog v-model:visible="detailVisible" modal :style="{ width: '36rem' }" class="rounded-xl">
       <template #header>
         <div class="flex items-center gap-3">
-          <span class="font-display text-xl font-bold text-[#1A1D1F]">Order #{{ detail?.orderNumber }}</span>
+          <span class="font-display text-xl font-bold text-[#1A1D1F]"
+            >Order #{{ detail?.orderNumber }}</span
+          >
           <Tag
             v-if="detail"
             :value="statusLabel(detail.status)"
@@ -94,12 +87,21 @@
       <div v-if="detail" class="space-y-5">
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Customer</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
+              >Customer</span
+            >
             <p class="font-medium text-[#1A1D1F] mt-0.5 leading-tight">{{ detail.customerName }}</p>
-            <p v-if="detail.customerId || detail.phone" class="text-xs text-[#6C757D] mt-1 leading-tight">{{ detail.customerId }}{{ detail.phone ? ' · ' + detail.phone : '' }}</p>
+            <p
+              v-if="detail.customerId || detail.phone"
+              class="text-xs text-[#6C757D] mt-1 leading-tight"
+            >
+              {{ detail.customerId }}{{ detail.phone ? ' · ' + detail.phone : '' }}
+            </p>
           </div>
           <div>
-            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Source</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
+              >Source</span
+            >
             <div class="mt-0.5">
               <Chip :label="detail.source" size="small" />
             </div>
@@ -117,21 +119,21 @@
               class="flex items-center justify-between py-1.5 border-b border-[#E9ECEF] last:border-0"
             >
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-medium text-[#6C757D]">{{ item.quantity }}×</span>
+                <span class="font-mono text-xs font-medium text-[#6C757D]"
+                  >{{ item.quantity }}×</span
+                >
                 <span class="text-[#1A1D1F]">{{ item.name }}</span>
               </div>
-              <span class="font-medium text-[#1A1D1F]">{{ formatCurrency(item.unitPrice * item.quantity) }}</span>
+              <span class="font-medium text-[#1A1D1F]">{{
+                formatCurrency(item.unitPrice * item.quantity)
+              }}</span>
             </div>
           </div>
           <div
             v-if="specialItems.length > 0"
             class="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-1"
           >
-            <p
-              v-for="(item, i) in specialItems"
-              :key="i"
-              class="text-sm text-amber-800"
-            >
+            <p v-for="(item, i) in specialItems" :key="i" class="text-sm text-amber-800">
               <span class="font-medium">{{ item.name }}:</span> {{ item.specialInstructions }}
             </p>
           </div>
@@ -141,42 +143,45 @@
 
         <div class="flex items-center justify-between">
           <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Total</span>
-          <span class="font-display font-bold text-lg text-[#1A1D1F]">{{ formatCurrency(detail.totalAmount) }}</span>
+          <span class="font-display font-bold text-lg text-[#1A1D1F]">{{
+            formatCurrency(detail.totalAmount)
+          }}</span>
         </div>
 
         <Divider />
 
         <div>
-          <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Timeline</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
+            >Timeline</span
+          >
           <div class="mt-2 space-y-3">
             <div class="flex items-center gap-3 text-sm">
               <i class="pi pi-clock text-[#6C757D]" />
               <span class="text-[#6C757D]">Placed</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{ formatTime(detail.timestamps.placedAt) }}</span>
+              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+                formatTime(detail.timestamps.placedAt)
+              }}</span>
             </div>
-            <div
-              v-if="detail.timestamps.startedAt"
-              class="flex items-center gap-3 text-sm"
-            >
+            <div v-if="detail.timestamps.startedAt" class="flex items-center gap-3 text-sm">
               <i class="pi pi-play text-[#4A90D9]" />
               <span class="text-[#6C757D]">Preparation started</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{ formatTime(detail.timestamps.startedAt) }}</span>
+              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+                formatTime(detail.timestamps.startedAt)
+              }}</span>
             </div>
-            <div
-              v-if="detail.timestamps.readyAt"
-              class="flex items-center gap-3 text-sm"
-            >
+            <div v-if="detail.timestamps.readyAt" class="flex items-center gap-3 text-sm">
               <i class="pi pi-check-circle text-[#2B9348]" />
               <span class="text-[#6C757D]">Ready</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{ formatTime(detail.timestamps.readyAt) }}</span>
+              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+                formatTime(detail.timestamps.readyAt)
+              }}</span>
             </div>
-            <div
-              v-if="detail.timestamps.dispatchedAt"
-              class="flex items-center gap-3 text-sm"
-            >
+            <div v-if="detail.timestamps.dispatchedAt" class="flex items-center gap-3 text-sm">
               <i class="pi pi-truck text-[#6C757D]" />
               <span class="text-[#6C757D]">Dispatched</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{ formatTime(detail.timestamps.dispatchedAt) }}</span>
+              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+                formatTime(detail.timestamps.dispatchedAt)
+              }}</span>
             </div>
           </div>
         </div>
@@ -203,8 +208,16 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 
 const {
-  feed, isLoading, isError, search, columns,
-  detail, detailVisible, specialItems, onViewDetail, refresh,
+  feed,
+  isLoading,
+  isError,
+  search,
+  columns,
+  detail,
+  detailVisible,
+  specialItems,
+  onViewDetail,
+  refresh,
 } = useOrderDashboard()
 
 function severityFor(status: OrderStatus): string {

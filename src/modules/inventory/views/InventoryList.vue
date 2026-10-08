@@ -18,11 +18,7 @@
     <div class="flex items-center gap-3">
       <IconField icon-position="left" class="flex-1">
         <InputIcon class="pi pi-search" />
-        <InputText
-          v-model="search"
-          placeholder="Search ingredients..."
-          class="w-full"
-        />
+        <InputText v-model="search" placeholder="Search ingredients..." class="w-full" />
       </IconField>
       <Select
         v-model="unitFilter"
@@ -44,76 +40,76 @@
       </div>
     </div>
     <template v-else>
-    <DataTable
-      :value="ingredients ?? []"
-      :loading="isLoading"
-      :paginator="true"
-      :rows="10"
-      :rows-per-page-options="[10, 25, 50]"
-      striped-rows
-      sort-field="name"
-      :sort-order="1"
-      class="p-datatable-sm"
-    >
-      <Column field="name" header="Name" sortable />
-      <Column field="category" header="Category" sortable>
-        <template #body="{ data }">
-          <span v-if="data.category" class="text-gray-700">{{ data.category }}</span>
-          <span v-else class="text-gray-400">—</span>
-        </template>
-      </Column>
-      <Column field="unit" header="Unit" sortable />
-      <Column field="currentStock" header="Current Stock" sortable>
-        <template #body="{ data }">
-          <span class="font-medium">{{ data.currentStock }}</span>
-          <span class="text-gray-500 text-xs ml-1">{{ data.unit }}</span>
-        </template>
-      </Column>
-      <Column field="reorderLevel" header="Reorder Level" sortable>
-        <template #body="{ data }">
-          {{ data.reorderLevel }}
-        </template>
-      </Column>
-      <Column field="unitCost" header="Unit Cost" sortable>
-        <template #body="{ data }">
-          {{ formatCurrency(data.unitCost) }}
-        </template>
-      </Column>
-      <Column header="Status">
-        <template #body="{ data }">
-          <Tag :value="stockStatus(data)" :severity="stockSeverity(data)" />
-        </template>
-      </Column>
-      <Column header="Actions" style="width: 8rem">
-        <template #body="{ data }">
-          <div class="flex gap-1">
-            <Button
-              icon="pi pi-pencil"
-              severity="secondary"
-              text
-              rounded
-              @click="openEdit(data)"
-            />
-            <Button
-              icon="pi pi-trash"
-              severity="danger"
-              text
-              rounded
-              @click="confirmDelete(data)"
-            />
-          </div>
-        </template>
-      </Column>
-    </DataTable>
+      <DataTable
+        :value="ingredients ?? []"
+        :loading="isLoading"
+        :paginator="true"
+        :rows="10"
+        :rows-per-page-options="[10, 25, 50]"
+        striped-rows
+        sort-field="name"
+        :sort-order="1"
+        class="p-datatable-sm"
+      >
+        <Column field="name" header="Name" sortable />
+        <Column field="category" header="Category" sortable>
+          <template #body="{ data }">
+            <span v-if="data.category" class="text-gray-700">{{ data.category }}</span>
+            <span v-else class="text-gray-400">—</span>
+          </template>
+        </Column>
+        <Column field="unit" header="Unit" sortable />
+        <Column field="currentStock" header="Current Stock" sortable>
+          <template #body="{ data }">
+            <span class="font-medium">{{ data.currentStock }}</span>
+            <span class="text-gray-500 text-xs ml-1">{{ data.unit }}</span>
+          </template>
+        </Column>
+        <Column field="reorderLevel" header="Reorder Level" sortable>
+          <template #body="{ data }">
+            {{ data.reorderLevel }}
+          </template>
+        </Column>
+        <Column field="unitCost" header="Unit Cost" sortable>
+          <template #body="{ data }">
+            {{ formatCurrency(data.unitCost) }}
+          </template>
+        </Column>
+        <Column header="Status">
+          <template #body="{ data }">
+            <Tag :value="stockStatus(data)" :severity="stockSeverity(data)" />
+          </template>
+        </Column>
+        <Column header="Actions" style="width: 8rem">
+          <template #body="{ data }">
+            <div class="flex gap-1">
+              <Button
+                icon="pi pi-pencil"
+                severity="secondary"
+                text
+                rounded
+                @click="openEdit(data)"
+              />
+              <Button
+                icon="pi pi-trash"
+                severity="danger"
+                text
+                rounded
+                @click="confirmDelete(data)"
+              />
+            </div>
+          </template>
+        </Column>
+      </DataTable>
 
-    <IngredientForm
-      :visible="formVisible"
-      :ingredient="selectedIngredient"
-      @close="closeForm"
-      @saved="closeForm"
-    />
+      <IngredientForm
+        :visible="formVisible"
+        :ingredient="selectedIngredient"
+        @close="closeForm"
+        @saved="closeForm"
+      />
 
-    <ConfirmDialog />
+      <ConfirmDialog />
     </template>
   </div>
 </template>
@@ -132,10 +128,7 @@ import Tag from 'primevue/tag'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { formatCurrency } from '@/utils/formatters'
 import type { Ingredient } from '@/types'
-import {
-  useIngredients,
-  useDeleteIngredient,
-} from '../composables/useInventory'
+import { useIngredients, useDeleteIngredient } from '../composables/useInventory'
 import IngredientForm from '../components/IngredientForm.vue'
 import LowStockBanner from '../components/LowStockBanner.vue'
 

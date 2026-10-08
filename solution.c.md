@@ -11,6 +11,7 @@ This document details the implementation of **Approach B-1** — moving admin ro
 ## 2. Judge Feedback Addressed
 
 ### 2.1 UUID Sessions Eliminate Phone Gate
+
 - **How it works:** On first visit, `crypto.randomUUID()` generates a session ID stored in `localStorage` as `customer_session_id`. This ID is sent with every order as `customerSessionId` and used to retrieve orders via `/orders?customerSessionId=<uuid>`.
 - **Why it matters:** Socket.IO real-time updates (via `order:update` events) work for every visitor because `customerSessionId` always exists. The `customerSessionId` is included in the `OrderUpdatePayload` broadcast by `server.js`, and `useCustomerOrderFeed` filters on it client-side to patch the correct query cache.
 - **Retrieval flow:** User visits `/orders` → query client calls `api.orders.list({ customerSessionId })` → json-server filters by the UUID → all orders for that session are displayed. The user never enters a phone number.
@@ -18,6 +19,7 @@ This document details the implementation of **Approach B-1** — moving admin ro
 ### 2.2 Guest Checkout Flow & Order Number Generation
 
 #### Checkout Flow
+
 1. User browses menu at `/` and adds items to cart.
 2. Cart badge in header shows item count. Clicking opens `CartPanel` slideover.
 3. From `CartPanel`, user clicks "Checkout" → navigates to `/checkout`.
@@ -34,31 +36,36 @@ This document details the implementation of **Approach B-1** — moving admin ro
 6. User lands on `OrderDetail` with the new order and real-time status timeline.
 
 #### Order Number Generation
+
 - Client calls `api.orders.list({ _sort: 'orderNumber', _order: 'desc', _limit: 1 })` to get the highest existing `orderNumber`.
 - New `orderNumber = (max || 2000) + 1`.
 - This runs inside the mutation as a warm-up query, avoiding race conditions by using the mutation function context.
 
 ### 2.3 Error & Loading States
+
 Every view handles four states:
-| State | Visual |
-|-------|--------|
+
+| State   | Visual                                                     |
+| ------- | ---------------------------------------------------------- |
 | Loading | Skeleton cards matching the layout (animated placeholders) |
-| Empty | Icon + message + suggested action |
-| Error | Error message + Retry button |
-| Success | Rendered data |
+| Empty   | Icon + message + suggested action                          |
+| Error   | Error message + Retry button                               |
+| Success | Rendered data                                              |
 
 `useSnackbar` (PrimeVue Toast) surfaces mutation errors globally.
 
 ### 2.4 Namespaced Query Keys
-| Context | Query Key | Invalidated By |
-|---------|-----------|----------------|
-| Admin KDS | `['orders']` | `useOrderFeed` socket handler patches `['orders']` |
-| Customer session | `['orders', 'customer', sessionId]` | `useCustomerOrderFeed` patches `['orders', 'customer', sessionId]` |
-| Order tracking | `['order', 'tracking', orderNumber]` | `useOrderTracking` patches `['order', 'tracking', orderNumber]` |
+
+| Context          | Query Key                            | Invalidated By                                                     |
+| ---------------- | ------------------------------------ | ------------------------------------------------------------------ |
+| Admin KDS        | `['orders']`                         | `useOrderFeed` socket handler patches `['orders']`                 |
+| Customer session | `['orders', 'customer', sessionId]`  | `useCustomerOrderFeed` patches `['orders', 'customer', sessionId]` |
+| Order tracking   | `['order', 'tracking', orderNumber]` | `useOrderTracking` patches `['order', 'tracking', orderNumber]`    |
 
 Keys are fully disjoint. Admin `useOrderFeed` never touches customer cache.
 
 ### 2.5 Module Naming: `customer` not `customer-order`
+
 Renamed per convention to match existing module names (`kds`, `inventory`, `menu`).
 
 ---
@@ -154,7 +161,7 @@ export interface GuestOrderPayload {
 // Order interface — add optional customerSessionId
 export interface Order {
   // ... existing fields ...
-  customerSessionId?: string   // NEW
+  customerSessionId?: string // NEW
 }
 
 // OrderUpdatePayload — add customerSessionId for WS filtering
@@ -163,7 +170,7 @@ export interface OrderUpdatePayload {
   status: OrderStatus
   orderNumber: number
   customerId?: number
-  customerSessionId?: string   // NEW
+  customerSessionId?: string // NEW
 }
 ```
 
@@ -174,7 +181,7 @@ export interface OrderUpdatePayload {
 ```typescript
 orders: {
   // ... existing list, get, create, updateStatus ...
-  update: (id: string, data: Partial<Order>) => 
+  update: (id: string, data: Partial<Order>) =>
     http.patch(`/orders/${id}`, data).then((r) => r.data),
   delete: (id: string) => http.delete(`/orders/${id}`),
 },
@@ -204,7 +211,7 @@ router.render = (req, res) => {
       status: order.status,
       orderNumber: order.orderNumber,
       customerId: order.customerId,
-      customerSessionId: order.customerSessionId,  // NEW
+      customerSessionId: order.customerSessionId, // NEW
     })
   }
   res.json(res.locals.data)
@@ -247,7 +254,7 @@ Legacy redirect guard:
 const LEGACY_ADMIN_PATHS = ['/kds', '/inventory', '/menu', '/analytics']
 
 router.beforeEach((to, from, next) => {
-  const match = LEGACY_ADMIN_PATHS.find(p => to.path.startsWith(p))
+  const match = LEGACY_ADMIN_PATHS.find((p) => to.path.startsWith(p))
   if (match && !to.query.redirected) {
     next({
       path: `/admin${to.path}`,
@@ -269,7 +276,7 @@ Template structure:
     header (sticky, white bg, border-b)
       Left: brand logo (pi pi-cart-plus + "Cloud Kitchen")
       Center: nav links (Menu, My Orders) — hidden on mobile
-      Right: 
+      Right:
         Cart badge (button with pi pi-shopping-cart + item count badge)
         Mobile menu toggle (pi pi-bars)
     main
@@ -376,7 +383,7 @@ export function useCustomerOrders(sessionId: Ref<string>) {
   //   enabled: () => !!sessionId.value,
   //   refetchOnWindowFocus: false,
   // })
-  // 
+  //
   // + useCustomerOrderFeed(sessionId) for real-time patching
   //
   // Returns: { data, isLoading, isError, error, refetch }
@@ -388,7 +395,6 @@ export function useCustomerOrders(sessionId: Ref<string>) {
 ```typescript
 export function usePlaceOrder() {
   // Returns: { mutate, mutateAsync, isPending }
-
   // Mutation flow:
   //   1. Fetch max orderNumber: api.orders.list({ _sort: 'orderNumber', _order: 'desc', _limit: 1 })
   //   2. Compute new orderNumber = (max || 2000) + 1
@@ -476,7 +482,7 @@ Template:
     Footer:
       Total amount (bold, large)
       "Checkout" button (primary, full-width)
-      
+
 Behaviors:
   - Close on backdrop click
   - Close on Escape key
@@ -492,7 +498,7 @@ Guard: Redirect to / if cart is empty (beforeEnter or onMounted check)
 
 Template:
   Page title: "Review Your Order"
-  
+
   Order summary card:
     For each item: name, brand, qty, unit price, line total
     Divider
@@ -501,7 +507,7 @@ Template:
   Customer info card:
     InputField: "Your Name" (optional, v-model.trim, placeholder "Guest")
     Textarea: "Special Instructions" (optional)
-  
+
   Action bar (sticky bottom on mobile):
     "Place Order" button (primary, large, loading state)
     or Back button (secondary)
@@ -522,17 +528,17 @@ States: loading, error, empty, success
 
 Template:
   Page title: "My Orders"
-  
+
   Loading: 3 skeleton cards (same shape as OrderCardCompact)
-  
+
   Error: icon + message + Retry button
-  
-  Empty: 
+
+  Empty:
     Icon (pi pi-receipt)
     "No orders yet"
     "Browse our menu and place your first order!"
     Button: "Browse Menu" → navigates to /
-  
+
   Orders list:
     Cards sorted by timestamps.placedAt descending
     Each card shows:
@@ -542,7 +548,7 @@ Template:
       Total amount
       Placed time (relative)
     Click navigates to /orders/:id
-  
+
   Real-time: useCustomerOrderFeed patches cache; cards update in place
 ```
 
@@ -565,17 +571,17 @@ Template:
     Table/list of items
     Name, qty, unit price, line total
     Special instructions shown as badge/note
-  
+
   Total: bold, right-aligned
 
   Status Timeline card:
     StatusTimeline component (reused from order-status module)
     Shows: Order Placed → Preparing → Ready for Pickup → Dispatched
-  
+
   Actions card (only when status === 'pending'):
     "Modify Items" button → opens inline edit mode or modal
     "Cancel Order" button → confirmation dialog → PATCH status='cancelled'
-  
+
   "Modify Items" inline edit:
     Table becomes editable
     Quantity +/- buttons per item
@@ -594,7 +600,9 @@ Template:
 ### 4.8 Navigation & Link Updates
 
 #### AppDrawer.vue (admin sidebar)
+
 All nav paths updated to `/admin/...`:
+
 ```
 /kds        → /admin/kds
 /inventory  → /admin/inventory
@@ -603,9 +611,11 @@ All nav paths updated to `/admin/...`:
 ```
 
 #### AppHeader.vue (mobile admin header)
+
 Same path updates as AppDrawer.
 
 #### PublicLayout.vue (existing customer header)
+
 - `/track` link remains unchanged
 - `/portal` link updated to point to `/orders` (or removed in favor of new CustomerLayout)
 
@@ -659,12 +669,12 @@ User navigates to /kds
   → Matches LEGACY_ADMIN_PATHS
   → query.redirected is undefined
   → Redirect to /admin/kds?redirected=1
-  
+
 User navigates to /admin/kds
   → beforeEach fires
   → No match in LEGACY_ADMIN_PATHS (starts with /admin)
   → next() — no redirect
-  
+
 User navigates to /admin/kds?redirected=1 (from redirect above)
   → No match in LEGACY_ADMIN_PATHS
   → next() — no redirect, loop prevented
@@ -674,63 +684,72 @@ User navigates to /admin/kds?redirected=1 (from redirect above)
 
 ## 6. Edge Cases & Error Handling
 
-| Scenario | Handling |
-|----------|----------|
-| Cart empty on checkout | `beforeEnter` guard redirects to `/`; page also checks `onMounted` |
-| Order number collision | Unlikely with single-user json-server; `_sort&_limit=1` + increment is deterministic |
-| `crypto.randomUUID()` unavailable | Fallback to `'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, ...)` |
-| localStorage full (cart/session) | Catch `QuotaExceededError`, cart works in memory, session falls back to runtime ID |
-| Corrupted localStorage data | Try/catch on JSON.parse, reset to defaults if invalid |
-| Multiple tabs | Each tab has independent cart in memory; sessionId is shared (same localStorage key) |
-| WebSocket disconnect | Socket.IO auto-reconnects; `useCustomerOrderFeed` re-attaches listener on reconnect via `socket.on` |
-| Order modification after status change | Buttons disabled unless `status === 'pending'`; server doesn't enforce — client-side guard only |
-| Pending order goes to preparing while user is modifying | WebSocket patches cache, status changes underneath — UI reverts to read-only on next tick |
-| Navigate away during checkout mutation | Mutation completes in background; on success, invalidate queries will update stale cache |
-| Admin hits `/portal` | Redirects to `/orders` (customer page) — no admin guard exists; acceptable for MVP |
-| Legacy `/portal` with bookmarks | Works — redirects to `/orders` |
-| Legacy `/track` | Unchanged — fully functional at original path |
+| Scenario                                                | Handling                                                                                            |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Cart empty on checkout                                  | `beforeEnter` guard redirects to `/`; page also checks `onMounted`                                  |
+| Order number collision                                  | Unlikely with single-user json-server; `_sort&_limit=1` + increment is deterministic                |
+| `crypto.randomUUID()` unavailable                       | Fallback to `'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, ...)`                          |
+| localStorage full (cart/session)                        | Catch `QuotaExceededError`, cart works in memory, session falls back to runtime ID                  |
+| Corrupted localStorage data                             | Try/catch on JSON.parse, reset to defaults if invalid                                               |
+| Multiple tabs                                           | Each tab has independent cart in memory; sessionId is shared (same localStorage key)                |
+| WebSocket disconnect                                    | Socket.IO auto-reconnects; `useCustomerOrderFeed` re-attaches listener on reconnect via `socket.on` |
+| Order modification after status change                  | Buttons disabled unless `status === 'pending'`; server doesn't enforce — client-side guard only     |
+| Pending order goes to preparing while user is modifying | WebSocket patches cache, status changes underneath — UI reverts to read-only on next tick           |
+| Navigate away during checkout mutation                  | Mutation completes in background; on success, invalidate queries will update stale cache            |
+| Admin hits `/portal`                                    | Redirects to `/orders` (customer page) — no admin guard exists; acceptable for MVP                  |
+| Legacy `/portal` with bookmarks                         | Works — redirects to `/orders`                                                                      |
+| Legacy `/track`                                         | Unchanged — fully functional at original path                                                       |
 
 ---
 
 ## 7. Verification Questions
 
 ### Q1: Are admin query cache and customer query cache truly disjoint?
+
 **Answer:** Yes. Admin `useOrderFeed` patches `['orders']`. Customer `useCustomerOrderFeed` patches `['orders', 'customer', sessionId]`. The `useQueryClient.setQueryData` calls target exact keys — no overlap. The only shared resource is the `socket.io` connection itself, which is a singleton managed by `useSocket`.
 
 ### Q2: Can the redirect guard loop?
+
 **Answer:** No. Three protections:
+
 1. Guard only fires for paths starting with `/kds`, `/inventory`, `/menu`, `/analytics` — not `/admin/*`.
 2. After redirect, the target path is `/admin/kds?redirected=1` which does not match the legacy patterns.
 3. Even if somehow triggered again, the `redirected=1` flag short-circuits.
 
 ### Q3: What happens if a user's localStorage is cleared mid-session?
+
 **Answer:**
+
 - **Session ID:** Generated fresh on next composable init. Previous orders remain in json-server (keyed by old UUID) and become orphaned — they can't be retrieved under the new session. Acceptable for MVP.
 - **Cart:** Lost. User sees empty cart. No data loss beyond the cart.
 
 ### Q4: How does the customer retrieve orders placed under a UUID session?
+
 **Answer:** On the `/orders` page, `useCustomerOrders` fires a query:
+
 ```typescript
 queryFn: () => api.orders.list({ customerSessionId: sessionId.value })
 ```
+
 json-server translates this to `GET /orders?customerSessionId=<uuid>`, returning all orders for that session. If the user clears localStorage, they lose access to those orders (since the UUID changes). A future enhancement could add phone-based lookup as a fallback.
 
 ### Q5: What prevents a user from cancelling an order that's already being prepared?
+
 **Answer:** The `OrderDetail` view checks `order.status === 'pending'` before rendering the "Cancel Order" and "Modify Items" buttons. If the status changes (via WebSocket push) while the user is viewing the page, the reactive `order` ref updates and buttons disappear. No server-side enforcement exists in json-server, but the client is fully protected.
 
 ---
 
 ## 8. Changes from Original Proposal
 
-| Aspect | Original Proposal | Implemented Solution | Rationale |
-|--------|-------------------|---------------------|-----------|
-| Module name | `customer-order` | `customer` | Align with existing module naming convention (`kds`, `inventory`, `menu`) |
-| Composable granularity | Single `useCart` + `useCustomerOrderFeed` | Six composables: `useCustomerSession`, `useCart`, `useCustomerOrderFeed`, `useCustomerOrders`, `usePlaceOrder`, `useModifyOrder` | Separation of concerns; each composable has a single responsibility |
-| Cart data structure | `Map<menuItemId, CartItem>` | `CartItem[]` with additive semantics | Simpler JSON serialization for localStorage; no need for Map polyfill |
-| Order number generation | Not specified | `GET /orders?_sort=orderNumber&_order=desc&_limit=1` + increment | Deterministic, no server-side changes needed |
-| Query key for customer orders | `['orders', 'customer', sessionId]` | Same | Unchanged — confirmed correct in review |
-| `CustomerLayout` | "Derived from PublicLayout" | New standalone `CustomerLayout.vue` with cart badge, slideover, responsive nav | PublicLayout has `/track`/`/portal` nav which is wrong for root; cleaner separation |
-| Legacy `/portal` | Redirect to `/admin/portal`? (not specified) | Redirect to `/orders` | `/portal` was customer-facing; redirect to new customer order history |
-| Modification of pending orders | Implied by "modify pending orders" | `useModifyOrder` with inline edit mode on OrderDetail | Concrete UX: quantity +/- per item, remove, add-item picker, Save/Discard |
-| Cancel action | `api.orders.delete(id)` | `api.orders.update(id, { status: 'cancelled' })` | Soft-delete preserves order history; DELETE would remove from json-server entirely |
-| WebSocket payload | Not specified to include `customerSessionId` | Server modified to broadcast `customerSessionId` | Required for client-side filtering in `useCustomerOrderFeed` |
+| Aspect                         | Original Proposal                            | Implemented Solution                                                                                                             | Rationale                                                                           |
+| ------------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Module name                    | `customer-order`                             | `customer`                                                                                                                       | Align with existing module naming convention (`kds`, `inventory`, `menu`)           |
+| Composable granularity         | Single `useCart` + `useCustomerOrderFeed`    | Six composables: `useCustomerSession`, `useCart`, `useCustomerOrderFeed`, `useCustomerOrders`, `usePlaceOrder`, `useModifyOrder` | Separation of concerns; each composable has a single responsibility                 |
+| Cart data structure            | `Map<menuItemId, CartItem>`                  | `CartItem[]` with additive semantics                                                                                             | Simpler JSON serialization for localStorage; no need for Map polyfill               |
+| Order number generation        | Not specified                                | `GET /orders?_sort=orderNumber&_order=desc&_limit=1` + increment                                                                 | Deterministic, no server-side changes needed                                        |
+| Query key for customer orders  | `['orders', 'customer', sessionId]`          | Same                                                                                                                             | Unchanged — confirmed correct in review                                             |
+| `CustomerLayout`               | "Derived from PublicLayout"                  | New standalone `CustomerLayout.vue` with cart badge, slideover, responsive nav                                                   | PublicLayout has `/track`/`/portal` nav which is wrong for root; cleaner separation |
+| Legacy `/portal`               | Redirect to `/admin/portal`? (not specified) | Redirect to `/orders`                                                                                                            | `/portal` was customer-facing; redirect to new customer order history               |
+| Modification of pending orders | Implied by "modify pending orders"           | `useModifyOrder` with inline edit mode on OrderDetail                                                                            | Concrete UX: quantity +/- per item, remove, add-item picker, Save/Discard           |
+| Cancel action                  | `api.orders.delete(id)`                      | `api.orders.update(id, { status: 'cancelled' })`                                                                                 | Soft-delete preserves order history; DELETE would remove from json-server entirely  |
+| WebSocket payload              | Not specified to include `customerSessionId` | Server modified to broadcast `customerSessionId`                                                                                 | Required for client-side filtering in `useCustomerOrderFeed`                        |

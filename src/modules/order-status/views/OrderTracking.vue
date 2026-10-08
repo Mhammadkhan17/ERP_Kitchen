@@ -11,12 +11,7 @@ const searched = ref(false)
 
 const orderNumber = computed(() => parseInt(input.value, 10))
 
-const {
-  data: order,
-  isLoading,
-  isError,
-  refetch,
-} = useOrderTracking(orderNumber)
+const { data: order, isLoading, isError, refetch } = useOrderTracking(orderNumber)
 
 const error = computed(() => {
   if (isError.value) return 'Something went wrong. Please try again.'
@@ -38,17 +33,8 @@ function submit() {
     </div>
 
     <form class="flex gap-3" @submit.prevent="submit">
-      <InputText
-        v-model="input"
-        placeholder="Order number (e.g. 2001)"
-        class="flex-1"
-      />
-      <Button
-        type="submit"
-        label="Track"
-        icon="pi pi-search"
-        :loading="isLoading"
-      />
+      <InputText v-model="input" placeholder="Order number (e.g. 2001)" class="flex-1" />
+      <Button type="submit" label="Track" icon="pi pi-search" :loading="isLoading" />
     </form>
 
     <p v-if="error" class="text-sm text-red-600 text-center">{{ error }}</p>
@@ -100,7 +86,13 @@ function submit() {
     <div v-if="isError && !isLoading" class="text-center py-12">
       <i class="pi pi-exclamation-triangle text-3xl text-gray-300 mb-3 block" />
       <p class="text-sm text-gray-500">Something went wrong.</p>
-      <Button label="Retry" severity="secondary" size="small" class="mt-3" @click="() => refetch()" />
+      <Button
+        label="Retry"
+        severity="secondary"
+        size="small"
+        class="mt-3"
+        @click="() => refetch()"
+      />
     </div>
   </div>
 </template>

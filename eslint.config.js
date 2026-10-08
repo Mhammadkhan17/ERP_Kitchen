@@ -6,7 +6,16 @@ import globals from 'globals'
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', 'docs/**', '.agents/**', '.specs/**', 'db.json', 'llms*.txt', 'coverage/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'docs/**',
+      '.agents/**',
+      '.specs/**',
+      'db.json',
+      'llms*.txt',
+      'coverage/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

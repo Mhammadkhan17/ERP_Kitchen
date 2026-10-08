@@ -26,7 +26,11 @@ const brandPerformance = computed<BrandPerf[]>(() => {
 
   const itemBrandMap = new Map<string, { brandId: string; brandName: string; price: number }>()
   for (const item of items) {
-    itemBrandMap.set(item.id, { brandId: item.brandId, brandName: item.brandName, price: item.price })
+    itemBrandMap.set(item.id, {
+      brandId: item.brandId,
+      brandName: item.brandName,
+      price: item.price,
+    })
   }
 
   const brandColorMap = new Map<string, string>()
@@ -65,14 +69,12 @@ const brandPerformance = computed<BrandPerf[]>(() => {
 <template>
   <div class="card space-y-4">
     <div class="flex items-center justify-between">
-      <h3 class="font-display text-sm font-bold text-[#1A1D1F] uppercase tracking-wider">Revenue by Brand</h3>
+      <h3 class="font-display text-sm font-bold text-[#1A1D1F] uppercase tracking-wider">
+        Revenue by Brand
+      </h3>
     </div>
     <div class="space-y-3">
-      <div
-        v-for="brand in brandPerformance"
-        :key="brand.brandId"
-        class="space-y-1.5"
-      >
+      <div v-for="brand in brandPerformance" :key="brand.brandId" class="space-y-1.5">
         <div class="flex items-center justify-between text-sm">
           <div class="flex items-center gap-2">
             <div
@@ -83,7 +85,9 @@ const brandPerformance = computed<BrandPerf[]>(() => {
           </div>
           <div class="flex items-center gap-3">
             <span class="font-mono text-xs text-[#6C757D]">{{ brand.units }} units</span>
-            <span class="font-mono text-sm font-semibold text-[#1A1D1F] w-20 text-right">{{ formatCurrency(brand.revenue) }}</span>
+            <span class="font-mono text-sm font-semibold text-[#1A1D1F] w-20 text-right">{{
+              formatCurrency(brand.revenue)
+            }}</span>
           </div>
         </div>
         <div class="w-full h-1.5 bg-[#E9ECEF] rounded-full overflow-hidden">
@@ -93,13 +97,18 @@ const brandPerformance = computed<BrandPerf[]>(() => {
           />
         </div>
       </div>
-      <div v-if="!brandPerformance.length" class="font-mono text-xs text-[#6C757D] text-center py-4">
+      <div
+        v-if="!brandPerformance.length"
+        class="font-mono text-xs text-[#6C757D] text-center py-4"
+      >
         no data available
       </div>
     </div>
     <div class="flex items-center justify-between pt-3 border-t border-gray-200">
       <span class="font-mono text-xs text-[#6C757D] uppercase tracking-wider">Total</span>
-      <span class="font-display font-bold text-base text-[#1A1D1F]">{{ formatCurrency(brandPerformance.reduce((s, b) => s + b.revenue, 0)) }}</span>
+      <span class="font-display font-bold text-base text-[#1A1D1F]">{{
+        formatCurrency(brandPerformance.reduce((s, b) => s + b.revenue, 0))
+      }}</span>
     </div>
   </div>
 </template>

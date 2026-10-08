@@ -8,12 +8,12 @@ Route `/` becomes the customer portal. Admin routes (KDS, Inventory, Menu, Analy
 
 ### Design Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| `/admin` prefix | Leaves room for future admin sub-modules (users, settings) |
-| localStorage cart | Ephemeral UX state; no server cart endpoint exists |
-| Extend `api.orders` | json-server PATCH supports partial body — no server changes |
-| Phone-based identity | Reuses `db.json` `customers` resource and existing patterns |
+| Decision                 | Rationale                                                            |
+| ------------------------ | -------------------------------------------------------------------- |
+| `/admin` prefix          | Leaves room for future admin sub-modules (users, settings)           |
+| localStorage cart        | Ephemeral UX state; no server cart endpoint exists                   |
+| Extend `api.orders`      | json-server PATCH supports partial body — no server changes          |
+| Phone-based identity     | Reuses `db.json` `customers` resource and existing patterns          |
 | Client-side WS filtering | Existing `order:update` events carry `customerId`; no server changes |
 
 ### Gaps Identified from Judge Feedback
@@ -32,17 +32,17 @@ Route `/` becomes the customer portal. Admin routes (KDS, Inventory, Menu, Analy
 
 ## 2. Judge Feedback — Specific Changes
 
-| Concern | Solution |
-|---------|----------|
-| **Phone gate friction** | Offer **Guest Checkout**: customer can place an order without phone. A temporary `customerId` of `0` is used. These orders use `source: "direct"` and show "Guest" as name. Real-time updates are not available for guest orders — a banner explains this. Returning customers can enter phone to see full order history with live updates. |
-| **Guest WS blind spot** | `useCustomerOrders` shows a banner: *"Enter your phone number to get live order updates"* when `customerId` is 0/null. The composable gracefully handles missing `customerId` by skipping socket listener registration. |
-| **Route conflict risk** | Existing `/track` and `/portal` routes are removed. Their functionality is absorbed into the customer portal: `/orders/track` (track by order number) and `/orders/history` (phone-based history). A **migration test checklist** verifies old routes redirect correctly. |
-| **Cart/order boundary** | `useCustomerCart()` is **cart-only** (new orders). `useCustomerOrders()` handles **existing order operations** (view, modify, cancel). They are separate composables that do not share state. Modifying a pending order calls `api.orders.update()` directly — it does not go through the cart. |
-| **Admin backward compat** | `RedirectShim.vue` is tested by navigating to all legacy paths (`/kds`, `/inventory`, `/menu`, `/analytics`, `/inventory/adjust`, `/menu/recipes`) and asserting redirect to `/admin/...`. A `console.warn` is emitted. |
-| **Scope creep (exclusions)** | Explicitly scoped out: payments, email auth, user registration, loyalty points, delivery tracking, multi-currency, image upload. |
-| **Order number generation** | Client generates `orderNumber` on create: `Date.now() % 100000` + random suffix. This is unique enough for v1 and avoids server query. |
-| **Loading/error states** | Every view implements: skeleton loading (matching existing `skeleton` shortcuts), error state with retry button, empty state with helpful message. |
-| **Menu item descriptions** | Menu cards display `name`, `price`, `category` badge, and `brandName`. No images needed for v1. |
+| Concern                      | Solution                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Phone gate friction**      | Offer **Guest Checkout**: customer can place an order without phone. A temporary `customerId` of `0` is used. These orders use `source: "direct"` and show "Guest" as name. Real-time updates are not available for guest orders — a banner explains this. Returning customers can enter phone to see full order history with live updates. |
+| **Guest WS blind spot**      | `useCustomerOrders` shows a banner: _"Enter your phone number to get live order updates"_ when `customerId` is 0/null. The composable gracefully handles missing `customerId` by skipping socket listener registration.                                                                                                                     |
+| **Route conflict risk**      | Existing `/track` and `/portal` routes are removed. Their functionality is absorbed into the customer portal: `/orders/track` (track by order number) and `/orders/history` (phone-based history). A **migration test checklist** verifies old routes redirect correctly.                                                                   |
+| **Cart/order boundary**      | `useCustomerCart()` is **cart-only** (new orders). `useCustomerOrders()` handles **existing order operations** (view, modify, cancel). They are separate composables that do not share state. Modifying a pending order calls `api.orders.update()` directly — it does not go through the cart.                                             |
+| **Admin backward compat**    | `RedirectShim.vue` is tested by navigating to all legacy paths (`/kds`, `/inventory`, `/menu`, `/analytics`, `/inventory/adjust`, `/menu/recipes`) and asserting redirect to `/admin/...`. A `console.warn` is emitted.                                                                                                                     |
+| **Scope creep (exclusions)** | Explicitly scoped out: payments, email auth, user registration, loyalty points, delivery tracking, multi-currency, image upload.                                                                                                                                                                                                            |
+| **Order number generation**  | Client generates `orderNumber` on create: `Date.now() % 100000` + random suffix. This is unique enough for v1 and avoids server query.                                                                                                                                                                                                      |
+| **Loading/error states**     | Every view implements: skeleton loading (matching existing `skeleton` shortcuts), error state with retry button, empty state with helpful message.                                                                                                                                                                                          |
+| **Menu item descriptions**   | Menu cards display `name`, `price`, `category` badge, and `brandName`. No images needed for v1.                                                                                                                                                                                                                                             |
 
 ---
 
@@ -86,6 +86,7 @@ Phase 6: Verification
 ### File Inventory
 
 **New files (18):**
+
 ```
 src/modules/customer/
 ├── composables/
@@ -107,6 +108,7 @@ src/components/layout/RedirectShim.vue
 ```
 
 **Modified files (5):**
+
 ```
 src/router/index.ts
 src/api/client.ts
@@ -116,12 +118,14 @@ src/components/layout/AppHeader.vue
 ```
 
 **Removed routes (2):**
+
 ```
 /track   → replaced by /orders/track
 /portal  → replaced by /orders/history
 ```
 
 **Explicitly not modified:**
+
 ```
 server.js, db.json, any module views or composables, plugins, styles
 ```
@@ -286,6 +290,7 @@ A minimal component that never renders. It exists solely because `vue-router` re
 ### 4c. API Extensions
 
 **`src/types/api.ts`** — Add to `orders`:
+
 ```typescript
 orders: {
   // ... existing: list, get, create, updateStatus
@@ -294,6 +299,7 @@ orders: {
 ```
 
 **`src/api/client.ts`** — Add:
+
 ```typescript
 // After updateStatus:
 update: (id, data) => http.patch(`/orders/${id}`, data).then((r) => r.data),
@@ -655,6 +661,7 @@ States:
 ### 4p. Admin Navigation Updates
 
 **`AppDrawer.vue`** — Change nav paths:
+
 ```typescript
 const navItems = [
   { path: '/admin/kds', label: 'KDS Dashboard', icon: '<i class="pi pi-receipt"></i>' },
@@ -676,25 +683,26 @@ Same change in **`AppHeader.vue`**.
 
 After deployment, manually verify:
 
-| Old URL | Expected Redirect | Status |
-|---------|------------------|--------|
-| `/kds` | `/admin/kds` | Console warning emitted |
-| `/inventory` | `/admin/inventory` | Console warning emitted |
-| `/inventory/adjust` | `/admin/inventory/adjust` | Console warning emitted |
-| `/menu` | `/admin/menu` | Console warning emitted |
-| `/menu/recipes` | `/admin/menu/recipes` | Console warning emitted |
-| `/analytics` | `/admin/analytics` | Console warning emitted |
-| `/track` | Returns 404 (route removed) | Show "Page not found" |
-| `/portal` | Returns 404 (route removed) | Show "Page not found" |
-| `/` | Customer portal menu | Brand header visible |
-| `/orders/history` | Order history (or phone prompt) | Guest handling works |
-| `/admin/kds` | KDS Dashboard | All 4 columns render |
+| Old URL             | Expected Redirect               | Status                  |
+| ------------------- | ------------------------------- | ----------------------- |
+| `/kds`              | `/admin/kds`                    | Console warning emitted |
+| `/inventory`        | `/admin/inventory`              | Console warning emitted |
+| `/inventory/adjust` | `/admin/inventory/adjust`       | Console warning emitted |
+| `/menu`             | `/admin/menu`                   | Console warning emitted |
+| `/menu/recipes`     | `/admin/menu/recipes`           | Console warning emitted |
+| `/analytics`        | `/admin/analytics`              | Console warning emitted |
+| `/track`            | Returns 404 (route removed)     | Show "Page not found"   |
+| `/portal`           | Returns 404 (route removed)     | Show "Page not found"   |
+| `/`                 | Customer portal menu            | Brand header visible    |
+| `/orders/history`   | Order history (or phone prompt) | Guest handling works    |
+| `/admin/kds`        | KDS Dashboard                   | All 4 columns render    |
 
 **Cypress/Playwright test outline (future):**
+
 ```typescript
 describe('admin backward compatibility', () => {
   const legacyPaths = ['/kds', '/inventory', '/menu', '/analytics']
-  legacyPaths.forEach(path => {
+  legacyPaths.forEach((path) => {
     it(`redirects ${path} to /admin${path}`, () => {
       cy.visit(path)
       cy.url().should('include', '/admin' + path)
@@ -728,6 +736,7 @@ The guest's order was created with `customerId: undefined` and `source: 'direct'
 ### Q5: How does the solution handle the "item becomes inactive after being added to cart" edge case?
 
 The cart stores the full `MenuItem` object (including `isActive`). When rendering:
+
 - `CartDrawer.vue` checks `item.isActive` and shows "(unavailable)" label with strikethrough and disabled stepper
 - `OrderCheckout.vue` shows a warning banner: "Some items in your order are no longer available. Please remove them before placing the order."
 - `useCustomerCart.submitOrder()` filters out inactive items before submission (with a warning)
@@ -736,18 +745,18 @@ The cart stores the full `MenuItem` object (including `isActive`). When renderin
 
 ## 7. Changes from Original Proposal
 
-| Aspect | Original Proposal | Final Solution |
-|--------|------------------|----------------|
-| **Guest checkout** | Phone-only identity | Guest mode with no phone required |
-| **Real-time for guests** | Not addressed | Banner explaining limitations; socket registration skipped gracefully |
-| **Route migration** | All legacy paths redirected | Individual route entries per legacy path for fine-grained warnings |
-| **Existing routes** | `/track` and `/portal` kept | Removed; functionality absorbed into `/orders/track` and `/orders/history` |
-| **Order number** | Not addressed | `generateOrderNumber()` composable-side |
-| **Loading/error states** | Not addressed | Every view: skeleton, error+retry, empty state |
-| **Cart/order separation** | Implicit | Explicit: separate composables, no shared state |
-| **Scope exclusions** | Not stated | Explicit list: payments, email, user registration, etc. |
-| **Admin nav** | Not addressed | AppDrawer.vue and AppHeader.vue paths updated |
-| **Menu display** | "name+price only" | Shows name, price, category badge, brand name |
+| Aspect                    | Original Proposal           | Final Solution                                                             |
+| ------------------------- | --------------------------- | -------------------------------------------------------------------------- |
+| **Guest checkout**        | Phone-only identity         | Guest mode with no phone required                                          |
+| **Real-time for guests**  | Not addressed               | Banner explaining limitations; socket registration skipped gracefully      |
+| **Route migration**       | All legacy paths redirected | Individual route entries per legacy path for fine-grained warnings         |
+| **Existing routes**       | `/track` and `/portal` kept | Removed; functionality absorbed into `/orders/track` and `/orders/history` |
+| **Order number**          | Not addressed               | `generateOrderNumber()` composable-side                                    |
+| **Loading/error states**  | Not addressed               | Every view: skeleton, error+retry, empty state                             |
+| **Cart/order separation** | Implicit                    | Explicit: separate composables, no shared state                            |
+| **Scope exclusions**      | Not stated                  | Explicit list: payments, email, user registration, etc.                    |
+| **Admin nav**             | Not addressed               | AppDrawer.vue and AppHeader.vue paths updated                              |
+| **Menu display**          | "name+price only"           | Shows name, price, category badge, brand name                              |
 
 ---
 

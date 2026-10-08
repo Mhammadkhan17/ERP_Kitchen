@@ -10,7 +10,12 @@
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
       <div class="field">
         <label for="name" class="font-medium text-sm text-gray-700 mb-1 block">Name</label>
-        <InputText id="name" v-model="form.name" class="w-full" :class="{ 'p-invalid': errors.name }" />
+        <InputText
+          id="name"
+          v-model="form.name"
+          class="w-full"
+          :class="{ 'p-invalid': errors.name }"
+        />
         <small v-if="errors.name" class="text-red-500">{{ errors.name }}</small>
       </div>
 
@@ -28,14 +33,18 @@
         </div>
 
         <div class="field">
-          <label for="category" class="font-medium text-sm text-gray-700 mb-1 block">Category</label>
+          <label for="category" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Category</label
+          >
           <InputText id="category" v-model="form.category" class="w-full" />
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div class="field">
-          <label for="currentStock" class="font-medium text-sm text-gray-700 mb-1 block">Current Stock</label>
+          <label for="currentStock" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Current Stock</label
+          >
           <InputNumber
             id="currentStock"
             v-model="form.currentStock"
@@ -49,7 +58,9 @@
         </div>
 
         <div class="field">
-          <label for="reorderLevel" class="font-medium text-sm text-gray-700 mb-1 block">Reorder Level</label>
+          <label for="reorderLevel" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Reorder Level</label
+          >
           <InputNumber
             id="reorderLevel"
             v-model="form.reorderLevel"
@@ -65,7 +76,9 @@
 
       <div class="grid grid-cols-2 gap-4">
         <div class="field">
-          <label for="reorderQty" class="font-medium text-sm text-gray-700 mb-1 block">Reorder Qty</label>
+          <label for="reorderQty" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Reorder Qty</label
+          >
           <InputNumber
             id="reorderQty"
             v-model="form.reorderQty"
@@ -77,7 +90,9 @@
         </div>
 
         <div class="field">
-          <label for="unitCost" class="font-medium text-sm text-gray-700 mb-1 block">Unit Cost</label>
+          <label for="unitCost" class="font-medium text-sm text-gray-700 mb-1 block"
+            >Unit Cost</label
+          >
           <InputNumber
             id="unitCost"
             v-model="form.unitCost"
@@ -140,23 +155,26 @@ const initialForm = () => ({
 const form = reactive(initialForm())
 const errors = reactive<Record<string, string | null>>({})
 
-watch(() => props.visible, (val) => {
-  if (val && props.ingredient) {
-    Object.assign(form, {
-      name: props.ingredient.name,
-      unit: props.ingredient.unit,
-      currentStock: props.ingredient.currentStock,
-      reorderLevel: props.ingredient.reorderLevel,
-      reorderQty: props.ingredient.reorderQty,
-      unitCost: props.ingredient.unitCost,
-      supplier: props.ingredient.supplier,
-      category: props.ingredient.category,
-    })
-  } else if (val) {
-    Object.assign(form, initialForm())
-  }
-  Object.keys(errors).forEach((k) => (errors[k] = null))
-})
+watch(
+  () => props.visible,
+  (val) => {
+    if (val && props.ingredient) {
+      Object.assign(form, {
+        name: props.ingredient.name,
+        unit: props.ingredient.unit,
+        currentStock: props.ingredient.currentStock,
+        reorderLevel: props.ingredient.reorderLevel,
+        reorderQty: props.ingredient.reorderQty,
+        unitCost: props.ingredient.unitCost,
+        supplier: props.ingredient.supplier,
+        category: props.ingredient.category,
+      })
+    } else if (val) {
+      Object.assign(form, initialForm())
+    }
+    Object.keys(errors).forEach((k) => (errors[k] = null))
+  },
+)
 
 const createMutation = useCreateIngredient()
 const updateMutation = useUpdateIngredient()

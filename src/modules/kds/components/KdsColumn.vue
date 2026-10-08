@@ -2,18 +2,17 @@
   <div class="flex flex-col">
     <div class="relative flex items-center gap-3 px-1 pb-3">
       <div class="flex items-center gap-2.5">
-        <div
-          class="w-2.5 h-2.5 rounded-full shrink-0"
-          :style="{ backgroundColor: color }"
-        />
+        <div class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ backgroundColor: color }" />
         <span
           class="font-display text-xs font-medium uppercase tracking-[0.08em]"
           :style="{ color: color }"
-        >{{ title }}</span>
+          >{{ title }}</span
+        >
       </div>
       <span
         class="font-mono text-[10px] font-medium text-gray-500 bg-gray-200 rounded-full px-2 py-0.5 leading-none"
-      >{{ count }}</span>
+        >{{ count }}</span
+      >
     </div>
     <div
       class="flex-1 overflow-y-auto space-y-3 min-h-[300px] max-h-[calc(100vh-14rem)] rounded-xl"

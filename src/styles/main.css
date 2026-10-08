@@ -10,16 +10,16 @@
   --p-primary-800: #9a3412;
   --p-primary-900: #7c2d12;
 
-  --surface-ground: #F8F9FA;
-  --surface-card: #FFFFFF;
-  --text-primary: #1A1D1F;
-  --text-secondary: #6C757D;
-  --border-color: #E9ECEF;
-  --accent: #E85D3A;
-  --status-pending: #F4A261;
-  --status-preparing: #4A90D9;
-  --status-ready: #2B9348;
-  --status-dispatched: #6C757D;
+  --surface-ground: #f8f9fa;
+  --surface-card: #ffffff;
+  --text-primary: #1a1d1f;
+  --text-secondary: #6c757d;
+  --border-color: #e9ecef;
+  --accent: #e85d3a;
+  --status-pending: #f4a261;
+  --status-preparing: #4a90d9;
+  --status-ready: #2b9348;
+  --status-dispatched: #6c757d;
 }
 
 /* UnoCSS shortcut backup — .field is defined in uno.config.ts */
@@ -35,7 +35,13 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -82,17 +88,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: #d1d5db;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+  background: #9ca3af;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #D1D5DB transparent;
+  scrollbar-color: #d1d5db transparent;
 }
 
 .p-dialog .p-dialog-footer {

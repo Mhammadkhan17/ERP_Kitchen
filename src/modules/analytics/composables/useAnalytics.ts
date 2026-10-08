@@ -41,12 +41,8 @@ export function useAggregatedSales(period: MaybeRefOrGetter<SalesPeriod>) {
 export function useKpiMetrics(rows: MaybeRefOrGetter<AggregatedPeriod[]>) {
   const data = computed(() => toValue(rows))
 
-  const totalRevenue = computed(() =>
-    data.value.reduce((sum, d) => sum + d.revenue, 0),
-  )
-  const totalOrders = computed(() =>
-    data.value.reduce((sum, d) => sum + d.orderCount, 0),
-  )
+  const totalRevenue = computed(() => data.value.reduce((sum, d) => sum + d.revenue, 0))
+  const totalOrders = computed(() => data.value.reduce((sum, d) => sum + d.orderCount, 0))
   const averageOrderValue = computed(() =>
     totalOrders.value > 0 ? totalRevenue.value / totalOrders.value : 0,
   )

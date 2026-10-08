@@ -30,70 +30,65 @@
       </div>
     </div>
     <template v-else>
-    <DataTable
-      :value="filteredItems"
-      :loading="itemsQuery.isLoading.value"
-      striped-rows
-      :size="'small'"
-      paginator
-      :rows="20"
-    >
-      <Column field="name" header="Name" sortable />
-      <Column field="brandName" header="Brand" sortable>
-        <template #body="{ data }">
-          <Chip
-            v-if="brandMap[data.brandId]"
-            :label="data.brandName"
-            :style="{ backgroundColor: brandMap[data.brandId].color + '20', color: brandMap[data.brandId].color }"
-            class="font-medium"
-          />
-          <span v-else class="text-gray-400">{{ data.brandName }}</span>
-        </template>
-      </Column>
-      <Column field="price" header="Price" sortable>
-        <template #body="{ data }">
-          {{ formatCurrency(data.price) }}
-        </template>
-      </Column>
-      <Column field="category" header="Category" sortable>
-        <template #body="{ data }">
-          <Tag :value="data.category" :severity="categorySeverity(data.category)" />
-        </template>
-      </Column>
-      <Column field="isActive" header="Active" style="width: 100px">
-        <template #body="{ data }">
-          <ToggleSwitch
-            :model-value="data.isActive"
-            @update:model-value="toggleActive(data)"
-          />
-        </template>
-      </Column>
-      <Column field="popularity" header="Popularity" sortable>
-        <template #body="{ data }">
-          <div class="flex items-center gap-1">
-            <i class="pi pi-star-fill text-yellow-500 text-xs" />
-            <span>{{ data.popularity }}</span>
-          </div>
-        </template>
-      </Column>
-      <Column header="Actions" style="width: 100px">
-        <template #body="{ data }">
-          <Button
-            icon="pi pi-pencil"
-            severity="secondary"
-            size="small"
-            @click="editItem(data)"
-          />
-        </template>
-      </Column>
-    </DataTable>
+      <DataTable
+        :value="filteredItems"
+        :loading="itemsQuery.isLoading.value"
+        striped-rows
+        :size="'small'"
+        paginator
+        :rows="20"
+      >
+        <Column field="name" header="Name" sortable />
+        <Column field="brandName" header="Brand" sortable>
+          <template #body="{ data }">
+            <Chip
+              v-if="brandMap[data.brandId]"
+              :label="data.brandName"
+              :style="{
+                backgroundColor: brandMap[data.brandId].color + '20',
+                color: brandMap[data.brandId].color,
+              }"
+              class="font-medium"
+            />
+            <span v-else class="text-gray-400">{{ data.brandName }}</span>
+          </template>
+        </Column>
+        <Column field="price" header="Price" sortable>
+          <template #body="{ data }">
+            {{ formatCurrency(data.price) }}
+          </template>
+        </Column>
+        <Column field="category" header="Category" sortable>
+          <template #body="{ data }">
+            <Tag :value="data.category" :severity="categorySeverity(data.category)" />
+          </template>
+        </Column>
+        <Column field="isActive" header="Active" style="width: 100px">
+          <template #body="{ data }">
+            <ToggleSwitch :model-value="data.isActive" @update:model-value="toggleActive(data)" />
+          </template>
+        </Column>
+        <Column field="popularity" header="Popularity" sortable>
+          <template #body="{ data }">
+            <div class="flex items-center gap-1">
+              <i class="pi pi-star-fill text-yellow-500 text-xs" />
+              <span>{{ data.popularity }}</span>
+            </div>
+          </template>
+        </Column>
+        <Column header="Actions" style="width: 100px">
+          <template #body="{ data }">
+            <Button icon="pi pi-pencil" severity="secondary" size="small" @click="editItem(data)" />
+          </template>
+        </Column>
+      </DataTable>
 
-    <MenuItemForm
-      :visible="showDialog"
-      :menu-item="editingItem"
-      @close="closeDialog"
-      @saved="closeDialog"
-    />
+      <MenuItemForm
+        :visible="showDialog"
+        :menu-item="editingItem"
+        @close="closeDialog"
+        @saved="closeDialog"
+      />
     </template>
   </div>
 </template>

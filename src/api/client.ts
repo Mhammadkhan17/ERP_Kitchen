@@ -28,11 +28,13 @@ export const api: ApiClient = {
     adjustStock: (id, delta, reason) =>
       http.get(`/ingredients/${id}`).then((r) => {
         const ing = r.data as Ingredient
-        return http.patch(`/ingredients/${id}`, {
-          currentStock: Math.max(0, +(ing.currentStock + delta).toFixed(3)),
-          lastAdjustReason: reason,
-          lastAdjustedAt: new Date().toISOString(),
-        }).then((r2) => r2.data)
+        return http
+          .patch(`/ingredients/${id}`, {
+            currentStock: Math.max(0, +(ing.currentStock + delta).toFixed(3)),
+            lastAdjustReason: reason,
+            lastAdjustedAt: new Date().toISOString(),
+          })
+          .then((r2) => r2.data)
       }),
   },
 
@@ -52,8 +54,7 @@ export const api: ApiClient = {
       delete: (id) => http.delete(`/menuItems/${id}`),
     },
     recipes: {
-      get: (menuItemId) =>
-        http.get('/recipes', { params: { menuItemId } }).then((r) => r.data[0]),
+      get: (menuItemId) => http.get('/recipes', { params: { menuItemId } }).then((r) => r.data[0]),
       upsert: (data) =>
         http.get('/recipes', { params: { menuItemId: data.menuItemId } }).then((r) => {
           const existing = r.data[0]
@@ -69,8 +70,7 @@ export const api: ApiClient = {
 
   analytics: {
     sales: {
-      list: (range) =>
-        http.get('/analytics_sales', { params: range }).then((r) => r.data),
+      list: (range) => http.get('/analytics_sales', { params: range }).then((r) => r.data),
     },
     wastage: {
       list: () => http.get('/wastage_logs').then((r) => r.data),

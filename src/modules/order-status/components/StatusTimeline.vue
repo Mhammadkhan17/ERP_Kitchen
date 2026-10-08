@@ -12,8 +12,14 @@ const statusOrder: OrderStatus[] = ['pending', 'preparing', 'ready', 'dispatched
 const now = ref(Date.now())
 let timer: ReturnType<typeof setInterval> | undefined
 
-onMounted(() => { timer = setInterval(() => { now.value = Date.now() }, 30000) })
-onUnmounted(() => { clearInterval(timer) })
+onMounted(() => {
+  timer = setInterval(() => {
+    now.value = Date.now()
+  }, 30000)
+})
+onUnmounted(() => {
+  clearInterval(timer)
+})
 
 function relativeTime(iso: string | null): string | null {
   if (!iso) return null
@@ -32,7 +38,7 @@ const steps = computed(() =>
     const key = timestampKey(s)
     const iso = props.timestamps?.[key] ?? null
     return { status: s, label: labelFor(s), time: iso, relative: relativeTime(iso) }
-  })
+  }),
 )
 
 function labelFor(s: OrderStatus): string {
@@ -79,11 +85,7 @@ function stepClass(s: OrderStatus): string {
   <div class="relative">
     <div class="absolute left-[11px] top-2 bottom-2 w-0.5 bg-gray-200" />
     <div class="space-y-5">
-      <div
-        v-for="step in steps"
-        :key="step.status"
-        class="flex items-start gap-3"
-      >
+      <div v-for="step in steps" :key="step.status" class="flex items-start gap-3">
         <div
           class="relative z-10 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
           :class="stepClass(step.status)"
@@ -95,7 +97,13 @@ function stepClass(s: OrderStatus): string {
         <div class="min-w-0">
           <p
             class="text-sm font-medium"
-            :class="isCompleted(step.status) ? 'text-gray-900' : isActive(step.status) ? 'text-orange-700' : 'text-gray-400'"
+            :class="
+              isCompleted(step.status)
+                ? 'text-gray-900'
+                : isActive(step.status)
+                  ? 'text-orange-700'
+                  : 'text-gray-400'
+            "
           >
             {{ step.label }}
           </p>

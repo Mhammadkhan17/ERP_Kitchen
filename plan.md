@@ -2,16 +2,16 @@
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Vue 3 (Composition API, `<script setup>`) |
-| UI Library | Vuetify0 (`@vuetify/v0`) — headless composables + components |
-| Styling | UnoCSS with `@unocss/preset-wind` |
-| State Management | Pinia (modular stores, setup function style) |
-| Routing | Vue Router 4 |
-| HTTP Client | Axios |
-| Mock Backend | JSON Server (`typicode/json-server`) |
-| Charts | Chart.js + `vue-chartjs` |
+| Layer            | Technology                                                   |
+| ---------------- | ------------------------------------------------------------ |
+| Framework        | Vue 3 (Composition API, `<script setup>`)                    |
+| UI Library       | Vuetify0 (`@vuetify/v0`) — headless composables + components |
+| Styling          | UnoCSS with `@unocss/preset-wind`                            |
+| State Management | Pinia (modular stores, setup function style)                 |
+| Routing          | Vue Router 4                                                 |
+| HTTP Client      | Axios                                                        |
+| Mock Backend     | JSON Server (`typicode/json-server`)                         |
+| Charts           | Chart.js + `vue-chartjs`                                     |
 
 ---
 
@@ -164,37 +164,37 @@ erp-cloud-kitchen/
 
 ### 3.1 Inventory Module
 
-| Component | Vuetify0 Primitives |
-|-----------|-------------------|
-| `InventoryList.vue` | `createDataTable` — sort/filter/paginate; `createFilter` — search; `createPagination` — pages; `Popover` — row actions; `VDialog` (wraps `Dialog.Root`) — add/edit modal |
-| `LowStockBanner.vue` | Unstyled `<div>` with UnoCSS `bg-error/10` class |
-| `IngredientForm.vue` | `createForm` — validation state; native `<input>`/`<select>` + UnoCSS |
+| Component            | Vuetify0 Primitives                                                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `InventoryList.vue`  | `createDataTable` — sort/filter/paginate; `createFilter` — search; `createPagination` — pages; `Popover` — row actions; `VDialog` (wraps `Dialog.Root`) — add/edit modal |
+| `LowStockBanner.vue` | Unstyled `<div>` with UnoCSS `bg-error/10` class                                                                                                                         |
+| `IngredientForm.vue` | `createForm` — validation state; native `<input>`/`<select>` + UnoCSS                                                                                                    |
 
 ### 3.2 KDS Module
 
-| Component | Vuetify0 Primitives |
-|-----------|-------------------|
+| Component            | Vuetify0 Primitives                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `OrderDashboard.vue` | Flexbox grid with `v-for` cards; `useWindowEventListener` — polling; `createKanban` — cross-column transfer |
-| `OrderCard.vue` | `Popover` — status change options; native `<button>` with UnoCSS |
-| `OrderDetail.vue` | `VDialog` (wraps `Dialog.Root`) |
-| `OrderTimer.vue` | `useTimer` composable |
+| `OrderCard.vue`      | `Popover` — status change options; native `<button>` with UnoCSS                                            |
+| `OrderDetail.vue`    | `VDialog` (wraps `Dialog.Root`)                                                                             |
+| `OrderTimer.vue`     | `useTimer` composable                                                                                       |
 
 ### 3.3 Menu Module
 
-| Component | Vuetify0 Primitives |
-|-----------|-------------------|
-| `MenuList.vue` | `createDataTable`; `createFilter`; `createPagination`; `Single` — brand filter tabs; `VDialog` |
-| `RecipeBuilder.vue` | `ExpansionPanel` — one per menu item; `Group` — checkbox selections; `Checkbox` (headless) |
-| `IngredientPicker.vue` | `Popover` + `createFilter` — searchable dropdown |
+| Component              | Vuetify0 Primitives                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `MenuList.vue`         | `createDataTable`; `createFilter`; `createPagination`; `Single` — brand filter tabs; `VDialog` |
+| `RecipeBuilder.vue`    | `ExpansionPanel` — one per menu item; `Group` — checkbox selections; `Checkbox` (headless)     |
+| `IngredientPicker.vue` | `Popover` + `createFilter` — searchable dropdown                                               |
 
 ### 3.4 Analytics Module
 
-| Component | Vuetify0 Primitives |
-|-----------|-------------------|
+| Component                | Vuetify0 Primitives                |
+| ------------------------ | ---------------------------------- |
 | `AnalyticsDashboard.vue` | `Single` — period selector buttons |
-| `KpiCard.vue` | Unstyled `<div>` with `bg-surface` |
-| `SalesChart.vue` | Chart.js via `vue-chartjs` |
-| `WastageLog.vue` | `createDataTable`; `createFilter` |
+| `KpiCard.vue`            | Unstyled `<div>` with `bg-surface` |
+| `SalesChart.vue`         | Chart.js via `vue-chartjs`         |
+| `WastageLog.vue`         | `createDataTable`; `createFilter`  |
 
 ---
 
@@ -341,7 +341,7 @@ Reverse flow on cancellation refunds stock. Analytics logs at "dispatched".
       "currentStock": 12.5,
       "reorderLevel": 5.0,
       "reorderQty": 10.0,
-      "unitCost": 4.50,
+      "unitCost": 4.5,
       "supplier": "FarmFresh Co.",
       "category": "protein",
       "isLowStock": false,
@@ -399,18 +399,14 @@ Reverse flow on cancellation refunds stock. Analytics logs at "dispatched".
       "prepTimeTarget": 15
     }
   ],
-  "brands": [
-    { "id": "brand-01", "name": "Tandoori Express", "color": "#E65100" }
-  ],
+  "brands": [{ "id": "brand-01", "name": "Tandoori Express", "color": "#E65100" }],
   "analytics_sales": [
     {
       "id": "sales-001",
       "date": "2026-07-13",
-      "totalRevenue": 1245.50,
+      "totalRevenue": 1245.5,
       "orderCount": 38,
-      "itemsSold": [
-        { "menuItemId": "item-001", "units": 22 }
-      ]
+      "itemsSold": [{ "menuItemId": "item-001", "units": 22 }]
     }
   ],
   "wastage_logs": [
@@ -437,13 +433,41 @@ const routes = [
     component: AppLayout,
     redirect: '/kds',
     children: [
-      { path: 'kds',              name: 'kds.dashboard',  component: () => import('@/modules/kds/views/OrderDashboard.vue') },
-      { path: 'kds/:id',         name: 'kds.detail',     component: () => import('@/modules/kds/views/OrderDetail.vue') },
-      { path: 'inventory',        name: 'inventory.list', component: () => import('@/modules/inventory/views/InventoryList.vue') },
-      { path: 'inventory/adjust', name: 'inventory.adjust', component: () => import('@/modules/inventory/views/StockAdjustment.vue') },
-      { path: 'menu',             name: 'menu.list',      component: () => import('@/modules/menu/views/MenuList.vue') },
-      { path: 'menu/recipes',     name: 'menu.recipes',   component: () => import('@/modules/menu/views/RecipeBuilder.vue') },
-      { path: 'analytics',        name: 'analytics.dashboard', component: () => import('@/modules/analytics/views/AnalyticsDashboard.vue') },
+      {
+        path: 'kds',
+        name: 'kds.dashboard',
+        component: () => import('@/modules/kds/views/OrderDashboard.vue'),
+      },
+      {
+        path: 'kds/:id',
+        name: 'kds.detail',
+        component: () => import('@/modules/kds/views/OrderDetail.vue'),
+      },
+      {
+        path: 'inventory',
+        name: 'inventory.list',
+        component: () => import('@/modules/inventory/views/InventoryList.vue'),
+      },
+      {
+        path: 'inventory/adjust',
+        name: 'inventory.adjust',
+        component: () => import('@/modules/inventory/views/StockAdjustment.vue'),
+      },
+      {
+        path: 'menu',
+        name: 'menu.list',
+        component: () => import('@/modules/menu/views/MenuList.vue'),
+      },
+      {
+        path: 'menu/recipes',
+        name: 'menu.recipes',
+        component: () => import('@/modules/menu/views/RecipeBuilder.vue'),
+      },
+      {
+        path: 'analytics',
+        name: 'analytics.dashboard',
+        component: () => import('@/modules/analytics/views/AnalyticsDashboard.vue'),
+      },
     ],
   },
 ]
@@ -451,12 +475,12 @@ const routes = [
 
 **Navigation Drawer:**
 
-| Icon | Label | Route |
-|------|-------|-------|
-| `mdi-chef-hat` | KDS Dashboard | `/kds` |
-| `mdi-package-variant` | Inventory | `/inventory` |
-| `mdi-food` | Menu & Recipes | `/menu` |
-| `mdi-chart-bar` | Analytics | `/analytics` |
+| Icon                  | Label          | Route        |
+| --------------------- | -------------- | ------------ |
+| `mdi-chef-hat`        | KDS Dashboard  | `/kds`       |
+| `mdi-package-variant` | Inventory      | `/inventory` |
+| `mdi-food`            | Menu & Recipes | `/menu`      |
+| `mdi-chart-bar`       | Analytics      | `/analytics` |
 
 ---
 
@@ -489,6 +513,7 @@ const routes = [
 ## 9. Implementation Roadmap
 
 ### Phase 0 — Project Scaffolding
+
 - [ ] `npm create vue@latest` (Vite + Vue 3, no TypeScript, no Router, no Pinia via CLI — add manually)
 - [ ] Install all dependencies
 - [ ] Create `uno.config.ts` with `presetWind()` + v0 theme color mappings
@@ -501,6 +526,7 @@ const routes = [
 - [ ] Set up `src/router/index.js` with all routes
 
 ### Phase 1a — Build UI Primitives
+
 - [ ] `VDataTable.vue` — wrapper around `createDataTable` + styled `<table>`
 - [ ] `VDialog.vue` — wrapper around `Dialog.Root`
 - [ ] `VChip.vue`, `VBadge.vue`, `VStatusDot.vue`
@@ -509,6 +535,7 @@ const routes = [
 - [ ] `LoadingSkeleton.vue`, `EmptyState.vue`
 
 ### Phase 1b — Inventory Module
+
 - [ ] Create `useInventoryStore` with full CRUD + stock adjustment
 - [ ] Build `api/modules/inventory.js`
 - [ ] Build `InventoryList.vue` with search, filter, pagination
@@ -517,6 +544,7 @@ const routes = [
 - [ ] Build `LowStockBanner.vue`
 
 ### Phase 2 — Menu & Recipe Module
+
 - [ ] Create `useMenuStore` with CRUD + recipe management
 - [ ] Build `api/modules/menu.js`
 - [ ] Build `MenuList.vue` with brand toggle switches
@@ -525,6 +553,7 @@ const routes = [
 - [ ] Build `IngredientPicker.vue` (autocomplete via `createCombobox`)
 
 ### Phase 3 — KDS & Order Management (HIGHEST COMPLEXITY)
+
 - [ ] Create `useOrdersStore` with status management + cross-store deduction
 - [ ] Build `api/modules/orders.js`
 - [ ] Build `KdsColumn.vue` (Kanban column)
@@ -536,6 +565,7 @@ const routes = [
 - [ ] Add polling for new orders (30s interval)
 
 ### Phase 4 — Analytics Module
+
 - [ ] Create `useAnalyticsStore`
 - [ ] Build `api/modules/analytics.js`
 - [ ] Build `KpiCard.vue`
@@ -545,6 +575,7 @@ const routes = [
 - [ ] Wire `logCompletedOrder` hook at "dispatched" transition
 
 ### Phase 5 — Polish
+
 - [ ] Confirm dialog for destructive actions
 - [ ] Loading skeletons on data tables
 - [ ] Error boundaries + snackbar notifications

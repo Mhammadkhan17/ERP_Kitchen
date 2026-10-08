@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useWastageLogs, useAggregatedSales, useKpiMetrics } from '@/modules/analytics/composables/useAnalytics'
+import {
+  useWastageLogs,
+  useAggregatedSales,
+  useKpiMetrics,
+} from '@/modules/analytics/composables/useAnalytics'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import { formatCurrency } from '@/utils/formatters'
 import type { SalesPeriod } from '@/utils/aggregateSales'
@@ -39,9 +43,24 @@ const graphPoints = computed(() =>
         <p class="page-subtitle">Sales, trends, and wastage overview</p>
       </div>
       <div class="flex gap-2">
-        <button :class="activePeriod === 'daily' ? 'btn-filter-active' : 'btn-filter-inactive'" @click="activePeriod = 'daily'">Daily</button>
-        <button :class="activePeriod === 'weekly' ? 'btn-filter-active' : 'btn-filter-inactive'" @click="activePeriod = 'weekly'">Weekly</button>
-        <button :class="activePeriod === 'monthly' ? 'btn-filter-active' : 'btn-filter-inactive'" @click="activePeriod = 'monthly'">Monthly</button>
+        <button
+          :class="activePeriod === 'daily' ? 'btn-filter-active' : 'btn-filter-inactive'"
+          @click="activePeriod = 'daily'"
+        >
+          Daily
+        </button>
+        <button
+          :class="activePeriod === 'weekly' ? 'btn-filter-active' : 'btn-filter-inactive'"
+          @click="activePeriod = 'weekly'"
+        >
+          Weekly
+        </button>
+        <button
+          :class="activePeriod === 'monthly' ? 'btn-filter-active' : 'btn-filter-inactive'"
+          @click="activePeriod = 'monthly'"
+        >
+          Monthly
+        </button>
       </div>
     </div>
 
@@ -60,11 +79,7 @@ const graphPoints = computed(() =>
           icon="pi-dollar"
           :subtitle="`${kpi.totalOrders.value} orders`"
         />
-        <KpiCard
-          title="Total Orders"
-          :value="String(kpi.totalOrders.value)"
-          icon="pi-receipt"
-        />
+        <KpiCard title="Total Orders" :value="String(kpi.totalOrders.value)" icon="pi-receipt" />
         <KpiCard
           title="Avg Order Value"
           :value="formatCurrency(kpi.averageOrderValue.value)"
@@ -93,10 +108,7 @@ const graphPoints = computed(() =>
       <TopSellingTable v-else :sales-data="aggregated" />
     </div>
 
-    <WastageLog
-      :logs="wastageLogs ?? []"
-      :ingredients="ingredients ?? []"
-    />
+    <WastageLog :logs="wastageLogs ?? []" :ingredients="ingredients ?? []" />
 
     <BrandPerformance :sales-data="aggregated" />
   </div>

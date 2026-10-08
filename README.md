@@ -14,11 +14,11 @@ npm start
 
 Open **http://localhost:5173** in your browser.
 
-| Service | URL | Purpose |
-|---------|-----|---------|
-| Frontend | http://localhost:5173 | Vue 3 SPA |
-| API | http://localhost:3001 | JSON Server REST API |
-| WebSocket | ws://localhost:3001 | Socket.IO real-time updates |
+| Service   | URL                   | Purpose                     |
+| --------- | --------------------- | --------------------------- |
+| Frontend  | http://localhost:5173 | Vue 3 SPA                   |
+| API       | http://localhost:3001 | JSON Server REST API        |
+| WebSocket | ws://localhost:3001   | Socket.IO real-time updates |
 
 ## What's Included
 
@@ -30,14 +30,14 @@ Open **http://localhost:5173** in your browser.
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Vue 3, TypeScript, PrimeVue 4, UnoCSS |
-| State | TanStack Vue Query |
-| Real-time | Socket.IO |
-| Backend | JSON Server (mock REST API) |
-| Build | Vite 6 |
-| Charts | Chart.js + vue-chartjs |
+| Layer     | Technology                            |
+| --------- | ------------------------------------- |
+| Frontend  | Vue 3, TypeScript, PrimeVue 4, UnoCSS |
+| State     | TanStack Vue Query                    |
+| Real-time | Socket.IO                             |
+| Backend   | JSON Server (mock REST API)           |
+| Build     | Vite 6                                |
+| Charts    | Chart.js + vue-chartjs                |
 
 ## Project Structure
 
@@ -59,15 +59,15 @@ src/
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm start` | Start dev server + API server concurrently |
-| `npm run dev` | Start Vite dev server only |
-| `npm run server` | Start JSON Server only |
-| `npm run build` | Type-check and build for production |
-| `npm run preview` | Preview production build |
-| `npm test` | Run tests |
-| `npm run test:watch` | Run tests in watch mode |
+| Command              | Description                                |
+| -------------------- | ------------------------------------------ |
+| `npm start`          | Start dev server + API server concurrently |
+| `npm run dev`        | Start Vite dev server only                 |
+| `npm run server`     | Start JSON Server only                     |
+| `npm run build`      | Type-check and build for production        |
+| `npm run preview`    | Preview production build                   |
+| `npm test`           | Run tests                                  |
+| `npm run test:watch` | Run tests in watch mode                    |
 
 ## Environment Variables
 

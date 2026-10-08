@@ -2,11 +2,7 @@
   <div class="flex flex-col gap-2">
     <span class="p-input-icon-left w-full">
       <i class="pi pi-search" />
-      <InputText
-        v-model="search"
-        placeholder="Search ingredients..."
-        class="w-full"
-      />
+      <InputText v-model="search" placeholder="Search ingredients..." class="w-full" />
     </span>
 
     <div v-if="filteredIngredients.length === 0" class="text-gray-400 text-sm p-2">
@@ -79,7 +75,10 @@ function getQuantity(ingredientId: string): number {
 
 function toggleIngredient(ingredientId: string) {
   if (isSelected(ingredientId)) {
-    emit('update:selected', props.selected.filter((s) => s.ingredientId !== ingredientId))
+    emit(
+      'update:selected',
+      props.selected.filter((s) => s.ingredientId !== ingredientId),
+    )
   } else {
     emit('update:selected', [...props.selected, { ingredientId, quantity: 1 }])
   }

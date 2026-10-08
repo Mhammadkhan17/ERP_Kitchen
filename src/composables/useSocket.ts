@@ -1,8 +1,8 @@
 import { ref, markRaw, onUnmounted } from 'vue'
 import { io, type Socket } from 'socket.io-client'
 
-const WS_URL = import.meta.env.VITE_WS_URL
-  ?? `http://localhost:${import.meta.env.VITE_WS_PORT ?? '3001'}`
+const WS_URL =
+  import.meta.env.VITE_WS_URL ?? `http://localhost:${import.meta.env.VITE_WS_PORT ?? '3001'}`
 
 let singletonSocket: Socket | null = null
 const singletonConnected = ref(false)

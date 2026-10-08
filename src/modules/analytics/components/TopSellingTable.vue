@@ -68,8 +68,6 @@ const topItems = computed<AggregatedItem[]>(() => {
         </template>
       </Column>
     </DataTable>
-    <div v-if="!topItems.length" class="text-center text-gray-400 py-6 text-sm">
-      No items sold
-    </div>
+    <div v-if="!topItems.length" class="text-center text-gray-400 py-6 text-sm">No items sold</div>
   </div>
 </template>
