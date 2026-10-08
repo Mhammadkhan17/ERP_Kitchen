@@ -29,10 +29,10 @@
 1. **Untrack build output**: add `dist/` to `.gitignore`; `git rm -r --cached dist`.
 2. **Type fixes** (`src/types/index.ts`): `Order.phone: string`, `Customer.phone: string` (matches string phones in `db.json`). Audit callers during implementation.
 3. **Seed backfill** (`db.json`):
-   - every `ingredient`: `isLowStock: false` (informational parity; UI keeps deriving live status from `currentStock` vs `reorderLevel`)
    - every `menuItem`: `popularity` integer 1–5
    - every `recipe`: `version: 1`
-   - every `wastage_log`: `cost` (derive `unitCost × quantity` from linked ingredient) and `ingredientName` (from linked ingredient)
+   - every `ingredient`: `isLowStock: false` (informational parity; UI keeps deriving live status from `currentStock` vs `reorderLevel`)
+   - `wastage_logs`: verified 2026-10-08 — all 4 entries already have `cost` + `ingredientName`; no backfill needed (spec kept for traceability)
 4. **Dead weight**: `npm uninstall pinia chart.js vue-chartjs`; delete `src/modules/analytics/components/SalesChart.vue` and `src/composables/useDebounce.ts`; remove Pinia registration from `src/main.ts`.
 
 ## Phase 1 — Logic fixes
