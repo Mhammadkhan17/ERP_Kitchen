@@ -32,6 +32,8 @@ export const api: ApiClient = {
         const ing = r.data as Ingredient
         return http.patch(`/ingredients/${id}`, {
           currentStock: Math.max(0, +(ing.currentStock + delta).toFixed(3)),
+          lastAdjustReason: reason,
+          lastAdjustedAt: new Date().toISOString(),
         }).then((r2) => r2.data)
       }),
   },

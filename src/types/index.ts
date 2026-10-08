@@ -10,6 +10,8 @@ export interface Ingredient {
   category: string
   isLowStock: boolean
   updatedAt: string
+  lastAdjustReason?: string
+  lastAdjustedAt?: string
 }
 
 export interface MenuItem {
