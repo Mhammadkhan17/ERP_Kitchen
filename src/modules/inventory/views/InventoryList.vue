@@ -155,10 +155,7 @@ const filters = computed(() => ({
   unit: unitFilter.value || undefined,
 }))
 
-const { data: ingredients, isLoading } = useIngredients(filters.value ? {
-  search: filters.value.search,
-  unit: filters.value.unit,
-} : undefined)
+const { data: ingredients, isLoading } = useIngredients(filters)
 const deleteMutation = useDeleteIngredient()
 
 function stockStatus(ing: Ingredient): string {

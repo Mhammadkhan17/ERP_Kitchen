@@ -1,12 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
+import { toValue, type MaybeRefOrGetter } from 'vue'
 import { api } from '@/api/client'
 import { useSnackbar } from '@/composables/useSnackbar'
 import type { Ingredient } from '@/types'
 
-export function useIngredients(filters?: { search?: string; unit?: string }) {
+export function useIngredients(
+  filters?: MaybeRefOrGetter<{ search?: string; unit?: string } | undefined>,
+) {
   return useQuery({
     queryKey: ['ingredients', filters],
-    queryFn: () => api.ingredients.list(filters),
+    queryFn: () => api.ingredients.list(toValue(filters)),
   })
 }
 
