@@ -1,25 +1,35 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useDailySales, useWastageLogs, useKpiMetrics } from '@/modules/analytics/composables/useAnalytics'
+import { ref } from 'vue'
+import { useWastageLogs, useAggregatedSales, useKpiMetrics } from '@/modules/analytics/composables/useAnalytics'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import { formatCurrency } from '@/utils/formatters'
+import type { SalesPeriod } from '@/utils/aggregateSales'
 import KpiCard from '@/modules/analytics/components/KpiCard.vue'
 import BrandPerformance from '@/modules/analytics/components/BrandPerformance.vue'
 import DailyRevenueGraph from '@/modules/analytics/components/DailyRevenueGraph.vue'
 import TopSellingTable from '@/modules/analytics/components/TopSellingTable.vue'
 import WastageLog from '@/modules/analytics/components/WastageLog.vue'
+import { computed } from 'vue'
 
-const { data: salesData } = useDailySales()
+const activePeriod = ref<SalesPeriod>('daily')
+
+const { aggregated, isPending } = useAggregatedSales(activePeriod)
 const { data: wastageLogs } = useWastageLogs()
 const { data: ingredients } = useIngredients()
 
-const kpi = useKpiMetrics()
+const kpi = useKpiMetrics(aggregated)
 
 const totalWastage = computed(() =>
   (wastageLogs.value ?? []).reduce((sum, w) => sum + w.quantity, 0),
 )
 
-const activePeriod = ref<'daily' | 'weekly' | 'monthly'>('daily')
+const graphPoints = computed(() =>
+  aggregated.value.map((row) => ({
+    label: row.label,
+    revenue: row.revenue,
+    orderCount: row.orderCount,
+  })),
+)
 </script>
 
 <template>
@@ -37,7 +47,7 @@ const activePeriod = ref<'daily' | 'weekly' | 'monthly'>('daily')
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      <template v-if="!salesData && !wastageLogs">
+      <template v-if="isPending && !wastageLogs">
         <div v-for="i in 4" :key="i" class="card space-y-3">
           <div class="skeleton-text w-24" />
           <div class="skeleton-heading" />
@@ -71,17 +81,17 @@ const activePeriod = ref<'daily' | 'weekly' | 'monthly'>('daily')
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <div class="xl:col-span-2">
-        <div v-if="!salesData" class="card">
+        <div v-if="isPending" class="card">
           <div class="skeleton-heading mb-4" />
           <div class="skeleton h-48 w-full" />
         </div>
-        <DailyRevenueGraph v-else :sales-data="salesData" />
+        <DailyRevenueGraph v-else :points="graphPoints" />
       </div>
-      <div v-if="!salesData" class="card">
+      <div v-if="isPending" class="card">
         <div class="skeleton-heading mb-4" />
         <div class="skeleton h-48 w-full" />
       </div>
-      <TopSellingTable v-else :sales-data="salesData" />
+      <TopSellingTable v-else :sales-data="aggregated" />
     </div>
 
     <WastageLog
@@ -89,6 +99,6 @@ const activePeriod = ref<'daily' | 'weekly' | 'monthly'>('daily')
       :ingredients="ingredients ?? []"
     />
 
-    <BrandPerformance />
+    <BrandPerformance :sales-data="aggregated" />
   </div>
 </template>

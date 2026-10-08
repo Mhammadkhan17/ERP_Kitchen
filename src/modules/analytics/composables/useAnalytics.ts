@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { api } from '@/api/client'
 import { useSnackbar } from '@/composables/useSnackbar'
-import { computed } from 'vue'
+import { computed, toValue, type MaybeRefOrGetter } from 'vue'
+import { aggregateSales, type AggregatedPeriod, type SalesPeriod } from '@/utils/aggregateSales'
 import type { WastageLog } from '@/types'
 
 export function useDailySales() {
@@ -31,14 +32,20 @@ export function useCreateWastage() {
   })
 }
 
-export function useKpiMetrics() {
-  const { data: sales } = useDailySales()
+export function useAggregatedSales(period: MaybeRefOrGetter<SalesPeriod>) {
+  const { data: sales, isPending } = useDailySales()
+  const aggregated = computed(() => aggregateSales(sales.value ?? [], toValue(period)))
+  return { aggregated, isPending }
+}
+
+export function useKpiMetrics(rows: MaybeRefOrGetter<AggregatedPeriod[]>) {
+  const data = computed(() => toValue(rows))
 
   const totalRevenue = computed(() =>
-    (sales.value ?? []).reduce((sum, d) => sum + d.totalRevenue, 0),
+    data.value.reduce((sum, d) => sum + d.revenue, 0),
   )
   const totalOrders = computed(() =>
-    (sales.value ?? []).reduce((sum, d) => sum + d.orderCount, 0),
+    data.value.reduce((sum, d) => sum + d.orderCount, 0),
   )
   const averageOrderValue = computed(() =>
     totalOrders.value > 0 ? totalRevenue.value / totalOrders.value : 0,

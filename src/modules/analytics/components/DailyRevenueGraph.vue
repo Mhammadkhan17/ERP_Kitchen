@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { formatCurrency } from '@/utils/formatters'
-import type { DailySales } from '@/types'
+
+interface RevenuePoint {
+  label: string
+  revenue: number
+  orderCount: number
+}
 
 const props = withDefaults(defineProps<{
-  salesData: DailySales[]
+  points: RevenuePoint[]
 }>(), {
-  salesData: () => [],
+  points: () => [],
 })
 
-const tooltip = ref<{ x: number; y: number; date: string; revenue: number; orderCount: number } | null>(null)
+const tooltip = ref<{ x: number; y: number; label: string; revenue: number; orderCount: number } | null>(null)
 
 const pad = { top: 20, right: 20, bottom: 36, left: 64 }
 const w = 700
@@ -18,20 +23,20 @@ const h = 240
 const iw = computed(() => w - pad.left - pad.right)
 const ih = computed(() => h - pad.top - pad.bottom)
 
-const maxRev = computed(() => Math.max(...props.salesData.map(d => d.totalRevenue), 1))
+const maxRev = computed(() => Math.max(...props.points.map(p => p.revenue), 1))
 
 const step = computed(() =>
-  props.salesData.length > 1 ? iw.value / (props.salesData.length - 1) : iw.value,
+  props.points.length > 1 ? iw.value / (props.points.length - 1) : iw.value,
 )
 
-type Pt = { x: number; y: number; date: string; revenue: number; orderCount: number }
+type Pt = { x: number; y: number; label: string; revenue: number; orderCount: number }
 const pts = computed<Pt[]>(() =>
-  props.salesData.map((d, i) => ({
+  props.points.map((p, i) => ({
     x: pad.left + i * step.value,
-    y: pad.top + ih.value - (d.totalRevenue / maxRev.value) * ih.value,
-    date: d.date,
-    revenue: d.totalRevenue,
-    orderCount: d.orderCount,
+    y: pad.top + ih.value - (p.revenue / maxRev.value) * ih.value,
+    label: p.label,
+    revenue: p.revenue,
+    orderCount: p.orderCount,
   })),
 )
 
@@ -52,10 +57,6 @@ const yTicks = computed(() => {
   const n = 5
   return Array.from({ length: n }, (_, i) => (maxRev.value / (n - 1)) * i)
 })
-
-function shortDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-}
 
 function onMove(e: MouseEvent) {
   const svg = e.currentTarget as SVGSVGElement
@@ -79,7 +80,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
 
 <template>
   <div class="card">
-    <h3 class="text-base font-semibold text-gray-900 mb-4">Daily Revenue</h3>
+    <h3 class="text-base font-semibold text-gray-900 mb-4">Revenue Trend</h3>
     <svg
       :viewBox="`0 0 ${w} ${h}`"
       class="w-full"
@@ -123,7 +124,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
         v-show="i % labelEvery === 0"
         :x="p.x" :y="h - 4"
         text-anchor="middle" fill="#6C757D" class="text-[10px]"
-      >{{ shortDate(p.date) }}</text>
+      >{{ p.label }}</text>
 
       <g v-if="tooltip">
         <line
@@ -145,10 +146,10 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
           :x="Math.min(tooltip.x - 52, w - 120) + 52"
           :y="Math.max(tooltip.y - 48, pad.top) + 28"
           text-anchor="middle" fill="#ADB5BD" class="text-[9px]"
-        >{{ shortDate(tooltip.date) }} · {{ tooltip.orderCount }} orders</text>
+        >{{ tooltip.label }} · {{ tooltip.orderCount }} orders</text>
       </g>
     </svg>
-    <div v-if="!salesData.length" class="text-center text-gray-400 py-12 text-sm">
+    <div v-if="!points.length" class="text-center text-gray-400 py-12 text-sm">
       No sales data available
     </div>
   </div>

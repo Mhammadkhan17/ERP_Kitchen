@@ -2,11 +2,11 @@
 import { computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import type { DailySales } from '@/types'
+import type { AggregatedPeriod } from '@/utils/aggregateSales'
 import { useMenuItems } from '@/modules/menu/composables/useMenu'
 
 const props = defineProps<{
-  salesData: DailySales[]
+  salesData: AggregatedPeriod[]
 }>()
 
 const { data: menuItems } = useMenuItems()

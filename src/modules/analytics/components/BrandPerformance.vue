@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMenuItems, useBrands } from '@/modules/menu/composables/useMenu'
-import { useDailySales } from '@/modules/analytics/composables/useAnalytics'
 import { formatCurrency } from '@/utils/formatters'
+import type { AggregatedPeriod } from '@/utils/aggregateSales'
 
-const { data: salesData } = useDailySales()
+const props = defineProps<{
+  salesData: AggregatedPeriod[]
+}>()
 const { data: menuItems } = useMenuItems()
 const { data: brands } = useBrands()
 
@@ -19,7 +21,7 @@ interface BrandPerf {
 
 const brandPerformance = computed<BrandPerf[]>(() => {
   const items = menuItems.value ?? []
-  const sales = salesData.value ?? []
+  const sales = props.salesData
   const brandList = brands.value ?? []
 
   const itemBrandMap = new Map<string, { brandId: string; brandName: string; price: number }>()
