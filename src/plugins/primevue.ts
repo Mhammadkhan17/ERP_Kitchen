@@ -1,20 +1,10 @@
 import { definePreset } from '@primevue/themes'
 import Aura from '@primevue/themes/aura'
+import { ORANGE } from '../constants/palette'
 
 export const KitchenPreset = definePreset(Aura, {
   semantic: {
-    primary: {
-      50: '#fff7ed',
-      100: '#ffedd5',
-      200: '#fed7aa',
-      300: '#fdba74',
-      400: '#fb923c',
-      500: '#f97316',
-      600: '#ea580c',
-      700: '#c2410c',
-      800: '#9a3412',
-      900: '#7c2d12',
-    },
+    primary: { ...ORANGE },
     colorScheme: {
       light: {
         surface: {
@@ -29,6 +19,26 @@ export const KitchenPreset = definePreset(Aura, {
           700: '#374151',
           800: '#1f2937',
           900: '#111827',
+        },
+      },
+    },
+  },
+  components: {
+    dialog: {
+      colorScheme: {
+        light: {
+          root: { borderRadius: '0.75rem' },
+          header: {
+            padding: '1.25rem 1.5rem',
+            borderColor: '{content.border.color}',
+          },
+          content: { padding: '1.5rem' },
+          footer: {
+            padding: '1rem 1.5rem',
+            borderColor: '{content.border.color}',
+            gap: '0.5rem',
+            justifyContent: 'flex-end',
+          },
         },
       },
     },

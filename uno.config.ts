@@ -1,5 +1,6 @@
 import { defineConfig, presetWind } from 'unocss'
 import transformerDirectives from '@unocss/transformer-directives'
+import { ORANGE } from './src/constants/palette'
 
 export default defineConfig({
   presets: [presetWind()],
@@ -29,30 +30,7 @@ export default defineConfig({
   },
   theme: {
     colors: {
-      brand: {
-        50: '#fff7ed',
-        100: '#ffedd5',
-        200: '#fed7aa',
-        300: '#fdba74',
-        400: '#fb923c',
-        500: '#f97316',
-        600: '#ea580c',
-        700: '#c2410c',
-        800: '#9a3412',
-        900: '#7c2d12',
-      },
-      primary: {
-        50: '#fff7ed',
-        100: '#ffedd5',
-        200: '#fed7aa',
-        300: '#fdba74',
-        400: '#fb923c',
-        500: '#f97316',
-        600: '#ea580c',
-        700: '#c2410c',
-        800: '#9a3412',
-        900: '#7c2d12',
-      },
+      primary: { ...ORANGE },
     },
   },
 })
