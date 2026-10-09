@@ -1,4 +1,3 @@
-// src/constants/palette.ts
 export const ORANGE = {
   50: '#fff7ed',
   100: '#ffedd5',

@@ -24,6 +24,16 @@ export const KitchenPreset = definePreset(Aura, {
     },
   },
   components: {
+    datatable: {
+      colorScheme: {
+        light: {
+          headerCell: {
+            background: '{surface.50}',
+            color: '{surface.500}',
+          },
+        },
+      },
+    },
     dialog: {
       colorScheme: {
         light: {

@@ -13,7 +13,7 @@ const { data: brands } = useBrands()
 interface BrandPerf {
   brandId: string
   brandName: string
-  color: string
+  color?: string
   revenue: number
   units: number
   pct: number
@@ -61,7 +61,7 @@ const brandPerformance = computed<BrandPerf[]>(() => {
         brandList.find((b) => b.id === brandId)?.name ??
         items.find((i) => i.brandId === brandId)?.brandName ??
         brandId,
-      color: brandColorMap.get(brandId) ?? '#6C757D',
+      color: brandColorMap.get(brandId),
       ...data,
       pct: totalRevenue > 0 ? (data.revenue / totalRevenue) * 100 : 0,
     }))
@@ -81,8 +81,8 @@ const brandPerformance = computed<BrandPerf[]>(() => {
         <div class="flex items-center justify-between text-sm">
           <div class="flex items-center gap-2">
             <div
-              class="w-2.5 h-2.5 rounded-full shrink-0"
-              :style="{ backgroundColor: brand.color }"
+              class="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-500"
+              :style="brand.color ? { backgroundColor: brand.color } : undefined"
             />
             <span class="font-medium text-gray-900">{{ brand.brandName }}</span>
           </div>
@@ -95,8 +95,11 @@ const brandPerformance = computed<BrandPerf[]>(() => {
         </div>
         <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
-            class="h-full rounded-full transition-all duration-500"
-            :style="{ width: `${brand.pct}%`, backgroundColor: brand.color }"
+            class="h-full rounded-full transition-all duration-500 bg-gray-500"
+            :style="{
+              width: `${brand.pct}%`,
+              ...(brand.color ? { backgroundColor: brand.color } : {}),
+            }"
           />
         </div>
       </div>

@@ -153,38 +153,24 @@ git checkout db.json
 | Modify the backend | `server.js` |
 | Reset the database | Delete `db.json` and restart server |
 
-## Design System
+## Design system (2026-10-09)
 
-### UI Components (PrimeVue 4)
+Tokens live in two files only:
 
-Most UI comes from PrimeVue. Key components used:
+- `src/constants/palette.ts` - the orange ramp (single source for Uno `primary-*` and PrimeVue)
+- `src/constants/orderStatus.ts` - status labels, severities, tint/spine/text/CTA classes, timer tiers, chart hexes
 
-- `DataTable` — All list/table views
-- `Dialog` — Modal forms
-- `Button` — Actions
-- `Tag` — Status badges
-- `InputText`, `InputNumber`, `Select` — Form fields
-- `Toast` — Notifications (via `useSnackbar` composable)
-- `Accordion` — Expandable sections
-- `Chip` — Brand labels
+Rules:
 
-### Styling (UnoCSS)
-
-Utility-first CSS (Tailwind-compatible). Custom shortcuts in `uno.config.ts`:
-
-```html
-<div class="card">          <!-- White card with shadow -->
-<button class="btn-primary"> <!-- Orange primary button -->
-<span class="chip">          <!-- Small label chip -->
-<div class="skeleton">       <!-- Loading skeleton -->
-```
-
-### Color Palette
-
-- **Brand orange:** `#f97316` (orange-500) — primary actions
-- **Tandoori Express:** `#E65100` — brand-01
-- **Wok On Fire:** `#D32F2F` — brand-02
-- **Pizza Piazza:** `#2E7D32` — brand-03
+- Action fills: `orange-700` (white text). Graphics/accents: `orange-600`. Never `orange-500` for small graphics on white.
+- Status text uses the -700 step (blue uses -600). Status graphics use the -600 step.
+- Type: DM Sans for UI, JetBrains Mono + `tabular-nums` for data. No Inter. No `text-[9px]/[10px]/[11px]`.
+- Radius: controls `rounded-lg`, cards/dialogs `rounded-xl`, pills full. `html` font-size is 14px.
+- Elevation: cards = gray-200 border + shadow-sm; overlays shadow-lg.
+- Page chrome: every page uses `src/components/ui/PageHeader.vue`.
+- Data surfaces render exactly one of loading (`AppSkeleton`), error (`AppErrorState`), empty (`AppEmptyState`), content.
+- Buttons are always PrimeVue `Button` with severity props. Do not reintroduce Uno `btn-*` classes.
+- KDS CTAs are at least 44px tall. Respect `prefers-reduced-motion`.
 
 ## Architecture Decisions
 

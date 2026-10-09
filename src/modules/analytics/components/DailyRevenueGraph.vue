@@ -110,7 +110,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
           :y1="pad.top + ih - (t / maxRev) * ih"
           :x2="w - pad.right"
           :y2="pad.top + ih - (t / maxRev) * ih"
-          stroke="#E9ECEF"
+          class="stroke-gray-200"
           stroke-width="1"
         />
 
@@ -120,7 +120,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
           :x="pad.left - 8"
           :y="pad.top + ih - (t / maxRev) * ih + 4"
           text-anchor="end"
-          fill="#6C757D"
+          class="fill-gray-500"
           font-size="12"
         >
           {{ formatCurrency(t) }}
@@ -144,9 +144,8 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
           :cy="p.y"
           r="3.5"
           :fill="ORANGE[600]"
-          stroke="#fff"
+          class="cursor-pointer stroke-white"
           stroke-width="2"
-          class="cursor-pointer"
         />
 
         <text
@@ -156,7 +155,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
           :x="p.x"
           :y="h - 4"
           text-anchor="middle"
-          fill="#6C757D"
+          class="fill-gray-500"
           font-size="12"
         >
           {{ p.label }}
@@ -178,15 +177,14 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
             width="104"
             height="36"
             rx="4"
-            fill="#1A1D1F"
+            class="fill-gray-900"
           />
           <text
             :x="Math.min(tooltip.x - 52, w - 120) + 52"
             :y="Math.max(tooltip.y - 48, pad.top) + 14"
             text-anchor="middle"
-            fill="#fff"
+            class="fill-white font-medium"
             font-size="12"
-            class="font-medium"
           >
             {{ formatCurrency(tooltip.revenue) }}
           </text>
@@ -194,7 +192,7 @@ const labelEvery = computed(() => Math.max(1, Math.floor(pts.value.length / 7)))
             :x="Math.min(tooltip.x - 52, w - 120) + 52"
             :y="Math.max(tooltip.y - 48, pad.top) + 28"
             text-anchor="middle"
-            fill="#ADB5BD"
+            class="fill-gray-400"
             font-size="12"
           >
             {{ tooltip.label }} · {{ tooltip.orderCount }} orders

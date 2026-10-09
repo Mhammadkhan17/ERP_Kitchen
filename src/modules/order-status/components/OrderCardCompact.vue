@@ -23,7 +23,7 @@
     </div>
     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
       <span class="text-xs text-gray-400">{{ order.source }}</span>
-      <span class="font-bold text-gray-900">${{ order.totalAmount.toFixed(2) }}</span>
+      <span class="font-bold text-gray-900">{{ formatCurrency(order.totalAmount) }}</span>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@ import {
   ORDER_STATUS_SPINE_CLASS,
   ORDER_STATUS_TINT_CLASS,
 } from '@/constants/orderStatus'
+import { formatCurrency } from '@/utils/formatters'
 
 const props = defineProps<{ order: Order }>()
 
