@@ -9,9 +9,11 @@
     </div>
   </div>
   <Toast />
+  <ConfirmDialog />
 </template>
 
 <script setup lang="ts">
+import ConfirmDialog from 'primevue/confirmdialog'
 import Toast from 'primevue/toast'
 import AppDrawer from './AppDrawer.vue'
 import AppHeader from './AppHeader.vue'
