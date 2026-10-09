@@ -90,7 +90,7 @@ function stepClass(s: OrderStatus): string {
           class="relative z-10 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
           :class="stepClass(step.status)"
         >
-          <i v-if="isCompleted(step.status)" class="pi pi-check text-white text-[10px]" />
+          <i v-if="isCompleted(step.status)" class="pi pi-check text-white text-xs" />
           <span v-else-if="isActive(step.status)" class="w-2 h-2 rounded-full bg-white" />
           <span v-else class="w-2 h-2 rounded-full bg-gray-300" />
         </div>
