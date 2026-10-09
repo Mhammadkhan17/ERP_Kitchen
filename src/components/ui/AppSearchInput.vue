@@ -11,12 +11,9 @@ import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 
 defineProps<{ placeholder?: string }>()
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 const model = defineModel<string>({ default: '' })
 
 function onInput(v: unknown) {
-  const value = typeof v === 'string' ? v : String(v ?? '')
-  model.value = value
-  emit('update:modelValue', value)
+  model.value = typeof v === 'string' ? v : String(v ?? '')
 }
 </script>

@@ -14,6 +14,7 @@ describe('AppSearchInput', () => {
     expect((input.element as HTMLInputElement).value).toBe('ramen')
     await input.setValue('pho')
     expect(w.emitted('update:modelValue')?.[0]).toEqual(['pho'])
+    expect(w.emitted('update:modelValue')).toHaveLength(1)
   })
 })
 
