@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import type { AggregatedPeriod } from '@/utils/aggregateSales'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 import { useMenuItems } from '@/modules/menu/composables/useMenu'
 
 const props = defineProps<{
@@ -67,7 +68,9 @@ const topItems = computed<AggregatedItem[]>(() => {
           <span class="font-medium">{{ data.units }}</span>
         </template>
       </Column>
+      <template #empty>
+        <AppEmptyState title="No sales yet" hint="Sales appear here once orders complete" />
+      </template>
     </DataTable>
-    <div v-if="!topItems.length" class="text-center text-gray-400 py-6 text-sm">No items sold</div>
   </div>
 </template>

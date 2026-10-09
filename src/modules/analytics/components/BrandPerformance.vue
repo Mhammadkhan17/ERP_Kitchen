@@ -72,7 +72,7 @@ const brandPerformance = computed<BrandPerf[]>(() => {
 <template>
   <div class="card space-y-4">
     <div class="flex items-center justify-between">
-      <h3 class="font-display text-sm font-bold text-[#1A1D1F] uppercase tracking-wider">
+      <h3 class="font-display text-sm font-bold text-gray-900 uppercase tracking-wider">
         Revenue by Brand
       </h3>
     </div>
@@ -84,32 +84,29 @@ const brandPerformance = computed<BrandPerf[]>(() => {
               class="w-2.5 h-2.5 rounded-full shrink-0"
               :style="{ backgroundColor: brand.color }"
             />
-            <span class="font-medium text-[#1A1D1F]">{{ brand.brandName }}</span>
+            <span class="font-medium text-gray-900">{{ brand.brandName }}</span>
           </div>
           <div class="flex items-center gap-3">
-            <span class="font-mono text-xs text-[#6C757D]">{{ brand.units }} units</span>
-            <span class="font-mono text-sm font-semibold text-[#1A1D1F] w-20 text-right">{{
+            <span class="font-mono text-xs text-gray-500">{{ brand.units }} units</span>
+            <span class="font-mono text-sm font-semibold text-gray-900 w-20 text-right">{{
               formatCurrency(brand.revenue)
             }}</span>
           </div>
         </div>
-        <div class="w-full h-1.5 bg-[#E9ECEF] rounded-full overflow-hidden">
+        <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
             class="h-full rounded-full transition-all duration-500"
             :style="{ width: `${brand.pct}%`, backgroundColor: brand.color }"
           />
         </div>
       </div>
-      <div
-        v-if="!brandPerformance.length"
-        class="font-mono text-xs text-[#6C757D] text-center py-4"
-      >
+      <div v-if="!brandPerformance.length" class="font-mono text-xs text-gray-500 text-center py-4">
         no data available
       </div>
     </div>
     <div class="flex items-center justify-between pt-3 border-t border-gray-200">
-      <span class="font-mono text-xs text-[#6C757D] uppercase tracking-wider">Total</span>
-      <span class="font-display font-bold text-base text-[#1A1D1F]">{{
+      <span class="font-mono text-xs text-gray-500 uppercase tracking-wider">Total</span>
+      <span class="font-display font-bold text-base text-gray-900">{{
         formatCurrency(brandPerformance.reduce((s, b) => s + b.revenue, 0))
       }}</span>
     </div>

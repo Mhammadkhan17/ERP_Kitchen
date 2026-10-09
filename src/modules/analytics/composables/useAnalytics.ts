@@ -33,9 +33,9 @@ export function useCreateWastage() {
 }
 
 export function useAggregatedSales(period: MaybeRefOrGetter<SalesPeriod>) {
-  const { data: sales, isPending } = useDailySales()
+  const { data: sales, isPending, isError, refetch } = useDailySales()
   const aggregated = computed(() => aggregateSales(sales.value ?? [], toValue(period)))
-  return { aggregated, isPending }
+  return { aggregated, isPending, isError, refetch }
 }
 
 export function useKpiMetrics(rows: MaybeRefOrGetter<AggregatedPeriod[]>) {

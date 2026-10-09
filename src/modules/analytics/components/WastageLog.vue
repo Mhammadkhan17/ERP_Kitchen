@@ -8,6 +8,7 @@ import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import { formatDate } from '@/utils/formatters'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 import { useCreateWastage } from '@/modules/analytics/composables/useAnalytics'
 import type { WastageLog, Ingredient } from '@/types'
 
@@ -65,8 +66,8 @@ function submitWastage() {
       <Button
         label="Log Wastage"
         icon="pi pi-plus"
+        severity="primary"
         size="small"
-        class="btn-primary"
         @click="openDialog"
       />
     </div>
@@ -92,9 +93,10 @@ function submitWastage() {
       <Column field="quantity" header="Qty" />
       <Column field="unit" header="Unit" />
       <Column field="reason" header="Reason" />
+      <template #empty>
+        <AppEmptyState title="No wastage logged" />
+      </template>
     </DataTable>
-
-    <div v-if="!logs.length" class="text-center text-gray-400 py-6 text-sm">No wastage records</div>
 
     <Dialog
       v-model:visible="dialogVisible"
@@ -134,15 +136,10 @@ function submitWastage() {
         </div>
       </div>
       <template #footer>
-        <Button
-          label="Cancel"
-          severity="secondary"
-          class="btn-secondary"
-          @click="dialogVisible = false"
-        />
+        <Button label="Cancel" severity="secondary" outlined @click="dialogVisible = false" />
         <Button
           label="Submit"
-          class="btn-primary"
+          severity="primary"
           :loading="createWastage.isPending.value"
           :disabled="!form.ingredientId || form.quantity <= 0"
           @click="submitWastage"

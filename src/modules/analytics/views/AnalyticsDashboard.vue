@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import SelectButton from 'primevue/selectbutton'
 import {
   useWastageLogs,
   useAggregatedSales,
@@ -8,6 +9,9 @@ import {
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import { formatCurrency } from '@/utils/formatters'
 import type { SalesPeriod } from '@/utils/aggregateSales'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
 import KpiCard from '@/modules/analytics/components/KpiCard.vue'
 import BrandPerformance from '@/modules/analytics/components/BrandPerformance.vue'
 import DailyRevenueGraph from '@/modules/analytics/components/DailyRevenueGraph.vue'
@@ -16,9 +20,25 @@ import WastageLog from '@/modules/analytics/components/WastageLog.vue'
 
 const activePeriod = ref<SalesPeriod>('daily')
 
-const { aggregated, isPending } = useAggregatedSales(activePeriod)
-const { data: wastageLogs } = useWastageLogs()
+const periodOptions = [
+  { label: 'Daily', value: 'daily' },
+  { label: 'Weekly', value: 'weekly' },
+  { label: 'Monthly', value: 'monthly' },
+]
+
+const { aggregated, isPending, isError, refetch } = useAggregatedSales(activePeriod)
+const {
+  data: wastageLogs,
+  isPending: wastagePending,
+  isError: wastageError,
+  refetch: refetchWastage,
+} = useWastageLogs()
 const { data: ingredients } = useIngredients()
+
+function refresh() {
+  refetch()
+  refetchWastage()
+}
 
 const kpi = useKpiMetrics(aggregated)
 
@@ -36,80 +56,52 @@ const graphPoints = computed(() =>
 </script>
 
 <template>
-  <div class="p-6 space-y-6">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="page-header">Analytics Dashboard</h1>
-        <p class="page-subtitle">Sales, trends, and wastage overview</p>
-      </div>
-      <div class="flex gap-2">
-        <button
-          :class="activePeriod === 'daily' ? 'btn-filter-active' : 'btn-filter-inactive'"
-          @click="activePeriod = 'daily'"
-        >
-          Daily
-        </button>
-        <button
-          :class="activePeriod === 'weekly' ? 'btn-filter-active' : 'btn-filter-inactive'"
-          @click="activePeriod = 'weekly'"
-        >
-          Weekly
-        </button>
-        <button
-          :class="activePeriod === 'monthly' ? 'btn-filter-active' : 'btn-filter-inactive'"
-          @click="activePeriod = 'monthly'"
-        >
-          Monthly
-        </button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      <template v-if="isPending && !wastageLogs">
-        <div v-for="i in 4" :key="i" class="card space-y-3">
-          <div class="skeleton-text w-24" />
-          <div class="skeleton-heading" />
-          <div class="skeleton-text w-16" />
-        </div>
+  <div class="space-y-6">
+    <PageHeader title="Analytics Dashboard" subtitle="Sales, trends, and wastage overview">
+      <template #actions>
+        <SelectButton
+          v-model="activePeriod"
+          :options="periodOptions"
+          option-label="label"
+          option-value="value"
+          :allow-empty="false"
+          size="small"
+        />
       </template>
-      <template v-else>
+    </PageHeader>
+
+    <AppSkeleton v-if="isPending || wastagePending" variant="kpi" :count="4" />
+    <AppErrorState v-else-if="isError || wastageError" @retry="refresh" />
+    <template v-else>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <KpiCard
-          title="Total Revenue"
+          label="Total Revenue"
           :value="formatCurrency(kpi.totalRevenue.value)"
           icon="pi-dollar"
-          :subtitle="`${kpi.totalOrders.value} orders`"
         />
-        <KpiCard title="Total Orders" :value="String(kpi.totalOrders.value)" icon="pi-receipt" />
+        <KpiCard label="Total Orders" :value="String(kpi.totalOrders.value)" icon="pi-receipt" />
         <KpiCard
-          title="Avg Order Value"
+          label="Avg Order Value"
           :value="formatCurrency(kpi.averageOrderValue.value)"
           icon="pi-chart-line"
         />
         <KpiCard
-          title="Total Wastage"
+          label="Total Wastage"
           :value="`${totalWastage.toFixed(1)} units`"
           icon="pi-trash"
         />
-      </template>
-    </div>
+      </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-      <div class="xl:col-span-2">
-        <div v-if="isPending" class="card">
-          <div class="skeleton-heading mb-4" />
-          <div class="skeleton h-48 w-full" />
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div class="xl:col-span-2">
+          <DailyRevenueGraph :points="graphPoints" />
         </div>
-        <DailyRevenueGraph v-else :points="graphPoints" />
+        <TopSellingTable :sales-data="aggregated" />
       </div>
-      <div v-if="isPending" class="card">
-        <div class="skeleton-heading mb-4" />
-        <div class="skeleton h-48 w-full" />
-      </div>
-      <TopSellingTable v-else :sales-data="aggregated" />
-    </div>
 
-    <WastageLog :logs="wastageLogs ?? []" :ingredients="ingredients ?? []" />
+      <WastageLog :logs="wastageLogs ?? []" :ingredients="ingredients ?? []" />
 
-    <BrandPerformance :sales-data="aggregated" />
+      <BrandPerformance :sales-data="aggregated" />
+    </template>
   </div>
 </template>
