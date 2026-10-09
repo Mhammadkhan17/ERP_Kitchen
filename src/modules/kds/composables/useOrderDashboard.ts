@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { api } from '@/api/client'
 import { useOrderFeed } from './useOrderFeed'
-import { ORDER_STATUS_HEX } from '@/constants/orderStatus'
+import { ORDER_STATUS_SPINE_CLASS } from '@/constants/orderStatus'
 import type { Order, OrderStatus } from '@/types'
 
 export function useOrderDashboard() {
@@ -44,28 +44,28 @@ export function useOrderDashboard() {
     const all = filteredOrders.value
     return [
       {
-        title: 'Pending',
+        title: 'pending',
         status: 'pending' as OrderStatus,
         orders: all.filter((o) => o.status === 'pending'),
-        color: ORDER_STATUS_HEX.pending,
+        spineClass: ORDER_STATUS_SPINE_CLASS.pending,
       },
       {
-        title: 'Preparing',
+        title: 'preparing',
         status: 'preparing' as OrderStatus,
         orders: all.filter((o) => o.status === 'preparing'),
-        color: ORDER_STATUS_HEX.preparing,
+        spineClass: ORDER_STATUS_SPINE_CLASS.preparing,
       },
       {
-        title: 'Ready',
+        title: 'ready',
         status: 'ready' as OrderStatus,
         orders: all.filter((o) => o.status === 'ready'),
-        color: ORDER_STATUS_HEX.ready,
+        spineClass: ORDER_STATUS_SPINE_CLASS.ready,
       },
       {
-        title: 'Dispatched',
+        title: 'dispatched',
         status: 'dispatched' as OrderStatus,
         orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'),
-        color: ORDER_STATUS_HEX.dispatched,
+        spineClass: ORDER_STATUS_SPINE_CLASS.dispatched,
       },
     ]
   })

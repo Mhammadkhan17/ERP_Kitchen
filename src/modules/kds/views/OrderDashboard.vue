@@ -1,37 +1,23 @@
 <template>
-  <div class="p-6 space-y-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <div>
-          <h1 class="font-display text-xl font-bold text-gray-900 tracking-tight">
-            Kitchen Display
-          </h1>
-          <p class="font-mono text-xs text-gray-500 mt-0.5 tracking-wide">
-            {{
-              new Date().toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'short',
-                day: 'numeric',
-              })
-            }}
-            <span class="mx-1.5">&middot;</span>
-            <span :class="feed.connected.value ? 'text-[#2B9348]' : 'text-[#E85D3A]'">{{
-              feed.connected.value ? 'live' : 'offline'
-            }}</span>
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
+  <div class="space-y-6">
+    <PageHeader title="Kitchen display" subtitle="Live orders">
+      <template #actions>
+        <span
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium"
+          :class="isLive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'"
+        >
+          <span class="w-1.5 h-1.5 rounded-full" :class="isLive ? 'bg-green-600' : 'bg-red-600'" />
+          {{ isLive ? 'Live' : 'Disconnected' }}
+        </span>
         <Button
           icon="pi pi-refresh"
           severity="secondary"
-          text
-          rounded
+          outlined
           :loading="isLoading"
           @click="refresh"
         />
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <div class="flex gap-3">
       <IconField class="w-full max-w-sm">
@@ -42,15 +28,9 @@
       </IconField>
     </div>
 
-    <div v-if="isError" class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-sm">
-      Failed to load orders. Please try again.
-    </div>
-
-    <div v-else-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div v-for="i in 4" :key="i" class="skeleton-card h-[400px]" />
-    </div>
-
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <AppSkeleton v-if="isLoading" variant="cards" :count="4" />
+    <AppErrorState v-else-if="isError" @retry="refresh" />
+    <div v-else class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
       <KdsColumn
         v-for="col in columns"
         :key="col.status"
@@ -58,8 +38,9 @@
         :status="col.status"
         :orders="col.orders"
         :count="col.orders.length"
-        :color="col.color"
+        :spine-class="col.spineClass"
       >
+        <AppEmptyState v-if="!col.orders.length" title="No orders" />
         <OrderCard
           v-for="order in col.orders"
           :key="order.id"
@@ -69,12 +50,10 @@
       </KdsColumn>
     </div>
 
-    <Dialog v-model:visible="detailVisible" modal :style="{ width: '36rem' }" class="rounded-xl">
+    <AppDialog v-model:visible="detailVisible" modal size="lg">
       <template #header>
         <div class="flex items-center gap-3">
-          <span class="font-display text-xl font-bold text-[#1A1D1F]"
-            >Order #{{ detail?.orderNumber }}</span
-          >
+          <span class="text-lg font-semibold text-gray-900">Order #{{ detail?.orderNumber }}</span>
           <Tag
             v-if="detail"
             :value="statusLabel(detail.status)"
@@ -87,21 +66,17 @@
       <div v-if="detail" class="space-y-5">
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
-              >Customer</span
-            >
-            <p class="font-medium text-[#1A1D1F] mt-0.5 leading-tight">{{ detail.customerName }}</p>
+            <span class="font-mono text-xs uppercase tracking-wider text-gray-500">Customer</span>
+            <p class="font-medium text-gray-900 mt-0.5 leading-tight">{{ detail.customerName }}</p>
             <p
               v-if="detail.customerId || detail.phone"
-              class="text-xs text-[#6C757D] mt-1 leading-tight"
+              class="text-xs text-gray-500 mt-1 leading-tight"
             >
               {{ detail.customerId }}{{ detail.phone ? ' · ' + detail.phone : '' }}
             </p>
           </div>
           <div>
-            <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
-              >Source</span
-            >
+            <span class="font-mono text-xs uppercase tracking-wider text-gray-500">Source</span>
             <div class="mt-0.5">
               <Chip :label="detail.source" size="small" />
             </div>
@@ -111,39 +86,37 @@
         <Divider />
 
         <div>
-          <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Items</span>
+          <span class="font-mono text-xs uppercase tracking-wider text-gray-500">Items</span>
           <div class="mt-2 space-y-2">
             <div
               v-for="(item, i) in detail.items"
               :key="i"
-              class="flex items-center justify-between py-1.5 border-b border-[#E9ECEF] last:border-0"
+              class="flex items-center justify-between py-1.5 border-b border-gray-200 last:border-0"
             >
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-medium text-[#6C757D]"
+                <span class="font-mono text-xs font-medium text-gray-500"
                   >{{ item.quantity }}×</span
                 >
-                <span class="text-[#1A1D1F]">{{ item.name }}</span>
+                <span class="text-gray-900">{{ item.name }}</span>
               </div>
-              <span class="font-medium text-[#1A1D1F]">{{
+              <span class="font-medium text-gray-900">{{
                 formatCurrency(item.unitPrice * item.quantity)
               }}</span>
             </div>
           </div>
-          <div
-            v-if="specialItems.length > 0"
-            class="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-1"
-          >
-            <p v-for="(item, i) in specialItems" :key="i" class="text-sm text-amber-800">
-              <span class="font-medium">{{ item.name }}:</span> {{ item.specialInstructions }}
-            </p>
+          <div v-if="specialItems.length > 0" class="mt-3 space-y-2">
+            <Message v-for="(item, i) in specialItems" :key="i" severity="warn" class="w-full">
+              <span class="font-medium">{{ item.name }}:</span>
+              {{ item.specialInstructions }}
+            </Message>
           </div>
         </div>
 
         <Divider />
 
         <div class="flex items-center justify-between">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]">Total</span>
-          <span class="font-display font-bold text-lg text-[#1A1D1F]">{{
+          <span class="font-mono text-xs uppercase tracking-wider text-gray-500">Total</span>
+          <span class="font-display font-bold text-lg text-gray-900">{{
             formatCurrency(detail.totalAmount)
           }}</span>
         </div>
@@ -151,55 +124,59 @@
         <Divider />
 
         <div>
-          <span class="font-mono text-[10px] uppercase tracking-wider text-[#6C757D]"
-            >Timeline</span
-          >
+          <span class="font-mono text-xs uppercase tracking-wider text-gray-500">Timeline</span>
           <div class="mt-2 space-y-3">
             <div class="flex items-center gap-3 text-sm">
-              <i class="pi pi-clock text-[#6C757D]" />
-              <span class="text-[#6C757D]">Placed</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+              <i class="pi pi-clock text-gray-500" />
+              <span class="text-gray-500">Placed</span>
+              <span class="ml-auto font-medium text-gray-900">{{
                 formatTime(detail.timestamps.placedAt)
               }}</span>
             </div>
             <div v-if="detail.timestamps.startedAt" class="flex items-center gap-3 text-sm">
-              <i class="pi pi-play text-[#4A90D9]" />
-              <span class="text-[#6C757D]">Preparation started</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+              <i class="pi pi-play text-blue-600" />
+              <span class="text-gray-500">Preparation started</span>
+              <span class="ml-auto font-medium text-gray-900">{{
                 formatTime(detail.timestamps.startedAt)
               }}</span>
             </div>
             <div v-if="detail.timestamps.readyAt" class="flex items-center gap-3 text-sm">
-              <i class="pi pi-check-circle text-[#2B9348]" />
-              <span class="text-[#6C757D]">Ready</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+              <i class="pi pi-check-circle text-green-600" />
+              <span class="text-gray-500">Ready</span>
+              <span class="ml-auto font-medium text-gray-900">{{
                 formatTime(detail.timestamps.readyAt)
               }}</span>
             </div>
             <div v-if="detail.timestamps.dispatchedAt" class="flex items-center gap-3 text-sm">
-              <i class="pi pi-truck text-[#6C757D]" />
-              <span class="text-[#6C757D]">Dispatched</span>
-              <span class="ml-auto font-medium text-[#1A1D1F]">{{
+              <i class="pi pi-truck text-gray-500" />
+              <span class="text-gray-500">Dispatched</span>
+              <span class="ml-auto font-medium text-gray-900">{{
                 formatTime(detail.timestamps.dispatchedAt)
               }}</span>
             </div>
           </div>
         </div>
       </div>
-    </Dialog>
+    </AppDialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { formatCurrency, statusLabel, formatTime } from '@/utils/formatters'
 import { ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import type { OrderStatus } from '@/types'
 import { useOrderDashboard } from '@/modules/kds/composables/useOrderDashboard'
 import KdsColumn from '@/modules/kds/components/KdsColumn.vue'
 import OrderCard from '@/modules/kds/components/OrderCard.vue'
-import Dialog from 'primevue/dialog'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
+import AppDialog from '@/components/ui/AppDialog.vue'
 import Chip from 'primevue/chip'
 import Divider from 'primevue/divider'
+import Message from 'primevue/message'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -218,6 +195,8 @@ const {
   onViewDetail,
   refresh,
 } = useOrderDashboard()
+
+const isLive = computed(() => feed.connected.value)
 
 function severityFor(status: OrderStatus): string {
   return ORDER_STATUS_SEVERITY[status] || 'info'
