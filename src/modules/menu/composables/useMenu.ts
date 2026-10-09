@@ -60,6 +60,10 @@ export function useRecipe(menuItemId: string) {
   })
 }
 
+export async function loadRecipe(id: string): Promise<Recipe> {
+  return api.menu.recipes.get(id)
+}
+
 export function useUpsertRecipe() {
   const qc = useQueryClient()
   const snackbar = useSnackbar()

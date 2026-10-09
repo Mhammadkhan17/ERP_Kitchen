@@ -1,17 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
-    <template v-if="!items.length && itemsQuery.isLoading.value">
-      <div class="flex items-center justify-between">
-        <div class="skeleton-heading w-48" />
-        <div class="skeleton h-9 w-36 rounded-lg" />
-      </div>
-      <div class="flex flex-col gap-2">
-        <div v-for="i in 4" :key="i" class="card space-y-2">
-          <div class="skeleton-heading w-32" />
-          <div class="skeleton-text w-full" />
-        </div>
-      </div>
-    </template>
+    <AppSkeleton v-if="isLoading" variant="cards" :count="3" />
+    <AppErrorState v-else-if="isError" @retry="refetch" />
     <template v-else>
       <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Recipe Builder</h1>
@@ -23,7 +13,14 @@
         />
       </div>
 
-      <div class="flex flex-col gap-2">
+      <AppEmptyState
+        v-if="!items.length"
+        title="No menu items"
+        hint="Add a menu item to configure its recipe"
+        icon="pi pi-book"
+      />
+
+      <div v-else class="flex flex-col gap-2">
         <div v-for="item in items" :key="item.id" class="card">
           <div
             class="flex items-center justify-between cursor-pointer select-none px-4 py-3"
@@ -104,8 +101,10 @@
 import { ref, computed, reactive } from 'vue'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
-import { api } from '@/api/client'
-import { useMenuItems, useUpsertRecipe } from '../composables/useMenu'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
+import { useMenuItems, useUpsertRecipe, loadRecipe } from '../composables/useMenu'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import { useSnackbar } from '@/composables/useSnackbar'
 import IngredientPicker from '../components/IngredientPicker.vue'
@@ -118,8 +117,8 @@ interface RecipeEditState {
   ingredients: RecipeIngredient[]
 }
 
-const itemsQuery = useMenuItems()
-const items = computed(() => itemsQuery.data.value ?? [])
+const { data: itemsData, isLoading, isError, refetch } = useMenuItems()
+const items = computed(() => itemsData.value ?? [])
 
 const ingredientsQuery = useIngredients()
 const ingredientsMap = computed(() => {
@@ -142,12 +141,12 @@ async function toggle(id: string) {
   } else {
     openPanels.value.push(id)
     if (!recipeData[id] || !recipeData[id].loaded) {
-      await loadRecipe(id)
+      await loadRecipeState(id)
     }
   }
 }
 
-async function loadRecipe(menuItemId: string) {
+async function loadRecipeState(menuItemId: string) {
   if (!recipeData[menuItemId]) {
     recipeData[menuItemId] = { loaded: false, loading: true, servings: 1, ingredients: [] }
   } else {
@@ -155,7 +154,7 @@ async function loadRecipe(menuItemId: string) {
   }
 
   try {
-    const recipe = await api.menu.recipes.get(menuItemId)
+    const recipe = await loadRecipe(menuItemId)
     recipeData[menuItemId] = {
       loaded: true,
       loading: false,

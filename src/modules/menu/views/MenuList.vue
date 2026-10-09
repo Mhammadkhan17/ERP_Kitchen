@@ -1,8 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-800">Menu Items</h1>
-      <div class="flex gap-2">
+    <PageHeader title="Menu & Recipes" subtitle="Dishes and recipe configuration">
+      <template #actions>
         <Button
           label="Recipes"
           icon="pi pi-book"
@@ -10,34 +9,15 @@
           @click="$router.push('/menu/recipes')"
         />
         <Button label="Add Menu Item" icon="pi pi-plus" @click="showDialog = true" />
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <div class="flex items-center gap-2">
-      <span class="p-input-icon-left flex-1">
-        <i class="pi pi-search" />
-        <InputText v-model="search" placeholder="Search menu items..." class="w-full" />
-      </span>
-    </div>
+    <AppSearchInput v-model="search" placeholder="Search menu" />
 
-    <div v-if="itemsQuery.isLoading.value && !items.length" class="space-y-3">
-      <div v-for="i in 5" :key="i" class="flex gap-4">
-        <div class="skeleton-text flex-1 h-8" />
-        <div class="skeleton-text w-24 h-8" />
-        <div class="skeleton-text w-20 h-8" />
-        <div class="skeleton-text w-16 h-8" />
-        <div class="skeleton-text w-24 h-8" />
-      </div>
-    </div>
+    <AppSkeleton v-if="isLoading" variant="table" :count="6" />
+    <AppErrorState v-else-if="isError" @retry="refetch" />
     <template v-else>
-      <DataTable
-        :value="filteredItems"
-        :loading="itemsQuery.isLoading.value"
-        striped-rows
-        :size="'small'"
-        paginator
-        :rows="20"
-      >
+      <DataTable :value="filteredItems" striped-rows :size="'small'" paginator :rows="20">
         <Column field="name" header="Name" sortable />
         <Column field="brandName" header="Brand" sortable>
           <template #body="{ data }">
@@ -78,18 +58,32 @@
         </Column>
         <Column header="Actions" style="width: 100px">
           <template #body="{ data }">
-            <Button icon="pi pi-pencil" severity="secondary" size="small" @click="editItem(data)" />
+            <Button
+              icon="pi pi-pencil"
+              text
+              rounded
+              severity="secondary"
+              aria-label="Edit"
+              @click="editItem(data)"
+            />
           </template>
         </Column>
+        <template #empty>
+          <AppEmptyState
+            title="No menu items found"
+            hint="Try a different search or add a menu item"
+            icon="pi pi-book"
+          />
+        </template>
       </DataTable>
-
-      <MenuItemForm
-        :visible="showDialog"
-        :menu-item="editingItem"
-        @close="closeDialog"
-        @saved="closeDialog"
-      />
     </template>
+
+    <MenuItemForm
+      :visible="showDialog"
+      :menu-item="editingItem"
+      @close="closeDialog"
+      @saved="closeDialog"
+    />
   </div>
 </template>
 
@@ -98,10 +92,14 @@ import { ref, computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
 import Chip from 'primevue/chip'
 import Tag from 'primevue/tag'
 import ToggleSwitch from 'primevue/toggleswitch'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSearchInput from '@/components/ui/AppSearchInput.vue'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 import { useMenuItems, useBrands, useUpdateMenuItem } from '../composables/useMenu'
 import { formatCurrency } from '@/utils/formatters'
 import type { MenuItem } from '@/types'
@@ -111,8 +109,8 @@ const search = ref('')
 const showDialog = ref(false)
 const editingItem = ref<MenuItem | null>(null)
 
-const itemsQuery = useMenuItems()
-const items = computed(() => itemsQuery.data.value ?? [])
+const { data: itemsData, isLoading, isError, refetch } = useMenuItems()
+const items = computed(() => itemsData.value ?? [])
 
 const brandsQuery = useBrands()
 const brandMap = computed(() => {

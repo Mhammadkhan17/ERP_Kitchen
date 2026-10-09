@@ -1,9 +1,6 @@
 <template>
   <div class="flex flex-col gap-2">
-    <span class="p-input-icon-left w-full">
-      <i class="pi pi-search" />
-      <InputText v-model="search" placeholder="Search ingredients..." class="w-full" />
-    </span>
+    <AppSearchInput v-model="search" placeholder="Search ingredients" />
 
     <div v-if="filteredIngredients.length === 0" class="text-gray-400 text-sm p-2">
       No ingredients found
@@ -39,9 +36,9 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Checkbox from 'primevue/checkbox'
+import AppSearchInput from '@/components/ui/AppSearchInput.vue'
 import { useIngredients } from '@/modules/inventory/composables/useInventory'
 import type { RecipeIngredient } from '@/types'
 
