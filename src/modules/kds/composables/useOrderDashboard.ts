@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { api } from '@/api/client'
 import { useOrderFeed } from './useOrderFeed'
-import { ORDER_STATUS_COLORS } from '@/constants/orderStatus'
+import { ORDER_STATUS_HEX } from '@/constants/orderStatus'
 import type { Order, OrderStatus } from '@/types'
 
 export function useOrderDashboard() {
@@ -47,25 +47,25 @@ export function useOrderDashboard() {
         title: 'Pending',
         status: 'pending' as OrderStatus,
         orders: all.filter((o) => o.status === 'pending'),
-        color: ORDER_STATUS_COLORS.pending,
+        color: ORDER_STATUS_HEX.pending,
       },
       {
         title: 'Preparing',
         status: 'preparing' as OrderStatus,
         orders: all.filter((o) => o.status === 'preparing'),
-        color: ORDER_STATUS_COLORS.preparing,
+        color: ORDER_STATUS_HEX.preparing,
       },
       {
         title: 'Ready',
         status: 'ready' as OrderStatus,
         orders: all.filter((o) => o.status === 'ready'),
-        color: ORDER_STATUS_COLORS.ready,
+        color: ORDER_STATUS_HEX.ready,
       },
       {
         title: 'Dispatched',
         status: 'dispatched' as OrderStatus,
         orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'),
-        color: ORDER_STATUS_COLORS.dispatched,
+        color: ORDER_STATUS_HEX.dispatched,
       },
     ]
   })

@@ -25,12 +25,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Order } from '@/types'
-import { ORDER_STATUS_LABELS, ORDER_STATUS_BADGE_CLASS } from '@/constants/orderStatus'
+import { ORDER_STATUS_LABELS, ORDER_STATUS_TINT_CLASS } from '@/constants/orderStatus'
 
 const props = defineProps<{ order: Order }>()
 
 const statusLabel = computed(() => ORDER_STATUS_LABELS[props.order.status] ?? props.order.status)
 const statusClass = computed(
-  () => ORDER_STATUS_BADGE_CLASS[props.order.status] ?? 'bg-gray-100 text-gray-600',
+  () => ORDER_STATUS_TINT_CLASS[props.order.status] ?? 'bg-gray-100 text-gray-600',
 )
 </script>

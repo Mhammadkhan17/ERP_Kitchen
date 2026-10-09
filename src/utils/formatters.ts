@@ -1,4 +1,4 @@
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/constants/orderStatus'
+import { ORDER_STATUS_LABELS } from '@/constants/orderStatus'
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
@@ -20,6 +20,3 @@ export function statusLabel(status: string): string {
   return ORDER_STATUS_LABELS[status as keyof typeof ORDER_STATUS_LABELS] || status
 }
 
-export function statusColor(status: string): string {
-  return ORDER_STATUS_COLORS[status as keyof typeof ORDER_STATUS_LABELS] || 'gray'
-}

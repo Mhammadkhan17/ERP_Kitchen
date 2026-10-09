@@ -110,7 +110,7 @@ import { computed } from 'vue'
 import type { Order, OrderStatus } from '@/types'
 import { useOrderFlow } from '@/modules/kds/composables/useOrderFlow'
 import { formatCurrency, statusLabel } from '@/utils/formatters'
-import { ORDER_STATUS_COLORS, ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
+import { ORDER_STATUS_HEX, ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import { useTimer } from '@/composables/useTimer'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
@@ -132,7 +132,7 @@ const extraCount = computed(() => Math.max(0, props.order.items.length - 2))
 const formattedTimer = computed(() => timer.formatted.value)
 
 const columnColor = computed(
-  () => ORDER_STATUS_COLORS[props.order.status] || ORDER_STATUS_COLORS.dispatched,
+  () => ORDER_STATUS_HEX[props.order.status] || ORDER_STATUS_HEX.dispatched,
 )
 
 type ActionEntry = { label: string; handler: (id: string) => Promise<unknown> }
