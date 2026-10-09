@@ -1,25 +1,25 @@
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-900">Inventory</h1>
-      <div class="flex items-center gap-2">
+    <PageHeader title="Inventory" subtitle="Stock levels and low-stock alerts">
+      <template #actions>
         <Button
           label="Stock Adjustment"
           severity="secondary"
+          outlined
           icon="pi pi-refresh"
           @click="$router.push('/inventory/adjust')"
         />
         <Button label="Add Ingredient" icon="pi pi-plus" @click="openCreate" />
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <LowStockBanner v-if="ingredients" :ingredients="ingredients" />
+    <LowStockBanner
+      v-if="!isLoading && !isError && ingredients?.length"
+      :ingredients="ingredients"
+    />
 
     <div class="flex items-center gap-3">
-      <IconField icon-position="left" class="flex-1">
-        <InputIcon class="pi pi-search" />
-        <InputText v-model="search" placeholder="Search ingredients..." class="w-full" />
-      </IconField>
+      <AppSearchInput v-model="search" placeholder="Search ingredients" class="flex-1" />
       <Select
         v-model="unitFilter"
         :options="unitOptions"
@@ -29,20 +29,11 @@
       />
     </div>
 
-    <div v-if="isLoading && !ingredients?.length" class="space-y-3">
-      <div v-for="i in 5" :key="i" class="flex gap-4">
-        <div class="skeleton-text flex-1 h-8" />
-        <div class="skeleton-text w-24 h-8" />
-        <div class="skeleton-text w-20 h-8" />
-        <div class="skeleton-text w-24 h-8" />
-        <div class="skeleton-text w-20 h-8" />
-        <div class="skeleton-text w-16 h-8" />
-      </div>
-    </div>
+    <AppSkeleton v-if="isLoading" variant="table" :count="6" />
+    <AppErrorState v-else-if="isError" @retry="refetch" />
     <template v-else>
       <DataTable
         :value="filteredIngredients"
-        :loading="isLoading"
         :paginator="true"
         :rows="10"
         :rows-per-page-options="[10, 25, 50]"
@@ -77,7 +68,12 @@
         </Column>
         <Column header="Status">
           <template #body="{ data }">
-            <Tag :value="stockStatus(data)" :severity="stockSeverity(data)" />
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+              :class="stockTint(data)"
+            >
+              {{ stockStatus(data) }}
+            </span>
           </template>
         </Column>
         <Column header="Actions" style="width: 8rem">
@@ -100,17 +96,22 @@
             </div>
           </template>
         </Column>
+        <template #empty>
+          <AppEmptyState
+            title="No ingredients found"
+            hint="Try a different search or add an ingredient"
+            icon="pi pi-box"
+          />
+        </template>
       </DataTable>
-
-      <IngredientForm
-        :visible="formVisible"
-        :ingredient="selectedIngredient"
-        @close="closeForm"
-        @saved="closeForm"
-      />
-
-      <ConfirmDialog />
     </template>
+
+    <IngredientForm
+      :visible="formVisible"
+      :ingredient="selectedIngredient"
+      @close="closeForm"
+      @saved="closeForm"
+    />
   </div>
 </template>
 
@@ -120,12 +121,12 @@ import { useConfirm } from 'primevue/useconfirm'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import InputIcon from 'primevue/inputicon'
-import IconField from 'primevue/iconfield'
 import Select from 'primevue/select'
-import Tag from 'primevue/tag'
-import ConfirmDialog from 'primevue/confirmdialog'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSearchInput from '@/components/ui/AppSearchInput.vue'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 import { formatCurrency } from '@/utils/formatters'
 import type { Ingredient } from '@/types'
 import { useIngredients, useDeleteIngredient } from '../composables/useInventory'
@@ -146,7 +147,7 @@ const filters = computed(() => ({
   unit: unitFilter.value || undefined,
 }))
 
-const { data: ingredients, isLoading } = useIngredients(filters)
+const { data: ingredients, isLoading, isError, refetch } = useIngredients(filters)
 
 const filteredIngredients = computed(() => {
   const rows = ingredients.value ?? []
@@ -164,10 +165,10 @@ function stockStatus(ing: Ingredient): string {
   return 'Ok'
 }
 
-function stockSeverity(ing: Ingredient): 'danger' | 'warn' | 'success' {
-  if (ing.currentStock <= 0) return 'danger'
-  if (ing.currentStock <= ing.reorderLevel) return 'warn'
-  return 'success'
+function stockTint(ing: Ingredient): string {
+  if (ing.currentStock <= 0) return 'bg-red-50 text-red-600'
+  if (ing.currentStock <= ing.reorderLevel) return 'bg-amber-50 text-amber-700'
+  return 'bg-green-50 text-green-700'
 }
 
 function openCreate() {

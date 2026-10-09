@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-xl mx-auto flex flex-col gap-6">
+  <div class="card max-w-xl mx-auto flex flex-col gap-5">
     <div class="flex items-center gap-3">
       <Button
         icon="pi pi-arrow-left"
@@ -11,11 +11,11 @@
       <h1 class="text-2xl font-bold text-gray-900">Stock Adjustment</h1>
     </div>
 
-    <div class="card bg-white rounded-lg border border-gray-200 p-6 flex flex-col gap-5">
+    <AppSkeleton v-if="isLoading" variant="panel" />
+    <AppErrorState v-else-if="isError" @retry="refetch" />
+    <template v-else>
       <div class="field">
-        <label for="ingredient" class="font-medium text-sm text-gray-700 mb-1 block"
-          >Ingredient</label
-        >
+        <label for="ingredient" class="text-sm font-medium text-gray-700">Ingredient</label>
         <Select
           id="ingredient"
           v-model="selectedIngredient"
@@ -37,7 +37,7 @@
         </div>
 
         <div class="field">
-          <label class="font-medium text-sm text-gray-700 mb-2 block">Adjustment Type</label>
+          <label class="text-sm font-medium text-gray-700">Adjustment Type</label>
           <div class="flex gap-2">
             <Button
               :severity="adjustmentType === 'in' ? 'primary' : 'secondary'"
@@ -57,9 +57,7 @@
         </div>
 
         <div class="field">
-          <label for="quantity" class="font-medium text-sm text-gray-700 mb-1 block"
-            >Quantity</label
-          >
+          <label for="quantity" class="text-sm font-medium text-gray-700">Quantity</label>
           <InputNumber
             id="quantity"
             v-model="quantity"
@@ -69,11 +67,11 @@
             class="w-full"
             :class="{ 'p-invalid': qtyError }"
           />
-          <small v-if="qtyError" class="text-red-500">{{ qtyError }}</small>
+          <small v-if="qtyError" class="text-red-600">{{ qtyError }}</small>
         </div>
 
         <div class="field">
-          <label for="reason" class="font-medium text-sm text-gray-700 mb-1 block">Reason</label>
+          <label for="reason" class="text-sm font-medium text-gray-700">Reason</label>
           <Textarea
             id="reason"
             v-model="reason"
@@ -83,13 +81,10 @@
           />
         </div>
 
-        <div
-          v-if="quantity > 0"
-          class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-sm text-orange-800"
-        >
+        <Message v-if="quantity > 0" severity="info" class="w-full">
           New stock will be: <strong>{{ newStockPreview }}</strong>
-          <span class="text-orange-600"> {{ selectedIngredient.unit }}</span>
-        </div>
+          {{ selectedIngredient.unit }}
+        </Message>
 
         <Button
           label="Submit Adjustment"
@@ -99,7 +94,7 @@
           @click="handleSubmit"
         />
       </template>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -109,11 +104,14 @@ import Button from 'primevue/button'
 import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
 import Textarea from 'primevue/textarea'
+import Message from 'primevue/message'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
 import { positiveNumber } from '@/utils/validators'
 import type { Ingredient } from '@/types'
 import { useIngredients, useAdjustStock } from '../composables/useInventory'
 
-const { data: ingredients } = useIngredients()
+const { data: ingredients, isLoading, isError, refetch } = useIngredients()
 const adjustMutation = useAdjustStock()
 
 const selectedIngredient = ref<Ingredient | null>(null)
