@@ -28,7 +28,7 @@ const brandPerformance = computed<BrandPerf[]>(() => {
   for (const item of items) {
     itemBrandMap.set(item.id, {
       brandId: item.brandId,
-      brandName: item.brandName,
+      brandName: brandList.find((b) => b.id === item.brandId)?.name ?? item.brandId,
       price: item.price,
     })
   }
@@ -57,7 +57,10 @@ const brandPerformance = computed<BrandPerf[]>(() => {
   return Array.from(brandTotals.entries())
     .map(([brandId, data]) => ({
       brandId,
-      brandName: items.find((i) => i.brandId === brandId)?.brandName ?? brandId,
+      brandName:
+        brandList.find((b) => b.id === brandId)?.name ??
+        items.find((i) => i.brandId === brandId)?.brandName ??
+        brandId,
       color: brandColorMap.get(brandId) ?? '#6C757D',
       ...data,
       pct: totalRevenue > 0 ? (data.revenue / totalRevenue) * 100 : 0,

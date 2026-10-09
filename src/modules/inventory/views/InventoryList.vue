@@ -41,7 +41,7 @@
     </div>
     <template v-else>
       <DataTable
-        :value="ingredients ?? []"
+        :value="filteredIngredients"
         :loading="isLoading"
         :paginator="true"
         :rows="10"
@@ -147,6 +147,15 @@ const filters = computed(() => ({
 }))
 
 const { data: ingredients, isLoading } = useIngredients(filters)
+
+const filteredIngredients = computed(() => {
+  const rows = ingredients.value ?? []
+  const q = search.value.trim().toLowerCase()
+  if (!q) return rows
+  return rows.filter(
+    (i) => i.name.toLowerCase().includes(q) || i.category?.toLowerCase().includes(q),
+  )
+})
 const deleteMutation = useDeleteIngredient()
 
 function stockStatus(ing: Ingredient): string {

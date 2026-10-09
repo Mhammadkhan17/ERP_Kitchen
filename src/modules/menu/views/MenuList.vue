@@ -131,8 +131,8 @@ const filteredItems = computed(() => {
   return items.value.filter(
     (i) =>
       i.name.toLowerCase().includes(q) ||
-      i.brandName.toLowerCase().includes(q) ||
-      i.category.toLowerCase().includes(q),
+      (brandMap.value[i.brandId]?.name ?? '').toLowerCase().includes(q) ||
+      (i.category ?? '').toLowerCase().includes(q),
   )
 })
 

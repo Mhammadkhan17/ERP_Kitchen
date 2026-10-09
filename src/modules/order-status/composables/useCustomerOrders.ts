@@ -8,7 +8,7 @@ export function useCustomerOrders(inputRef: Ref<string>) {
   const queryClient = useQueryClient()
   const { socket } = useSocket()
 
-  const isPhone = computed(() => /^\d{10}$/.test(inputRef.value))
+  const isPhone = computed(() => /^\d{10,15}$/.test(inputRef.value))
   const isNumeric = computed(() => /^\d+$/.test(inputRef.value))
 
   const queryKey = computed(() => ['orders', 'customer', inputRef.value] as const)
@@ -18,7 +18,7 @@ export function useCustomerOrders(inputRef: Ref<string>) {
     queryFn: async () => {
       const val = inputRef.value
       if (isPhone.value) {
-        const customers = await api.customers.list({ phone: Number(val) })
+        const customers = await api.customers.list({ phone: val })
         if (!customers.length) return []
         return api.orders.list({ customerId: customers[0].id })
       }
