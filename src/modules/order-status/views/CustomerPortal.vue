@@ -43,7 +43,11 @@ function logout() {
 
 <template>
   <div class="space-y-6">
-    <PageHeader title="My orders" subtitle="Sign in with your phone to see order history" />
+    <PageHeader
+      align="center"
+      title="My orders"
+      subtitle="Sign in with your phone to see order history"
+    />
 
     <div v-if="!customerId" class="space-y-4">
       <p class="text-sm text-gray-500 text-center">
@@ -83,11 +87,7 @@ function logout() {
 
       <AppSkeleton v-if="isLoading" variant="cards" :count="2" />
 
-      <AppErrorState
-        v-else-if="isError"
-        message="Could not load your orders"
-        @retry="refetch"
-      />
+      <AppErrorState v-else-if="isError" message="Could not load your orders" @retry="refetch" />
 
       <div v-else-if="orders?.length" class="space-y-4">
         <OrderCardCompact
