@@ -2,6 +2,10 @@
 import { ref, computed } from 'vue'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
+import AppErrorState from '@/components/ui/AppErrorState.vue'
 import { useCustomerOrders } from '../composables/useCustomerOrders'
 import OrderCardCompact from '../components/OrderCardCompact.vue'
 import StatusTimeline from '../components/StatusTimeline.vue'
@@ -39,20 +43,28 @@ function logout() {
 
 <template>
   <div class="space-y-6">
-    <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold text-gray-900">My Orders</h1>
-      <p class="text-sm text-gray-500">Live status of all your orders</p>
-    </div>
+    <PageHeader title="My orders" subtitle="Sign in with your phone to see order history" />
 
     <div v-if="!customerId" class="space-y-4">
       <p class="text-sm text-gray-500 text-center">
         Enter your phone number or customer ID to see your orders.
       </p>
-      <form class="flex gap-3" @submit.prevent="login">
-        <InputText v-model="input" placeholder="Phone number or customer ID" class="flex-1" />
-        <Button type="submit" label="View Orders" icon="pi pi-arrow-right" />
+      <form class="max-w-md mx-auto space-y-3" @submit.prevent="login">
+        <div class="field">
+          <label for="portal-identity" class="text-sm font-medium text-gray-700">
+            Phone number
+          </label>
+          <InputText
+            id="portal-identity"
+            v-model="input"
+            class="w-full"
+            :class="{ 'p-invalid': loginError }"
+            @input="loginError = ''"
+          />
+          <p v-if="loginError" class="text-xs text-red-600">{{ loginError }}</p>
+        </div>
+        <Button type="submit" label="View Orders" icon="pi pi-arrow-right" class="w-full" />
       </form>
-      <p v-if="loginError" class="text-sm text-red-600 text-center">{{ loginError }}</p>
     </div>
 
     <template v-else>
@@ -69,39 +81,13 @@ function logout() {
         />
       </div>
 
-      <div v-if="isLoading" class="space-y-4">
-        <div
-          v-for="n in 3"
-          :key="n"
-          class="bg-white rounded-xl border border-gray-200 p-5 space-y-3 animate-pulse"
-        >
-          <div class="flex justify-between">
-            <div class="space-y-2">
-              <div class="h-3 w-20 bg-gray-200 rounded" />
-              <div class="h-4 w-32 bg-gray-200 rounded" />
-            </div>
-            <div class="h-6 w-20 bg-gray-200 rounded-full" />
-          </div>
-          <div class="h-3 w-48 bg-gray-200 rounded" />
-          <div class="h-px bg-gray-100" />
-          <div class="flex justify-between">
-            <div class="h-3 w-16 bg-gray-200 rounded" />
-            <div class="h-4 w-16 bg-gray-200 rounded" />
-          </div>
-        </div>
-      </div>
+      <AppSkeleton v-if="isLoading" variant="cards" :count="2" />
 
-      <div v-else-if="isError" class="text-center py-12">
-        <i class="pi pi-exclamation-triangle text-3xl text-gray-300 mb-3 block" />
-        <p class="text-sm text-gray-500">Failed to load orders.</p>
-        <Button
-          label="Retry"
-          severity="secondary"
-          size="small"
-          class="mt-3"
-          @click="() => refetch()"
-        />
-      </div>
+      <AppErrorState
+        v-else-if="isError"
+        message="Could not load your orders"
+        @retry="refetch"
+      />
 
       <div v-else-if="orders?.length" class="space-y-4">
         <OrderCardCompact
@@ -111,7 +97,7 @@ function logout() {
           class="cursor-pointer transition-shadow hover:shadow-md"
           @click="expanded = expanded === order.id ? null : order.id"
         />
-        <Transition name="slide-fade">
+        <Transition name="fade">
           <div
             v-if="expanded"
             key="timeline"
@@ -125,23 +111,12 @@ function logout() {
         </Transition>
       </div>
 
-      <div v-else class="text-center py-12">
-        <i class="pi pi-receipt text-3xl text-gray-300 mb-3 block" />
-        <p class="text-sm text-gray-500">No orders found for this account.</p>
-        <p class="text-xs text-gray-400 mt-1">Try a different phone number or customer ID.</p>
-      </div>
+      <AppEmptyState
+        v-else
+        title="No orders yet"
+        hint="Orders placed with your phone number appear here"
+        icon="pi pi-receipt"
+      />
     </template>
   </div>
 </template>
-
-<style scoped>
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.25s ease;
-}
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>
