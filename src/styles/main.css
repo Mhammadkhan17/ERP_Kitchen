@@ -60,6 +60,15 @@ body {
   scrollbar-color: #d1d5db transparent;
 }
 
+/* Constrain VirtualScroller so items cannot force horizontal scroll */
+.p-virtualscroller {
+  overflow-x: hidden !important;
+}
+.p-virtualscroller-content,
+.p-virtualscroller-spacer {
+  max-width: 100%;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition:

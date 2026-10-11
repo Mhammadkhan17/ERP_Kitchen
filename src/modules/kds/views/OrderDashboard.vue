@@ -26,25 +26,28 @@
 
     <AppSkeleton v-if="isLoading" variant="cards" :count="4" />
     <AppErrorState v-else-if="isError" @retry="refresh" />
-    <div v-else class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+    <div v-else class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 h-[calc(100vh-14rem)]">
       <KdsColumn
         v-for="col in columns"
         :key="col.status"
         :title="col.title"
-        :status="col.status"
-        :orders="col.orders"
+        :header-class="col.headerClass"
         :count="col.orders.length"
-        :spine-class="col.spineClass"
       >
-        <AppEmptyState v-if="!col.orders.length" title="No orders" />
-        <TransitionGroup v-else name="slide-fade" tag="div" class="space-y-3">
-          <OrderCard
-            v-for="order in col.orders"
-            :key="order.id"
-            :order="order"
-            @view-detail="onViewDetail"
-          />
-        </TransitionGroup>
+        <AppEmptyState v-if="!col.orders.length" title="No orders" class="h-full" />
+        <VirtualScroller
+          v-else
+          :items="col.orders"
+          :item-size="ORDER_CARD_ITEM_SIZE"
+          orientation="vertical"
+          class="h-full w-full overflow-x-hidden"
+        >
+          <template #item="{ item }">
+            <div class="w-full box-border px-3 pt-3 overflow-hidden">
+              <OrderCard :order="item" @view-detail="onViewDetail" />
+            </div>
+          </template>
+        </VirtualScroller>
       </KdsColumn>
     </div>
 
@@ -155,6 +158,19 @@
           </div>
         </div>
       </div>
+
+      <template #footer>
+        <Button
+          v-if="detailCta"
+          :label="detailCta.label"
+          :severity="detailCta.severity"
+          size="large"
+          :loading="isActionPending"
+          :disabled="isActionPending"
+          class="min-h-[44px] px-8 font-semibold"
+          @click="handleDetailAction"
+        />
+      </template>
     </AppDialog>
   </div>
 </template>
@@ -162,9 +178,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { formatCurrency, statusLabel, formatTime } from '@/utils/formatters'
-import { ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
+import { ORDER_STATUS_CTA, ORDER_STATUS_SEVERITY } from '@/constants/orderStatus'
 import type { OrderStatus } from '@/types'
 import { useOrderDashboard } from '@/modules/kds/composables/useOrderDashboard'
+import { useOrderFlow } from '@/modules/kds/composables/useOrderFlow'
 import KdsColumn from '@/modules/kds/components/KdsColumn.vue'
 import OrderCard from '@/modules/kds/components/OrderCard.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
@@ -178,6 +195,9 @@ import Divider from 'primevue/divider'
 import Message from 'primevue/message'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
+import VirtualScroller from 'primevue/virtualscroller'
+
+const ORDER_CARD_ITEM_SIZE = 292
 
 const {
   feed,
@@ -192,9 +212,33 @@ const {
   refresh,
 } = useOrderDashboard()
 
+const orderFlow = useOrderFlow()
+
 const isLive = computed(() => feed.connected.value)
+
+const detailCta = computed(() =>
+  detail.value ? (ORDER_STATUS_CTA[detail.value.status] ?? null) : null,
+)
+
+const isActionPending = computed(() => orderFlow.isPending.value)
 
 function severityFor(status: OrderStatus): string {
   return ORDER_STATUS_SEVERITY[status] || 'info'
+}
+
+function handleDetailAction() {
+  if (!detail.value || !detailCta.value) return
+  const id = detail.value.id
+  switch (detail.value.status) {
+    case 'pending':
+      orderFlow.startPreparing(id)
+      break
+    case 'preparing':
+      orderFlow.markReady(id)
+      break
+    case 'ready':
+      orderFlow.markDispatched(id)
+      break
+  }
 }
 </script>

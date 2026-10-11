@@ -1,11 +1,9 @@
 <template>
   <div
-    class="group cursor-pointer bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-150 overflow-hidden relative min-h-[44px]"
+    class="group cursor-pointer bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-150 overflow-hidden relative h-[280px] w-full flex flex-col"
     @click="$emit('view-detail', order.id)"
   >
-    <div class="h-1 w-full" :class="ORDER_STATUS_SPINE_CLASS[order.status] ?? 'bg-gray-400'" />
-
-    <div class="p-4 space-y-3">
+    <div class="p-4 space-y-3 flex-1 min-h-0 overflow-hidden">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2 min-w-0">
           <span class="font-mono text-lg font-bold text-gray-900 tabular-nums leading-none shrink-0"
@@ -50,49 +48,49 @@
           +{{ extraCount }} more
         </p>
       </div>
+    </div>
 
-      <div class="pt-2 border-t border-gray-100 space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <Tag
-              v-if="cta"
-              :value="statusLabel(order.status)"
-              :severity="tagSeverity"
-              rounded
-              size="small"
-            />
-            <span class="font-mono text-sm font-bold text-gray-900 tabular-nums">{{
-              formatCurrency(order.totalAmount)
-            }}</span>
-          </div>
-          <Button
-            icon="pi pi-eye"
-            size="small"
-            severity="secondary"
-            text
+    <div class="px-4 pb-4 pt-2 border-t border-gray-100 space-y-2 shrink-0">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <Tag
+            v-if="cta"
+            :value="statusLabel(order.status)"
+            :severity="tagSeverity"
             rounded
-            aria-label="View details"
-            class="text-gray-400 hover:text-gray-600"
-            @click.stop="$emit('view-detail', order.id)"
+            size="small"
           />
+          <span class="font-mono text-sm font-bold text-gray-900 tabular-nums">{{
+            formatCurrency(order.totalAmount)
+          }}</span>
         </div>
         <Button
-          v-if="cta"
-          :label="cta.label"
-          :severity="cta.severity"
-          size="large"
-          :loading="loading"
-          :disabled="loading"
-          class="w-full justify-center font-semibold min-h-[44px]"
-          @click.stop="handleAction"
+          icon="pi pi-eye"
+          size="small"
+          severity="secondary"
+          text
+          rounded
+          aria-label="View details"
+          class="text-gray-400 hover:text-gray-600"
+          @click.stop="$emit('view-detail', order.id)"
         />
-        <div
-          v-else
-          class="w-full rounded-lg text-xs font-semibold text-center py-2 leading-none tracking-wide uppercase bg-gray-50"
-          :class="ORDER_STATUS_TEXT_CLASS[order.status] ?? 'text-gray-400'"
-        >
-          {{ statusLabel(order.status) }}
-        </div>
+      </div>
+      <Button
+        v-if="cta"
+        :label="cta.label"
+        :severity="cta.severity"
+        size="large"
+        :loading="loading"
+        :disabled="loading"
+        class="w-full justify-center font-semibold min-h-[44px]"
+        @click.stop="handleAction"
+      />
+      <div
+        v-else
+        class="w-full rounded-lg text-xs font-semibold text-center py-2 leading-none tracking-wide uppercase bg-gray-50"
+        :class="ORDER_STATUS_TEXT_CLASS[order.status] ?? 'text-gray-400'"
+      >
+        {{ statusLabel(order.status) }}
       </div>
     </div>
   </div>
@@ -106,7 +104,6 @@ import { formatCurrency, statusLabel } from '@/utils/formatters'
 import {
   ORDER_STATUS_CTA,
   ORDER_STATUS_SEVERITY,
-  ORDER_STATUS_SPINE_CLASS,
   ORDER_STATUS_TEXT_CLASS,
   TIMER_TIER_CLASS,
   timerTier,

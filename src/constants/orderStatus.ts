@@ -24,12 +24,12 @@ export const ORDER_STATUS_TINT_CLASS: Record<OrderStatus, string> = {
   cancelled: 'bg-gray-100 text-gray-600',
 }
 
-export const ORDER_STATUS_SPINE_CLASS: Record<OrderStatus, string> = {
-  pending: 'bg-amber-600',
-  preparing: 'bg-blue-600',
-  ready: 'bg-green-600',
-  dispatched: 'bg-gray-500',
-  cancelled: 'bg-gray-400',
+export const ORDER_STATUS_HEADER_CLASS: Record<OrderStatus, string> = {
+  pending: 'bg-amber-700',
+  preparing: 'bg-blue-700',
+  ready: 'bg-green-700',
+  dispatched: 'bg-gray-600',
+  cancelled: 'bg-gray-500',
 }
 
 export const ORDER_STATUS_TEXT_CLASS: Record<OrderStatus, string> = {

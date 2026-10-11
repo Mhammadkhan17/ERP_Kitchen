@@ -1,9 +1,5 @@
 <template>
-  <div class="card relative overflow-hidden pl-6 space-y-3">
-    <div
-      class="absolute left-0 top-0 bottom-0 w-1.5"
-      :class="ORDER_STATUS_SPINE_CLASS[order.status]"
-    />
+  <div class="card relative overflow-hidden space-y-3">
     <div class="flex items-center justify-between">
       <div>
         <p class="font-mono text-base font-semibold text-gray-900 tabular-nums">
@@ -33,7 +29,6 @@ import { computed } from 'vue'
 import type { Order } from '@/types'
 import {
   ORDER_STATUS_LABELS,
-  ORDER_STATUS_SPINE_CLASS,
   ORDER_STATUS_TINT_CLASS,
 } from '@/constants/orderStatus'
 import { formatCurrency } from '@/utils/formatters'

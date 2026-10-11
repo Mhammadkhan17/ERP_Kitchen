@@ -4,7 +4,7 @@ import {
   timerTier,
   TIMER_TIER_CLASS,
   ORDER_STATUS_TINT_CLASS,
-  ORDER_STATUS_SPINE_CLASS,
+  ORDER_STATUS_HEADER_CLASS,
   ORDER_STATUS_CTA,
 } from './orderStatus'
 import type { OrderStatus } from '@/types'
@@ -31,10 +31,10 @@ describe('timerTier', () => {
 
 describe('status class maps', () => {
   const statuses: OrderStatus[] = ['pending', 'preparing', 'ready', 'dispatched', 'cancelled']
-  it('every status has tint, spine, and CTA entries', () => {
+  it('every status has tint, header, and CTA entries', () => {
     for (const s of statuses) {
       expect(ORDER_STATUS_TINT_CLASS[s]).toBeTruthy()
-      expect(ORDER_STATUS_SPINE_CLASS[s]).toBeTruthy()
+      expect(ORDER_STATUS_HEADER_CLASS[s]).toBeTruthy()
     }
     expect(ORDER_STATUS_CTA.pending?.label).toBe('Start')
     expect(ORDER_STATUS_CTA.preparing?.label).toBe('Ready')

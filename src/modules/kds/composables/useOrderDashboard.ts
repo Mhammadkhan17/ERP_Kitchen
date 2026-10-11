@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { api } from '@/api/client'
 import { useOrderFeed } from './useOrderFeed'
-import { ORDER_STATUS_SPINE_CLASS } from '@/constants/orderStatus'
+import { ORDER_STATUS_HEADER_CLASS } from '@/constants/orderStatus'
 import type { Order, OrderStatus } from '@/types'
 
 export function useOrderDashboard() {
@@ -47,25 +47,25 @@ export function useOrderDashboard() {
         title: 'pending',
         status: 'pending' as OrderStatus,
         orders: all.filter((o) => o.status === 'pending'),
-        spineClass: ORDER_STATUS_SPINE_CLASS.pending,
+        headerClass: ORDER_STATUS_HEADER_CLASS.pending,
       },
       {
         title: 'preparing',
         status: 'preparing' as OrderStatus,
         orders: all.filter((o) => o.status === 'preparing'),
-        spineClass: ORDER_STATUS_SPINE_CLASS.preparing,
+        headerClass: ORDER_STATUS_HEADER_CLASS.preparing,
       },
       {
         title: 'ready',
         status: 'ready' as OrderStatus,
         orders: all.filter((o) => o.status === 'ready'),
-        spineClass: ORDER_STATUS_SPINE_CLASS.ready,
+        headerClass: ORDER_STATUS_HEADER_CLASS.ready,
       },
       {
         title: 'dispatched',
         status: 'dispatched' as OrderStatus,
         orders: all.filter((o) => o.status === 'dispatched' || o.status === 'cancelled'),
-        spineClass: ORDER_STATUS_SPINE_CLASS.dispatched,
+        headerClass: ORDER_STATUS_HEADER_CLASS.dispatched,
       },
     ]
   })
