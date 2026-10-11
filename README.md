@@ -39,18 +39,32 @@ Open **http://localhost:5173** in your browser.
 | Build     | Vite 6                                    |
 | Charts    | Hand-rolled SVG (`DailyRevenueGraph.vue`) |
 
+## Design System
+
+- **Fonts**: DM Sans (UI) + JetBrains Mono (code/timers)
+- **Brand color**: Single orange source in `src/constants/palette.ts` (Tailwind scale, primary = orange-700)
+- **Status colors**: amber-700 pending, blue-600 preparing, green-700 ready, gray-600 dispatched, red-600 cancelled
+- **Timer escalation**: green-700 (0–8 min) → amber-700 (8–12 min) → red-600 (12+ min)
+- **Cards**: gray-200 border + shadow-sm
+- **Radius**: 0.5rem (sm) / 0.75rem (md) / full (pills)
+- **Shared kit**: PageHeader, AppSkeleton, AppEmptyState, AppErrorState, AppSearchInput, AppDialog, NavList (`src/components/ui/`)
+
 ## Architecture at a glance
 
 - Mock API = json-server on :3001 (`server.js`, seeded by `db.json`)
 - Reset seed data with `git checkout db.json`
+- API contract = `src/types/api.ts` (swap backend by changing Vite proxy only)
+- Status/colors = `src/constants/orderStatus.ts` (single source)
 
 ## Project Structure
 
 ```
 src/
 ├── api/client.ts          # Typed API client (Axios)
-├── composables/           # Shared composables (socket, timer, snackbar)
+├── components/ui/         # Shared UI kit (PageHeader, states, inputs)
 ├── components/layout/     # App shell, sidebar, header
+├── composables/           # Shared composables (socket, timer, snackbar)
+├── constants/             # Palette, order status, nav
 ├── modules/
 │   ├── kds/               # Kitchen Display System
 │   ├── inventory/         # Ingredient & stock management
@@ -58,7 +72,9 @@ src/
 │   ├── analytics/         # Dashboard, charts, KPIs
 │   └── order-status/      # Customer-facing order tracking
 ├── router/                # Vue Router config
+├── styles/                # Global CSS, transitions
 ├── types/                 # TypeScript interfaces
+├── utils/                 # Formatters, validators, aggregation
 └── plugins/               # PrimeVue theme config
 ```
 
@@ -110,6 +126,8 @@ The `db.json` file serves as the database, pre-seeded with:
 - **Server state** is managed via TanStack Vue Query composables (one per module)
 - **API calls** go through `src/api/client.ts` — never import Axios directly in components
 - **UI components** are from PrimeVue 4 — check existing components before adding new ones
+- **Shared UI** (PageHeader, states, inputs) lives in `src/components/ui/` — use these instead of ad-hoc layouts
+- **Status/colors** come from `src/constants/orderStatus.ts` — never hardcode status hex values
 - **Styling** uses UnoCSS utility classes (Tailwind-compatible)
 
 ## License
