@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useMenuItems, useBrands } from '@/modules/menu/composables/useMenu'
 import { formatCurrency } from '@/utils/formatters'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 import type { AggregatedPeriod } from '@/utils/aggregateSales'
 
 const props = defineProps<{
@@ -103,9 +104,11 @@ const brandPerformance = computed<BrandPerf[]>(() => {
           />
         </div>
       </div>
-      <div v-if="!brandPerformance.length" class="font-mono text-xs text-gray-500 text-center py-4">
-        no data available
-      </div>
+      <AppEmptyState
+        v-if="!brandPerformance.length"
+        title="No data available"
+        icon="pi pi-chart-bar"
+      />
     </div>
     <div class="flex items-center justify-between pt-3 border-t border-gray-200">
       <span class="font-mono text-xs text-gray-500 uppercase tracking-wider">Total</span>

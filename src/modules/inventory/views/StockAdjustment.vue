@@ -1,15 +1,17 @@
 <template>
   <div class="card max-w-xl mx-auto flex flex-col gap-5">
-    <div class="flex items-center gap-3">
-      <Button
-        icon="pi pi-arrow-left"
-        severity="secondary"
-        text
-        rounded
-        @click="$router.push('/inventory')"
-      />
-      <h1 class="text-2xl font-bold text-gray-900">Stock Adjustment</h1>
-    </div>
+    <PageHeader title="Stock Adjustment">
+      <template #actions>
+        <Button
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          text
+          rounded
+          aria-label="Back to inventory"
+          @click="$router.push('/inventory')"
+        />
+      </template>
+    </PageHeader>
 
     <AppSkeleton v-if="isLoading" variant="panel" />
     <AppErrorState v-else-if="isError" @retry="refetch" />
@@ -105,6 +107,7 @@ import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
 import Textarea from 'primevue/textarea'
 import Message from 'primevue/message'
+import PageHeader from '@/components/ui/PageHeader.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
 import AppErrorState from '@/components/ui/AppErrorState.vue'
 import { positiveNumber } from '@/utils/validators'

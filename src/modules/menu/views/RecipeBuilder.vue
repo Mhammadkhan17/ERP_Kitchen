@@ -3,15 +3,16 @@
     <AppSkeleton v-if="isLoading" variant="cards" :count="3" />
     <AppErrorState v-else-if="isError" @retry="refetch" />
     <template v-else>
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-gray-800">Recipe Builder</h1>
-        <Button
-          label="Back to Menu"
-          icon="pi pi-arrow-left"
-          severity="secondary"
-          @click="$router.push('/menu')"
-        />
-      </div>
+      <PageHeader title="Recipe Builder">
+        <template #actions>
+          <Button
+            label="Back to Menu"
+            icon="pi pi-arrow-left"
+            severity="secondary"
+            @click="$router.push('/menu')"
+          />
+        </template>
+      </PageHeader>
 
       <AppEmptyState
         v-if="!items.length"
@@ -62,7 +63,7 @@
                 >
                   <i class="pi pi-circle-fill text-primary-400 text-xs" />
                   <span>{{ getIngredientName(ing.ingredientId) }}</span>
-                  <span class="text-gray-400">—</span>
+                  <span class="text-gray-400">-</span>
                   <span class="font-medium">{{ ing.quantity }}</span>
                   <span class="text-gray-400">{{ getIngredientUnit(ing.ingredientId) }}</span>
                 </div>
@@ -101,6 +102,7 @@
 import { ref, computed, reactive } from 'vue'
 import Button from 'primevue/button'
 import InputNumber from 'primevue/inputnumber'
+import PageHeader from '@/components/ui/PageHeader.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
 import AppErrorState from '@/components/ui/AppErrorState.vue'
 import AppEmptyState from '@/components/ui/AppEmptyState.vue'

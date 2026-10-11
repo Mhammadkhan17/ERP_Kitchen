@@ -14,18 +14,14 @@
           severity="secondary"
           outlined
           :loading="isLoading"
+          aria-label="Refresh"
           @click="refresh"
         />
       </template>
     </PageHeader>
 
     <div class="flex gap-3">
-      <IconField class="w-full max-w-sm">
-        <InputIcon>
-          <i class="pi pi-search" />
-        </InputIcon>
-        <InputText v-model="search" placeholder="Search..." class="w-full" />
-      </IconField>
+      <AppSearchInput v-model="search" placeholder="Search orders..." class="w-full max-w-sm" />
     </div>
 
     <AppSkeleton v-if="isLoading" variant="cards" :count="4" />
@@ -41,12 +37,14 @@
         :spine-class="col.spineClass"
       >
         <AppEmptyState v-if="!col.orders.length" title="No orders" />
-        <OrderCard
-          v-for="order in col.orders"
-          :key="order.id"
-          :order="order"
-          @view-detail="onViewDetail"
-        />
+        <TransitionGroup v-else name="slide-fade" tag="div" class="space-y-3">
+          <OrderCard
+            v-for="order in col.orders"
+            :key="order.id"
+            :order="order"
+            @view-detail="onViewDetail"
+          />
+        </TransitionGroup>
       </KdsColumn>
     </div>
 
@@ -170,6 +168,7 @@ import { useOrderDashboard } from '@/modules/kds/composables/useOrderDashboard'
 import KdsColumn from '@/modules/kds/components/KdsColumn.vue'
 import OrderCard from '@/modules/kds/components/OrderCard.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
+import AppSearchInput from '@/components/ui/AppSearchInput.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
 import AppErrorState from '@/components/ui/AppErrorState.vue'
 import AppEmptyState from '@/components/ui/AppEmptyState.vue'
@@ -179,9 +178,6 @@ import Divider from 'primevue/divider'
 import Message from 'primevue/message'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import IconField from 'primevue/iconfield'
-import InputIcon from 'primevue/inputicon'
 
 const {
   feed,

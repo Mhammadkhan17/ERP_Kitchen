@@ -71,6 +71,7 @@
             severity="secondary"
             text
             rounded
+            aria-label="View details"
             class="text-gray-400 hover:text-gray-600"
             @click.stop="$emit('view-detail', order.id)"
           />

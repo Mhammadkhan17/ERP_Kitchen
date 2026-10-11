@@ -1,10 +1,10 @@
 <template>
-  <Dialog
+  <AppDialog
     :visible="visible"
     :header="ingredient ? 'Edit Ingredient' : 'Add Ingredient'"
     :modal="true"
     :closable="false"
-    :style="{ width: '520px' }"
+    size="md"
     @update:visible="$emit('close')"
   >
     <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
@@ -115,12 +115,12 @@
         <Button type="submit" label="Save" :loading="isPending" />
       </div>
     </form>
-  </Dialog>
+  </AppDialog>
 </template>
 
 <script setup lang="ts">
 import { reactive, computed, watch } from 'vue'
-import Dialog from 'primevue/dialog'
+import AppDialog from '@/components/ui/AppDialog.vue'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Select from 'primevue/select'

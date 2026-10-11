@@ -46,7 +46,7 @@
         <Column field="category" header="Category" sortable>
           <template #body="{ data }">
             <span v-if="data.category" class="text-gray-700">{{ data.category }}</span>
-            <span v-else class="text-gray-400">—</span>
+            <span v-else class="text-gray-400">-</span>
           </template>
         </Column>
         <Column field="unit" header="Unit" sortable />
@@ -84,6 +84,7 @@
                 severity="secondary"
                 text
                 rounded
+                aria-label="Edit"
                 @click="openEdit(data)"
               />
               <Button
@@ -91,6 +92,7 @@
                 severity="danger"
                 text
                 rounded
+                aria-label="Delete"
                 @click="confirmDelete(data)"
               />
             </div>

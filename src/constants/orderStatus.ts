@@ -1,13 +1,5 @@
 import type { OrderStatus } from '@/types'
 
-export const ORDER_STATUS_HEX: Record<OrderStatus, string> = {
-  pending: '#b45309',
-  preparing: '#2563eb',
-  ready: '#15803d',
-  dispatched: '#4b5563',
-  cancelled: '#4b5563',
-}
-
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'Pending',
   preparing: 'Preparing',

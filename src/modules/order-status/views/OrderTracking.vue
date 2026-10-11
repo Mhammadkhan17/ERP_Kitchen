@@ -46,7 +46,20 @@ function onSearch() {
 
     <AppSkeleton v-if="isLoading" variant="panel" />
 
-    <Transition name="fade">
+    <AppErrorState
+      v-else-if="isError"
+      message="Could not look up this order"
+      @retry="onSearch"
+    />
+
+    <AppEmptyState
+      v-else-if="searched && !order"
+      title="Order not found"
+      hint="Check the number on your receipt and try again"
+      icon="pi pi-search"
+    />
+
+    <Transition v-else-if="order" name="fade">
       <div v-if="order" key="result" class="space-y-5">
         <OrderCardCompact :order="order" />
         <div class="bg-white rounded-xl border border-gray-200 p-5">
@@ -55,18 +68,5 @@ function onSearch() {
         </div>
       </div>
     </Transition>
-
-    <AppEmptyState
-      v-if="searched && !order && !isLoading && !isError"
-      title="Order not found"
-      hint="Check the number on your receipt and try again"
-      icon="pi pi-search"
-    />
-
-    <AppErrorState
-      v-if="isError && !isLoading"
-      message="Could not look up this order"
-      @retry="onSearch"
-    />
   </div>
 </template>

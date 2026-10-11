@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
-import Dialog from 'primevue/dialog'
+import AppDialog from '@/components/ui/AppDialog.vue'
 import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
@@ -98,12 +98,7 @@ function submitWastage() {
       </template>
     </DataTable>
 
-    <Dialog
-      v-model:visible="dialogVisible"
-      header="Log Wastage"
-      :modal="true"
-      class="w-full max-w-md"
-    >
+    <AppDialog v-model:visible="dialogVisible" header="Log Wastage" :modal="true" size="md">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-medium text-gray-700">Ingredient</label>
@@ -145,6 +140,6 @@ function submitWastage() {
           @click="submitWastage"
         />
       </template>
-    </Dialog>
+    </AppDialog>
   </div>
 </template>

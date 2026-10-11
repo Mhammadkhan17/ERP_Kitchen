@@ -1,9 +1,9 @@
 <template>
-  <Dialog
+  <AppDialog
     :visible="visible"
     :header="menuItem ? 'Edit Menu Item' : 'Add Menu Item'"
     :modal="true"
-    :style="{ width: '480px' }"
+    size="sm"
     @update:visible="$emit('close')"
   >
     <form class="flex flex-col gap-4 p-4" @submit.prevent="handleSubmit">
@@ -62,12 +62,12 @@
         <Button type="submit" label="Save" :loading="isPending" />
       </div>
     </form>
-  </Dialog>
+  </AppDialog>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import Dialog from 'primevue/dialog'
+import AppDialog from '@/components/ui/AppDialog.vue'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Select from 'primevue/select'

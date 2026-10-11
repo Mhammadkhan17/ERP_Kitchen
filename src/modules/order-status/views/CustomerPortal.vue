@@ -56,7 +56,7 @@ function logout() {
       <form class="max-w-md mx-auto space-y-3" @submit.prevent="login">
         <div class="field">
           <label for="portal-identity" class="text-sm font-medium text-gray-700">
-            Phone number
+            Phone or customer ID
           </label>
           <InputText
             id="portal-identity"
