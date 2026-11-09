@@ -1,11 +1,12 @@
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted, type MaybeRefOrGetter, toValue } from 'vue'
 
-export function useTimer(fromIso: string) {
+export function useTimer(from: MaybeRefOrGetter<string>) {
   const elapsed = ref(0)
   let interval: ReturnType<typeof setInterval> | null = null
 
   function start() {
-    const startTime = new Date(fromIso).getTime()
+    stop()
+    const startTime = new Date(toValue(from)).getTime()
     elapsed.value = Math.floor((Date.now() - startTime) / 1000)
     interval = setInterval(() => {
       elapsed.value = Math.floor((Date.now() - startTime) / 1000)
@@ -14,6 +15,7 @@ export function useTimer(fromIso: string) {
 
   function stop() {
     if (interval) clearInterval(interval)
+    interval = null
   }
 
   const formatted = computed(() => {
@@ -26,6 +28,7 @@ export function useTimer(fromIso: string) {
   const isWarning = computed(() => elapsed.value > 600 && elapsed.value <= 900)
 
   start()
+  watch(() => toValue(from), start)
   onUnmounted(stop)
 
   return { elapsed, formatted, isUrgent, isWarning, stop }

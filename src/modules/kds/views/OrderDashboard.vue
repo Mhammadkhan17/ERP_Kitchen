@@ -43,8 +43,8 @@
           class="h-full w-full overflow-x-hidden"
         >
           <template #item="{ item }">
-            <div class="w-full box-border px-3 pt-3 overflow-hidden">
-              <OrderCard :order="item" @view-detail="onViewDetail" />
+            <div :key="item.id" class="w-full box-border px-3 pt-3 overflow-hidden">
+              <OrderCard :key="item.id" :order="item" @view-detail="onViewDetail" />
             </div>
           </template>
         </VirtualScroller>

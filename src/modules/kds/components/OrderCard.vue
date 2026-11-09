@@ -121,7 +121,7 @@ defineEmits<{
 }>()
 
 const orderFlow = useOrderFlow()
-const timer = useTimer(props.order.timestamps.placedAt)
+const timer = useTimer(() => props.order.timestamps.placedAt)
 
 const visibleItems = computed(() => props.order.items.slice(0, 2))
 const extraCount = computed(() => Math.max(0, props.order.items.length - 2))
