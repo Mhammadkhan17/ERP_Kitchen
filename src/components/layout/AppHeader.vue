@@ -12,7 +12,30 @@
         <span class="font-bold text-lg">Menu</span>
         <Button icon="pi pi-times" text rounded aria-label="Close menu" @click="mobileOpen = false" />
       </div>
-      <NavList @navigate="mobileOpen = false" />
+      <div class="flex flex-col h-[calc(100%-3.5rem)]">
+        <NavList @navigate="mobileOpen = false" />
+        <div class="mt-auto border-t border-gray-200 py-3 px-3 space-y-1">
+          <p class="px-3 pb-1 font-mono text-[10px] uppercase tracking-wider text-gray-400">
+            Customer
+          </p>
+          <router-link
+            to="/track"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-colors"
+            @click="mobileOpen = false"
+          >
+            <i class="pi pi-search text-lg" />
+            Track Order
+          </router-link>
+          <router-link
+            to="/portal"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-colors"
+            @click="mobileOpen = false"
+          >
+            <i class="pi pi-list text-lg" />
+            My Orders
+          </router-link>
+        </div>
+      </div>
     </aside>
   </div>
 </template>
