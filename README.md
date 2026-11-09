@@ -132,4 +132,4 @@ The `db.json` file serves as the database, pre-seeded with:
 
 ## License
 
-Private project.
+MIT — see [LICENSE](LICENSE).
