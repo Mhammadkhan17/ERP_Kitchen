@@ -8,17 +8,20 @@ A web-based ERP application for cloud kitchens (dark kitchens) that manage multi
 # Install dependencies
 npm install
 
-# Start both frontend and backend
+# Environment — point at your Supabase project
+cp .env.example .env.local   # fill in VITE_SUPABASE_URL + VITE_SUPABASE_PUBLISHABLE_KEY
+
+# Start the dev server
 npm start
 ```
 
 Open **http://localhost:5173** in your browser.
 
-| Service   | URL                   | Purpose                     |
-| --------- | --------------------- | --------------------------- |
-| Frontend  | http://localhost:5173 | Vue 3 SPA                   |
-| API       | http://localhost:3001 | JSON Server REST API        |
-| WebSocket | ws://localhost:3001   | Socket.IO real-time updates |
+| Service   | URL                       | Purpose                    |
+| --------- | ------------------------- | -------------------------- |
+| Frontend  | http://localhost:5173     | Vue 3 SPA (Vite dev server) |
+| Database  | your-project.supabase.co  | Postgres (via PostgREST)   |
+| Realtime  | your-project.supabase.co  | Supabase Realtime (`orders`) |
 
 ## What's Included
 
@@ -30,14 +33,13 @@ Open **http://localhost:5173** in your browser.
 
 ## Tech Stack
 
-| Layer     | Technology                                |
-| --------- | ----------------------------------------- |
-| Frontend  | Vue 3, TypeScript, PrimeVue 4, UnoCSS     |
-| State     | TanStack Vue Query                        |
-| Real-time | Socket.IO                                 |
-| Backend   | JSON Server (mock REST API)               |
-| Build     | Vite 6                                    |
-| Charts    | Hand-rolled SVG (`DailyRevenueGraph.vue`) |
+| Layer     | Technology                                     |
+| --------- | ---------------------------------------------- |
+| Frontend  | Vue 3, TypeScript, PrimeVue 4, UnoCSS          |
+| State     | TanStack Vue Query                             |
+| Backend   | Supabase (Postgres + PostgREST + Realtime)     |
+| Build     | Vite 6                                         |
+| Charts    | Hand-rolled SVG (`DailyRevenueGraph.vue`)      |
 
 ## Design System
 
@@ -51,9 +53,9 @@ Open **http://localhost:5173** in your browser.
 
 ## Architecture at a glance
 
-- Mock API = json-server on :3001 (`server.js`, seeded by `db.json`)
-- Reset seed data with `git checkout db.json`
-- API contract = `src/types/api.ts` (swap backend by changing Vite proxy only)
+- Backend = Supabase project (schema in `supabase/migrations/`, seed via `npm run seed`)
+- API contract = `src/types/api.ts` (swap backend by changing `src/api/client.ts` only)
+- Realtime = Supabase Realtime `postgres_changes` on `orders`, wrapped by `src/composables/useSocket.ts` behind the same `order:update` listener contract
 - Status/colors = `src/constants/orderStatus.ts` (single source)
 
 ## Project Structure
@@ -82,9 +84,9 @@ src/
 
 | Command              | Description                                |
 | -------------------- | ------------------------------------------ |
-| `npm start`          | Start dev server + API server concurrently |
-| `npm run dev`        | Start Vite dev server only                 |
-| `npm run server`     | Start JSON Server only                     |
+| `npm start`          | Start Vite dev server                      |
+| `npm run dev`        | Start Vite dev server                      |
+| `npm run seed`       | Seed Supabase from the legacy fixture      |
 | `npm run build`      | Type-check and build for production        |
 | `npm run preview`    | Preview production build                   |
 | `npm test`           | Run tests                                  |
@@ -94,15 +96,16 @@ src/
 
 ## Environment Variables
 
-Copy `.env.example` to `.env`:
+Copy `.env.example` to `.env.local`:
 
 ```bash
-VITE_WS_URL=http://localhost:3001
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
 ```
 
 ## Data
 
-The `db.json` file serves as the database, pre-seeded with:
+Seed data lives in Supabase (loaded once from the original fixture via `npm run seed`):
 
 - 25 ingredients (protein, grain, dairy, vegetable, spice)
 - 3 restaurant brands (Tandoori Express, Wok On Fire, Pizza Piazza)
@@ -124,7 +127,7 @@ The `db.json` file serves as the database, pre-seeded with:
 
 - **Components** use `<script setup lang="ts">` with Vue 3 Composition API
 - **Server state** is managed via TanStack Vue Query composables (one per module)
-- **API calls** go through `src/api/client.ts` — never import Axios directly in components
+- **API calls** go through `src/api/client.ts` — never import fetch or supabase-js in components
 - **UI components** are from PrimeVue 4 — check existing components before adding new ones
 - **Shared UI** (PageHeader, states, inputs) lives in `src/components/ui/` — use these instead of ad-hoc layouts
 - **Status/colors** come from `src/constants/orderStatus.ts` — never hardcode status hex values

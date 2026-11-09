@@ -1,26 +1,30 @@
 # API Documentation
 
-REST API served by JSON Server on port 3001. The Vite dev server proxies `/api/*` requests to `http://localhost:3001` (stripping the `/api` prefix).
+Data access goes through `src/api/client.ts` (the `ApiClient` interface), which calls **Supabase PostgREST**. Schema lives in `supabase/migrations/0001_erp_kitchen_init.sql`; seed data via `npm run seed`.
 
-**Base URL:** `http://localhost:3001`
+**Base URL:** `https://<project>.supabase.co/rest/v1` (PostgREST) — configured by `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`.
+
+Paths below are logical table names (`/customers` → `POST /rest/v1/customers` with `Accept: application/vnd.pgrst.object+json` semantics handled by supabase-js).
 
 ## Authentication
 
-None. This is a mock API for development purposes.
+None at the app layer. RLS policies on all tables are permissive for the `anon` role (`USING (true) WITH CHECK (true)`) — parity with the old unauthenticated mock. Narrowing RLS + Supabase Auth is a planned follow-up.
 
 ## Real-time Events
 
-Socket.IO WebSocket server runs alongside the HTTP server. On any order mutation (POST/PATCH), the server broadcasts an `order:update` event to all connected clients.
+Supabase Realtime emits `postgres_changes` on the `orders` table. `src/composables/useSocket.ts` subscribes once (singleton channel `orders-feed`), maps each row change to the historical Socket.IO contract, and dispatches to local listeners:
 
 ```javascript
-// Server emits
-io.emit('order:update', {
+// Adapter emits locally (consumers unchanged from Socket.IO era)
+socket.on('order:update', {
   id: string,
   status: OrderStatus,
   orderNumber: number,
   customerId?: number,
 })
 ```
+
+Payloads come from the Realtime row (`new` row on INSERT/UPDATE); rows missing `id`/`status`/`orderNumber` are ignored.
 
 ---
 
@@ -229,7 +233,7 @@ POST /orders
 
 **Response:** `201 Created` — Created order with auto-generated `id` and `orderNumber`
 
-**Side effect:** Server broadcasts `order:update` via Socket.IO
+**Side effect:** Realtime emits an `orders` change → local `order:update` (see Real-time Events)
 
 ### Update Order Status
 
@@ -248,7 +252,7 @@ PATCH /orders/:id
 
 **Response:** `200 OK` — Updated order
 
-**Side effect:** Server broadcasts `order:update` via Socket.IO
+**Side effect:** Realtime emits an `orders` change → local `order:update` (see Real-time Events)
 
 ---
 
@@ -478,16 +482,16 @@ POST /wastage_logs
 
 ## Error Responses
 
-JSON Server returns standard HTTP error codes:
+`src/api/client.ts` unwraps every PostgREST response: on `error` it **throws** `Error(error.message)`, so Vue Query surfaces the error state via `AppErrorState`.
 
 | Code | Description |
 |------|-------------|
 | `200` | Success |
 | `201` | Created |
-| `404` | Resource not found |
+| `404` | Resource not found (PostgREST empty result / PGRST116) |
+| `409` | Unique constraint violation (e.g. duplicate `orderNumber`) |
+| `42501` | RLS policy rejection (will not happen while policies are open) |
 | `500` | Server error |
-
-Error responses include a JSON body with `error` and `data` fields.
 
 ---
 

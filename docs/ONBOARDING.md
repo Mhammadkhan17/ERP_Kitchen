@@ -18,10 +18,10 @@ cd ERP_Kitchen
 # 2. Install dependencies
 npm install
 
-# 3. Copy environment template (optional — defaults work fine)
-cp .env.example .env
+# 3. Environment (your Supabase project URL + publishable key)
+cp .env.example .env.local   # then fill in real values
 
-# 4. Start both servers
+# 4. Start the dev server
 npm start
 ```
 
@@ -31,19 +31,20 @@ Open **http://localhost:5173** — you should see the KDS Dashboard with 15 samp
 
 | Problem | Solution |
 |---------|----------|
-| Port 3001 already in use | `kill $(lsof -ti:3001)` then retry |
 | Port 5173 already in use | `kill $(lsof -ti:5173)` then retry |
-| Blank page | Make sure both `npm run server` AND `npm run dev` are running |
-| Stale data | Delete `db.json` and restart `npm run server` to reset to seed data |
+| Blank page / 401 errors | Check `.env.local` has valid `VITE_SUPABASE_URL` + `VITE_SUPABASE_PUBLISHABLE_KEY` |
+| Stale data | Re-run `npm run seed` (drops nothing; insert fails on existing IDs — clear tables in Supabase first if you want a fresh seed) |
+| Realtime not firing | Confirm the `orders` table is in the `supabase_realtime` publication |
 
 ## How the Project is Organized
 
 ```
 ERP_Kitchen/
-├── db.json              ← The "database" (plain JSON file)
-├── server.js            ← Backend (55 lines: JSON Server + Socket.IO)
+├── supabase/migrations/  ← Postgres schema (tables, RLS, realtime)
+├── scripts/seed.mjs      ← Seed/wipe Supabase from the original fixture (kept in git history)
 ├── src/
-│   ├── api/client.ts    ← ONE place where HTTP calls happen
+│   ├── api/client.ts    ← ONE place where HTTP calls happen (Supabase client)
+│   ├── api/supabase.ts  ← Shared Supabase client instance
 │   ├── types/           ← TypeScript interfaces (your source of truth)
 │   ├── composables/     ← Shared hooks (socket, timer, snackbar)
 │   ├── components/      ← Layout shell (sidebar, header)
@@ -68,10 +69,10 @@ module/
 ### Data Flow
 
 ```
-Component → Composable (useQuery) → api/client.ts → Axios → Vite Proxy → JSON Server → db.json
+Component → Composable (useQuery) → api/client.ts → Supabase (PostgREST / Realtime)
 ```
 
-- **Never import Axios directly** in components — always go through `src/api/client.ts`
+- **Never call fetch or supabase-js directly** in components — always go through `src/api/client.ts`
 - **Never fetch data in components** — use composables from `src/modules/<name>/composables/`
 
 ### Adding a New Feature
@@ -89,7 +90,7 @@ Component → Composable (useQuery) → api/client.ts → Axios → Vite Proxy �
 
 1. Update the `Ingredient` interface in `src/types/index.ts`
 2. Update `IngredientForm.vue` to include the new field
-3. The API auto-handles it (JSON Server accepts any fields)
+3. Add the column in Supabase (migration in `supabase/migrations/`)
 
 #### Add a new order status
 
@@ -103,24 +104,16 @@ Component → Composable (useQuery) → api/client.ts → Axios → Vite Proxy �
 2. Add a new `KpiCard` or component in `AnalyticsDashboard.vue`
 3. Use `computed` for derived metrics (no API call needed)
 
-#### Modify the API response
+#### Modify backend behavior
 
-Edit `server.js`. For example, to add a new middleware:
-
-```javascript
-server.use((req, res, next) => {
-  // Your logic here
-  next()
-})
-```
+Schema changes go in `supabase/migrations/` (new SQL file) and are applied via the Supabase dashboard or MCP. Row-level access is governed by RLS policies in the same migration.
 
 ## Useful Commands
 
 ```bash
 # Development
-npm start                    # Start both servers (recommended)
-npm run dev                  # Frontend only
-npm run server               # Backend only
+npm start                    # Vite dev server (recommended)
+npm run dev                  # Same as start
 
 # Build
 npm run build                # Type-check + production build
@@ -131,8 +124,7 @@ npm test                     # Run all tests
 npm run test:watch           # Watch mode
 
 # Database
-# Just edit db.json directly, or reset it:
-git checkout db.json
+npm run seed                 # Wipe + re-seed Supabase from the original fixture
 ```
 
 ## Where to Look for What
@@ -150,8 +142,8 @@ git checkout db.json
 | Modify order tracking | `src/modules/order-status/` |
 | Change the color theme | `src/plugins/primevue.ts` |
 | Add CSS shortcuts | `uno.config.ts` |
-| Modify the backend | `server.js` |
-| Reset the database | Delete `db.json` and restart server |
+| Modify the backend | `supabase/migrations/` + Supabase dashboard |
+| Reset the database | Clear tables in Supabase, then `npm run seed` |
 
 ## Design system (2026-10-09)
 
@@ -176,10 +168,10 @@ Rules:
 
 Read `docs/ARCHITECTURE.md` for the full rationale behind key decisions. Summary:
 
-1. **JSON Server** for rapid prototyping (will be replaced for production)
+1. **Supabase** for database + REST + realtime (replaced json-server for deployment)
 2. **TanStack Vue Query** for server state (not Pinia)
 3. **Module-based** organization (not layer-based)
-4. **Socket.IO** for real-time with singleton client pattern
+4. **Supabase Realtime** (`postgres_changes` on `orders`) with a singleton channel, exposed through the same `socket.on('order:update')` contract
 5. **ApiClient interface** as the abstraction boundary between frontend and backend
 
 ## Useful Links

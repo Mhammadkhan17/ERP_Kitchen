@@ -1,59 +1,82 @@
-import { ref, markRaw, onUnmounted } from 'vue'
-import { io, type Socket } from 'socket.io-client'
+import { ref, onUnmounted } from 'vue'
+import type { RealtimeChannel } from '@supabase/supabase-js'
+import { supabase } from '@/api/supabase'
+import type { OrderUpdatePayload } from '@/types'
 
-const WS_URL =
-  import.meta.env.VITE_WS_URL ?? `http://localhost:${import.meta.env.VITE_WS_PORT ?? '3001'}`
+type Handler = (payload: OrderUpdatePayload) => void
 
-let singletonSocket: Socket | null = null
-const singletonConnected = ref(false)
-const singletonError = ref<string | null>(null)
-let refCount = 0
-
-function createSocket(): Socket {
-  const socket = io(WS_URL, {
-    transports: ['websocket', 'polling'],
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 30000,
-    randomizationFactor: 0.5,
-    reconnectionAttempts: Infinity,
-  })
-
-  socket.on('connect', () => {
-    singletonConnected.value = true
-    singletonError.value = null
-  })
-
-  socket.on('connect_error', (err: Error) => {
-    singletonError.value = err.message
-  })
-
-  socket.on('disconnect', () => {
-    singletonConnected.value = false
-  })
-
-  return socket
+export interface SocketLike {
+  on: (event: 'order:update', handler: Handler) => void
+  off: (event: 'order:update', handler: Handler) => void
 }
 
-function getSocket(): Socket {
-  if (!singletonSocket?.connected) {
-    singletonSocket?.removeAllListeners()
-    singletonSocket?.disconnect()
-    singletonSocket = markRaw(createSocket())
-  }
-  return singletonSocket
+const listeners = new Set<Handler>()
+const singletonConnected = ref(false)
+const singletonError = ref<string | null>(null)
+
+let channel: RealtimeChannel | null = null
+let refCount = 0
+
+const socket: SocketLike = {
+  on: (_event, handler) => {
+    listeners.add(handler)
+  },
+  off: (_event, handler) => {
+    listeners.delete(handler)
+  },
+}
+
+function dispatch(payload: OrderUpdatePayload) {
+  listeners.forEach((handler) => handler(payload))
+}
+
+function getChannel(): RealtimeChannel {
+  if (channel) return channel
+
+  channel = supabase
+    .channel('orders-feed')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'orders' },
+      (payload) => {
+        const row = payload.new as Partial<OrderUpdatePayload> | undefined
+        if (!row?.id || !row.status || row.orderNumber == null) return
+        dispatch({
+          id: row.id,
+          status: row.status,
+          orderNumber: row.orderNumber,
+          customerId: row.customerId,
+        })
+      },
+    )
+    .subscribe((status, err) => {
+      if (status === 'SUBSCRIBED') {
+        singletonConnected.value = true
+        singletonError.value = null
+      } else if (status === 'CHANNEL_ERROR') {
+        singletonConnected.value = false
+        singletonError.value = err?.message ?? 'Realtime channel error'
+      } else if (status === 'TIMED_OUT') {
+        singletonConnected.value = false
+        singletonError.value = 'Realtime channel timed out'
+      } else if (status === 'CLOSED') {
+        singletonConnected.value = false
+      }
+    })
+
+  return channel
 }
 
 export function useSocket() {
-  const socket = getSocket()
+  getChannel()
   refCount++
 
   onUnmounted(() => {
     refCount--
-    if (refCount <= 0) {
-      singletonSocket?.removeAllListeners()
-      singletonSocket?.disconnect()
-      singletonSocket = null
+    if (refCount <= 0 && channel) {
+      supabase.removeChannel(channel)
+      channel = null
+      listeners.clear()
       singletonConnected.value = false
     }
   })
@@ -66,8 +89,10 @@ export function useSocket() {
 }
 
 export function disconnectSocket() {
-  singletonSocket?.removeAllListeners()
-  singletonSocket?.disconnect()
-  singletonSocket = null
+  if (channel) {
+    supabase.removeChannel(channel)
+    channel = null
+  }
+  listeners.clear()
   singletonConnected.value = false
 }

@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.5.0 — 2026-11-09
+
+Backend migration: json-server mock → Supabase (Postgres + PostgREST + Realtime).
+
+### Added
+
+- `supabase/migrations/0001_erp_kitchen_init.sql`: 8 tables (quoted camelCase), FKs, status CHECK, permissive anon RLS, `orders` in `supabase_realtime`, indexes
+- `scripts/seed.mjs`: idempotent wipe + seed from the original fixture (column-whitelisted; verified counts)
+- `src/api/supabase.ts`: shared supabase-js client from `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `npm run seed` script; `ImportMetaEnv` typings for Supabase env vars
+
+### Changed
+
+- `src/api/client.ts`: `ApiClient` unchanged; internals now call PostgREST (throws on error; `withId`/`now` keep mock-middleware parity)
+- `src/composables/useSocket.ts`: Supabase Realtime `postgres_changes` on `orders` behind the same `socket.on('order:update')` contract (refcounted singleton channel)
+- Docs (README, ONBOARDING, ARCHITECTURE, API, AGENTS) describe the Supabase data path
+
+### Removed
+
+- json-server backend (`server.js`, `db.json`), Socket.IO, axios, concurrently, Vite `/api` proxy, `VITE_WS_URL`
+
 ## 0.4.0 — 2026-10-11
 
 Full UI/UX redesign across all five modules.
